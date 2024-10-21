@@ -1,0 +1,80 @@
+<!-- dashboard/templates/dashboard/home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .sidebar {
+            color: #fff;
+            width: 250px;
+            background: #1c9e30;
+            padding: 15px;
+            position: fixed;
+            height: 100%;
+        }
+        .sidebar a {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .sidebar a:hover {
+            background: #39c44e;
+        }
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .card h2 {
+            margin-top: 0;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1c9e30;
+            color: #fff;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>FloraTech</h2>
+        <a href="#"><i class="fas fa-home"></i> Home</a>
+        <a href="#"><i class="fas fa-chart-line"></i> Analytics</a>
+        <a href="#"><i class="fas fa-user"></i> Users</a>
+        <a href="#"><i class="fas fa-cogs"></i> Settings</a>
+    </div>
+    <div class="main-content">
+        <div class="header">
+            <h1>Dashboard</h1>
+            <button>Logout</button>
+        </div>
+        <div class="card">
+            <h2>Welcome, User!</h2>
+            <p>This is your dashboard home page.</p>
+        </div>
+        <div class="card">
+            <h2>Analytics</h2>
+            <p>Display some analytics or charts here...</p>
+        </div>
+    </div>
+</body>
+</html>
