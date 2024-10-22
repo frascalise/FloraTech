@@ -1,0 +1,25 @@
+.main-content {
+    margin-left: 270px;
+    padding: 20px;
+}
+
+.card {
+    background: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.card h2 {
+    margin-top: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1c9e30;
+    color: #fff;
+    padding: 10px 20px;
+}

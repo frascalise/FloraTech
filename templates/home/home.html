@@ -1,0 +1,14 @@
+{% extends "main_page.html" %}
+
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/sidebar/sidebar.css'%}">
+    <link rel="stylesheet" href="{% static 'css/home_content/home_content.css'%}">
+{% endblock head %}
+
+{% block title %} FloraTech {% endblock title %}
+
+{% block content %}
+    {% include "components/sidebar.html" %}
+    {% include "components/home_content.html" %}
+{% endblock content %}

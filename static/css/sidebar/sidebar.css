@@ -1,0 +1,43 @@
+/* dashboard/static/dashboard/sidebar.css */
+.sidebar {
+    color: #fff;
+    width: 250px;
+    background: #1c9e30;
+    padding: 15px;
+    position: fixed;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar a {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.sidebar a:hover {
+    background: #39c44e;
+}
+
+.logout-button {
+    margin-top: auto;
+    text-align: center;
+}
+
+.logout-button button {
+    background: #f44336;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.logout-button button:hover {
+    background: #d32f2f;
+}
