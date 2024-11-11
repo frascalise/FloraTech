@@ -1,0 +1,128 @@
+/* welcome.css */
+.welcome-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    background-image: url("/static/photo/bg.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white; /* Imposto il colore del testo su bianco */
+}
+
+.welcome-box {
+    background-color: rgba(255, 255, 255, 0.2); /* Colore semitrasparente per il contenitore */
+    padding: 40px 60px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 600px;
+    width: 100%; /* Aggiunto per una responsività migliore */
+    
+    backdrop-filter: blur(10px); /* Effetto sfocatura */
+    -webkit-backdrop-filter: blur(10px); /* Sfocatura per Safari */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Bordo semitrasparente */
+}
+
+.welcome-box h1 {
+    margin: 0;
+    font-size: 2.5em;
+    color: white; /* Testo del titolo in bianco */
+}
+
+.slogan {
+    font-size: 1.2em;
+    color: #d5d5d5;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+form {
+    width: 100%; /* Assicura che il modulo occupi tutta la larghezza disponibile */
+}
+
+.form-group {
+    width: 100%; /* Contenitore per ogni campo di input */
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 1.1em;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    font-size: 1em;
+    border: 1px solid #fff;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.2); /* Campo di input trasparente */
+    color: white; /* Colore testo input bianco */
+    outline: none;
+    transition: border-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.form-control:focus {
+    border-color: #4DB39C; /* Colore bordo al focus */
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.form-control::placeholder {
+    color: #d5d5d5; /* Colore del placeholder */
+}
+
+button[type="submit"] {
+    padding: 15px 30px;
+    background-color: #4DB39C;
+    color: white;
+    border-radius: 30px;
+    font-size: 1.1em;
+    border: none;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #377969; /* Colore hover per il bottone */
+}
+
+/* Stile per gli errori nei form */
+.errorlist {
+    color: #ff4d4d; /* Colore rosso per gli errori */
+    margin-top: 10px;
+    padding-left: 0;
+    list-style-type: none;
+    font-size: 0.9em;
+}
+
+.errorlist li {
+    margin-bottom: 5px;
+}
+
+.welcome-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+.button {
+    padding: 10px 20px;
+    background-color: #4DB39C;
+    color: white;
+    text-decoration: none;
+    border-radius: 100px;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #377969;
+}

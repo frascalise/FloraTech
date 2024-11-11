@@ -1,0 +1,12 @@
+{% extends "main_page.html" %}
+
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/login/style.css'%}">
+{% endblock head %}
+
+{% block title %} FloraTech {% endblock title %}
+
+{% block content %}
+    {% include "appuser/login/loginContent.html" %}
+{% endblock content %}

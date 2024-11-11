@@ -1,0 +1,22 @@
+{% load static %}
+
+<div 
+    class="welcome-content" 
+    style="
+        background-image: url('{% static 'photo/bg.png' %}');
+        background-size: cover;
+        background-position: center;">
+    
+    <!-- Contenitore per FloraTech, slogan e bottoni -->
+    <div class="welcome-box">
+        <h1>FloraTech</h1>
+        
+        <!-- Slogan aggiunto sotto il titolo -->
+        <p class="slogan">Connecting You with Nature</p>
+        
+        <div class="welcome-buttons">
+            <a href="{% url 'login' %}" class="button">Login</a>
+            <a href="{% url 'register' %}" class="button">Register</a>
+        </div>
+    </div>
+</div>

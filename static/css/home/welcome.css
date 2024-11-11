@@ -1,0 +1,64 @@
+/* welcome.css */
+.welcome-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    background-image: url("/static/photo/bg.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.welcome-box {
+    background-color: rgba(255, 255, 255, 0.15); /* Colore semitrasparente */
+    padding: 40px 60px; /* Aumentato il padding per un contenitore più grande */
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 600px; /* Larghezza massima del contenitore */
+    
+    /* Effetto Frosted Glass */
+    backdrop-filter: blur(10px); /* Sfocatura */
+    -webkit-backdrop-filter: blur(10px); /* Sfocatura per Safari */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Bordo semitrasparente */
+}
+
+.welcome-box h1 {
+    margin: 0;
+    font-size: 2.5em;
+    color: white;
+}
+
+.slogan {
+    font-size: 1.2em;
+    color: #d5d5d5;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    max-width: 100%;
+}
+
+.welcome-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+.button {
+    padding: 10px 20px;
+    background-color: #4DB39C;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    border-radius: 100px;
+}
+
+.button:hover {
+    background-color: #377969;
+    color: white;
+}

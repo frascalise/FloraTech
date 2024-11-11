@@ -2,13 +2,18 @@
 
 {% block head %}
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/sidebar/sidebar.css'%}">
-    <link rel="stylesheet" href="{% static 'css/home_content/home_content.css'%}">
+    <link rel="stylesheet" href="{% static 'css/components/sidebar.css'%}">
+    <link rel="stylesheet" href="{% static 'css/home/style.css'%}">
+    <link rel="stylesheet" href="{% static 'css/home/welcome.css'%}">
 {% endblock head %}
 
 {% block title %} FloraTech {% endblock title %}
 
 {% block content %}
-    {% include "components/sidebar.html" %}
-    {% include "components/home_content.html" %}
+    {% if user.is_authenticated %}
+        {% include "components/sidebar.html" %}
+        {% include "home/homeContent.html" %}
+    {% else %}
+        {% include "home/homeWelcome.html" %}
+    {% endif %}
 {% endblock content %}

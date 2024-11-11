@@ -1,0 +1,12 @@
+{% extends "main_page.html" %}
+
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/register/style.css'%}">
+{% endblock head %}
+
+{% block title %} FloraTech {% endblock title %}
+
+{% block content %}
+    {% include "appuser/register/registerContent.html" %}
+{% endblock content %}

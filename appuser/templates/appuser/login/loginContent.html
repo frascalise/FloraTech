@@ -1,0 +1,38 @@
+{% load static %}
+
+<div class="welcome-content" 
+    style="background-image: url('{% static 'photo/bg.png' %}');
+          background-size: cover;
+          background-position: center;">
+    
+    <div class="welcome-box">
+        <h1>FloraTech</h1>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group first">
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.username.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            
+            <div class="form-group last mb-4">
+                {{ form.password }}
+                {% if form.password.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.password.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            
+            <button type="submit" class="btn btn-primary my-2 my-sm-0 workrate-orange">Accedi</button>
+        </form>
+    </div>
+</div>
