@@ -50,7 +50,7 @@
 
 .button {
     padding: 10px 20px;
-    background-color: #4DB39C;
+    background-color: #093A61;
     color: white;
     text-decoration: none;
     border-radius: 5px;
@@ -59,6 +59,6 @@
 }
 
 .button:hover {
-    background-color: #377969;
+    background-color: #0f68b0;
     color: white;
 }
