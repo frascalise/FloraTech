@@ -1,0 +1,28 @@
+{% extends "main_page.html" %}
+
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/components/sidebar.css'%}">
+    <link rel="stylesheet" href="{% static 'css/home/style.css'%}">
+    <link rel="stylesheet" href="{% static 'css/home/welcome.css'%}">
+{% endblock head %}
+
+{% block title %} FloraTech {% endblock title %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        {% include "components/sidebar.html" %}
+        <!-- homeContent.html -->
+<div class="home-content">
+    <h1>I miei Hub</h1>
+    <table>
+        <tr>
+            <td>ID</td><td>Tipo di dispositivo</td><td>Località</td><td>Data di attivazione</td>
+        </tr>
+    </table>
+
+</div>
+    {% else %}
+        {% include "home/homeWelcome.html" %}
+    {% endif %}
+{% endblock content %}

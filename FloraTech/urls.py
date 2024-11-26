@@ -22,6 +22,7 @@ from appuser.views import Register, Login, Logout
 
 urlpatterns = [
     path("", home, name="home"),
+    path("mydevices", myDevicesList, name="lista_dispositivi"),
     path("admin/", admin.site.urls),
     path("register/", Register, name="register"),
     path("login/", Login, name="login"),
