@@ -1,24 +1,29 @@
 from django.db import models
 
-# Create your models here.
-
 class Hub():
-    hub_id_auto = models.AutoField(primary_key=True) #PK
-
-    hub_id = models.IntegerField(unique=True)
+    # hub_id = models.IntegerField(unique=True)
     hub_type = models.CharField(max_length=100, default="Raspberry PI")
-    number_of_registered_devices = models.ImageField()
+    installation_date = models.DateField(auto_now=True)
+    hub_status = models.CharField(max_length=100, default="working") # working, anomaly, down
+    name = models.CharField(max_length=100, default="My House")
+    location = models.CharField(max_length=100)
+    picture = models.ImageField(upload_to='hub_pics/', default='hub_pics/default.jpg')
 
-    date_of_installation = models.DateField()
-    date_of_disinstallation = models.DateField(null=True)
-
-    # working, anomaly (yellow status?), down
-    #state = models.CharField()
-
-
-
-
-
-
+    def getHubType(self):
+        return self.hub_type
     
+    def getInstallationDate(self):
+        return self.installation_date
+    
+    def getHubStatus(self):
+        return self.hub_status
+
+    def getName(self):
+        return self.name
+    
+    def getLocation(self):
+        return self.location
+    
+    def getPicture(self):
+        return self.picture
     
