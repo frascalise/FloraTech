@@ -1,10 +1,12 @@
 from django.db import models
+from appuser.models import Appuser
 
-class Hub():
+class Hub(models.Model):
     # hub_id = models.IntegerField(unique=True)
+    owner = models.ForeignKey(Appuser, on_delete=models.CASCADE)  # Relation with Appuser
     hub_type = models.CharField(max_length=100, default="Raspberry PI")
     installation_date = models.DateField(auto_now=True)
-    hub_status = models.CharField(max_length=100, default="working") # working, anomaly, down
+    hub_status = models.CharField(max_length=100, default="working")
     name = models.CharField(max_length=100, default="My House")
     location = models.CharField(max_length=100)
     picture = models.ImageField(upload_to='hub_pics/', default='hub_pics/default.jpg')
