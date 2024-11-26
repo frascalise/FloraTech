@@ -18,13 +18,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from .views import *
+from devices.views import myDevicesList
 from appuser.views import Register, Login, Logout
 
 urlpatterns = [
     path("", home, name="home"),
-    path("mydevices", myDevicesList, name="lista_dispositivi"),
     path("admin/", admin.site.urls),
     path("register/", Register, name="register"),
     path("login/", Login, name="login"),
     path('logout/', Logout, name='logout'),
+    path("house", myDevicesList, name="house"),
 ]

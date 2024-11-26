@@ -1,0 +1,30 @@
+.home-content {
+    margin-left: 250px;
+    padding: 20px;
+    background-color: #292929;
+    min-height: 100vh;
+}
+
+.home-content h1 {
+    color: #4db39c;
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: left;
+    color: #fff;
+    border-bottom: 1px solid #4db39c;
+}
+
+table th {
+    color: #4db39c;
+    font-weight: bold;
+}

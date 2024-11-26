@@ -1,3 +1,6 @@
 from django.shortcuts import render
 
-# Create your views here.
+# Vista per vedera la lista dei miei dispositivi - OK
+def myDevicesList(request):
+    return render(request, 'devices/hub/hubPage.html')
+
