@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "appuser.apps.AppuserConfig",
-    "devices.apps.DevicesConfig"
+    "devices.apps.DevicesConfig",
+    "garden.apps.GardenConfig"
 ]
 
 MIDDLEWARE = [
