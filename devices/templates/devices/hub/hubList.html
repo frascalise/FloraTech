@@ -1,0 +1,28 @@
+<div class="home-content">
+    <h1>My Houses</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Tipo di dispositivo</th>
+            <th>Località</th>
+            <th>Data di attivazione</th>
+            <th>Stato</th>
+            <th>     </th>
+        </tr>
+
+        {% for hub in hubs %}
+        <tr>
+            <th>{{ hub.id }}</th>
+            <td>{{ hub.hub_type }}</td>
+            <td>{{ hub.location }}</td>
+            <td>{{ hub.installation_date }}</td>
+            <td>{{ hub.hub_status }}</td>
+            <td>
+                <a href="{% url 'house_details' %}">
+                    <button class="button">Dettagli</button>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>

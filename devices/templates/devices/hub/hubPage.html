@@ -12,7 +12,11 @@
 {% block content %}
     {% if user.is_authenticated %}
         {% include "components/sidebar.html" %}
-        {% include "devices/hub/hub.html"%}
+        {% if details %}
+            {% include "devices/hub/hubDetailPage.html"%}
+        {% else %}
+            {% include "devices/hub/hubList.html"%}
+        {% endif %}
     {% else %}
         {% include "home/homeWelcome.html" %}
     {% endif %}

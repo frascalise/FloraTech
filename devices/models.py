@@ -1,6 +1,6 @@
 from django.db import models
 
-class Hub():
+class Hub(models.Model):
     # hub_id = models.IntegerField(unique=True)
     hub_type = models.CharField(max_length=100, default="Raspberry PI")
     installation_date = models.DateField(auto_now=True)
