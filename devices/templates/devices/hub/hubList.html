@@ -1,5 +1,8 @@
 <div class="home-content">
     <h1>My Houses</h1>
+    <a href="#">
+        <button class="button">Aggiungi un'abitazione</button>
+    </a>
     <table>
         <tr>
             <th>ID</th>
@@ -18,7 +21,7 @@
             <td>{{ hub.installation_date }}</td>
             <td>{{ hub.hub_status }}</td>
             <td>
-                <a href="{% url 'house_details' %}">
+                <a href="{% url 'house_details' hub.id %}">
                     <button class="button">Dettagli</button>
                 </a>
             </td>

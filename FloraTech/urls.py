@@ -28,5 +28,5 @@ urlpatterns = [
     path("login/", Login, name="login"),
     path('logout/', Logout, name='logout'),
     path("house", myDevicesList, name="house"),
-    path("house/details", deviceDetails, name="house_details"),
+    path("house/details/<int:id>/", deviceDetails, name="house_details"),
 ]

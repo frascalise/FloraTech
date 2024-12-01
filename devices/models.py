@@ -7,7 +7,7 @@ class Hub(models.Model):
     hub_status = models.CharField(max_length=100, default="working") # working, anomaly, down
     name = models.CharField(max_length=100, default="My House")
     location = models.CharField(max_length=100)
-    picture = models.ImageField(upload_to='hub_pics/', default='hub_pics/default.jpg')
+    picture = models.ImageField(upload_to='hub_pics/', default='photo/hub_pics/default.jpg')
 
     def getHubType(self):
         return self.hub_type

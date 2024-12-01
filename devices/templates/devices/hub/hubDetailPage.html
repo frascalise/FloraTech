@@ -1,4 +1,57 @@
-<div class="home-content">
-    <h1>Viewing details of an hub</h1>
+{% load static %}
 
+<div class="home-content">
+    <h1>Viewing details of hub #{{ hub.id }}</h1>
+
+    <hr />
+
+    <div style="    display: flex;
+    align-content: flex-end;
+    flex-wrap: wrap;
+    justify-content: space-around; ">
+        <div>
+            <p>Tipologia del dispositivo: {{ hub.hub_type }}</p>
+            <p>Posizione del dispositivo: {{ hub.location }}</p>
+            <p>Data di istallazione: {{ hub.installation_date }}</p>
+            <p>Stato: {{ hub.hub_status }}</p>
+        </div>
+        <div>
+            <img href="{% static hub.picture %}" alt="immagine dell'hub" />
+            {% static hub.picture %}
+        </div> 
+    </div>
+
+    <hr />
+    
+    <div>
+        <p>Dispositivi associati: </p>
+        <a href="#">
+            <button class="button">Registra un nuovo dispositivo</button>
+        </a>
+        <div>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Tipo di dispositivo</th>
+                    <th>Località</th>
+                    <th>Data di attivazione</th>
+                    <th>Stato</th>
+                    <th>     </th>
+                </tr>
+        
+                <tr>
+                    <th>placeholder</th>
+                    <td>placeholder</td>
+                    <td>placeholder</td>
+                    <td>placeholder</td>
+                    <td>placeholder</td>
+                    <td>
+                        <a href="#">
+                            <button class="button">Dettagli</button>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </div>

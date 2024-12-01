@@ -20,9 +20,13 @@ def myDevicesList(request):
 
     return render(request, 'devices/hub/hubPage.html', context)
 
-def deviceDetails(request):
+def deviceDetails(request, id):
+
+    device = Hub.objects.get(id=id)
+
     context = {
         "details": True,
+        "hub": device,
     }
     return render(request, 'devices/hub/hubPage.html', context)
 
