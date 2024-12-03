@@ -27,3 +27,16 @@ class Hub(models.Model):
     def getPicture(self):
         return self.picture
     
+
+class SensorDevice(models.Model):
+    
+    parent_hub = models.ForeignKey(Hub, on_delete=models.CASCADE)
+
+    #composite_id = parent_hub + '#' + id
+
+    sensor_type = models.CharField(max_length=100, default="Arduino")
+    installation_date = models.DateField(auto_now=True)
+    last_update_date = models.DateField(auto_now=True)
+    last_transmitted_telematry = models.JSONField(default='{}')
+    
+    plant_ref = models.CharField(max_length=100, default="Generic culture") #this should be a select field

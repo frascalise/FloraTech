@@ -18,7 +18,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from .views import *
-from devices.views import myDevicesList, deviceDetails
 from appuser.views import Register, Login, Logout
 
 urlpatterns = [
@@ -27,6 +26,5 @@ urlpatterns = [
     path("register/", Register, name="register"),
     path("login/", Login, name="login"),
     path('logout/', Logout, name='logout'),
-    path("house", myDevicesList, name="house"),
-    path("house/details/<int:id>/", deviceDetails, name="house_details"),
+    path("house/", include("devices.urls")),
 ]

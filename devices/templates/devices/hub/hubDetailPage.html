@@ -9,15 +9,14 @@
     align-content: flex-end;
     flex-wrap: wrap;
     justify-content: space-around; ">
-        <div>
+        <div style="max-width: 50%;">
             <p>Tipologia del dispositivo: {{ hub.hub_type }}</p>
             <p>Posizione del dispositivo: {{ hub.location }}</p>
             <p>Data di istallazione: {{ hub.installation_date }}</p>
             <p>Stato: {{ hub.hub_status }}</p>
         </div>
-        <div>
-            <img href="{% static hub.picture %}" alt="immagine dell'hub" />
-            {% static hub.picture %}
+        <div style="max-width: 50%;">
+            <img style="max-width: 80%;" src="{% static hub.picture %}" alt="immagine dell'hub" />
         </div> 
     </div>
 
@@ -33,24 +32,26 @@
                 <tr>
                     <th>ID</th>
                     <th>Tipo di dispositivo</th>
-                    <th>Località</th>
+                    <th>Piantagione</th>
                     <th>Data di attivazione</th>
-                    <th>Stato</th>
+                    <th>Data di ultimo update</th>
                     <th>     </th>
                 </tr>
-        
+                {% for sensore in sensors %}
                 <tr>
-                    <th>placeholder</th>
-                    <td>placeholder</td>
-                    <td>placeholder</td>
-                    <td>placeholder</td>
-                    <td>placeholder</td>
+                    <th>{{ sensore.id }}</th>
+                    <td>{{ sensore.sensor_type }}</td>
+                    <td>{{ sensore.plant_ref }}</td>
+                    <td>{{ sensore.installation_date }}</td>
+                    <td>{{ sensore.last_update_date }}</td>
                     <td>
                         <a href="#">
                             <button class="button">Dettagli</button>
                         </a>
                     </td>
                 </tr>
+                {% endfor %}
+
             </table>
         </div>
     </div>

@@ -1,18 +1,9 @@
 from django.shortcuts import render
-from .models import Hub
+from .models import Hub, SensorDevice
 
 # Vista per vedera la lista dei miei dispositivi - OK
 def myDevicesList(request):
-    
-    h1 = Hub(location='Modena')
-    h1.save()
-    h2 = Hub(location='Firenze', hub_status="down")
-    h2.save()
-
-    hublist = [
-        h1,
-        h2
-    ]
+    hublist = Hub.objects.all()
     context = {
         "details": False,
         "hubs": hublist,
@@ -22,11 +13,14 @@ def myDevicesList(request):
 
 def deviceDetails(request, id):
 
-    device = Hub.objects.get(id=id)
+    hub = Hub.objects.get(id=id)
+
+    sensorDevices = SensorDevice.objects.filter(parent_hub__id=id)
 
     context = {
         "details": True,
-        "hub": device,
+        "hub": hub,
+        "sensors": sensorDevices,
     }
     return render(request, 'devices/hub/hubPage.html', context)
 
