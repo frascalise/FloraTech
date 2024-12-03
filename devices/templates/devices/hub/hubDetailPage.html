@@ -3,7 +3,7 @@
 <div class="home-content">
     <h1>Viewing details of hub #{{ hub.id }}</h1>
 
-    <hr />
+    <hr class="border-2 border-top"/>
 
     <div style="    display: flex;
     align-content: flex-end;
@@ -20,7 +20,7 @@
         </div> 
     </div>
 
-    <hr />
+    <hr class="border-2 border-top" />
     
     <div>
         <p>Dispositivi associati: </p>
@@ -45,7 +45,7 @@
                     <td>{{ sensore.installation_date }}</td>
                     <td>{{ sensore.last_update_date }}</td>
                     <td>
-                        <a href="#">
+                        <a href="{% url 'sensor_details' sensore.parent_hub.id sensore.id %}">
                             <button class="button">Dettagli</button>
                         </a>
                     </td>

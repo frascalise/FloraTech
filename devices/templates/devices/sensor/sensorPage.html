@@ -1,0 +1,19 @@
+{% extends "main_page.html" %}
+
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/components/sidebar.css'%}">
+    <link rel="stylesheet" href="{% static 'css/hub/style.css'%}">
+    <link rel="stylesheet" href="{% static 'css/home/welcome.css'%}">
+{% endblock head %}
+
+{% block title %} FloraTech {% endblock title %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        {% include "components/sidebar.html" %}
+            {% include "devices/sensor/sensorDetailPage.html"%}
+    {% else %}
+        {% include "home/homeWelcome.html" %}
+    {% endif %}
+{% endblock content %}
