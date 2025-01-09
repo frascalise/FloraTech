@@ -13,6 +13,12 @@
         <p>
             {{ sensor.last_transmitted_telematry }}
         </p>
+
+        {% for tel in telematry %}
+            <p>
+                {{ tel.humidity }}
+            </p>
+        {% endfor %}
     </div>
 
 </div>

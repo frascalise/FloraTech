@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import Hub, SensorDevice
+from telematry.models import TelematryData
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 import json
@@ -33,9 +34,12 @@ def sensorDetails(request, parent_hub, id):
 
     sensor = SensorDevice.objects.get(id=id, parent_hub=parent_hub)
 
+    s_telem = TelematryData.objects.filter(parent_sensor=id, parent_hub=parent_hub)
+
     context = {
         "details": True,
         "sensor": sensor,
+        "telematry": s_telem
     }
     return render(request, 'devices/sensor/sensorPage.html', context)
 

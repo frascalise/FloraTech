@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "appuser.apps.AppuserConfig",
     "devices.apps.DevicesConfig",
-    "garden.apps.GardenConfig"
+    "garden.apps.GardenConfig",
+    "telematry.apps.TelematryConfig"
 ]
 
 MIDDLEWARE = [
