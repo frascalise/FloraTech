@@ -11,14 +11,13 @@
 
         <p>Ultimi dati ricevuti:</p>
         <p>
+            Last transmitted telematry: 
             {{ sensor.last_transmitted_telematry }}
         </p>
+        <div id="grafico variazione telemetrie raccolte">
+            {{ graph|safe }}
+        </div>
 
-        {% for tel in telematry %}
-            <p>
-                {{ tel.humidity }}
-            </p>
-        {% endfor %}
     </div>
 
 </div>

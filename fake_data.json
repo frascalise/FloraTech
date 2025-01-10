@@ -86,16 +86,81 @@
         }
     },
     {
-        "model": "devices.telematrydata",
-        "pk": 3,
+        "model": "telematry.telematrydata",
+        "pk": 1,
         "fields": {
-            "parent_sensor ": 3,
+            "parent_sensor": 3,
             "parent_hub": 1,
             "received_date": "2025-01-05",
-            "is_last_transmitted": "True",
+            "is_last_transmitted": "False",
             "previously_transmitted": null,
-            "next_transmitted": null,
+            "next_transmitted": 2,
             "humidity": 12.2
+        }
+    },
+    {
+        "model": "telematry.telematrydata",
+        "pk": 2,
+        "fields": {
+            "parent_sensor": 3,
+            "parent_hub": 1,
+            "received_date": "2025-01-06",
+            "is_last_transmitted": "False",
+            "previously_transmitted": 1,
+            "next_transmitted": 3,
+            "humidity": 12.3
+        }
+    },
+    {
+        "model": "telematry.telematrydata",
+        "pk": 3,
+        "fields": {
+            "parent_sensor": 3,
+            "parent_hub": 1,
+            "received_date": "2025-01-07",
+            "is_last_transmitted": "False",
+            "previously_transmitted": 2,
+            "next_transmitted": 4,
+            "humidity": 13.1
+        }
+    },
+    {
+        "model": "telematry.telematrydata",
+        "pk": 4,
+        "fields": {
+            "parent_sensor": 3,
+            "parent_hub": 1,
+            "received_date": "2025-01-08",
+            "is_last_transmitted": "False",
+            "previously_transmitted": 3,
+            "next_transmitted": 5,
+            "humidity": 12.5
+        }
+    },
+    {
+        "model": "telematry.telematrydata",
+        "pk": 5,
+        "fields": {
+            "parent_sensor": 3,
+            "parent_hub": 1,
+            "received_date": "2025-01-09",
+            "is_last_transmitted": "False",
+            "previously_transmitted": 4,
+            "next_transmitted": 6,
+            "humidity": 12.0
+        }
+    },
+    {
+        "model": "telematry.telematrydata",
+        "pk": 6,
+        "fields": {
+            "parent_sensor": 3,
+            "parent_hub": 1,
+            "received_date": "2025-01-10",
+            "is_last_transmitted": "True",
+            "previously_transmitted": 5,
+            "next_transmitted": null,
+            "humidity": 11.9
         }
     }
 ]
