@@ -38,7 +38,7 @@ def sensorDetails(request, parent_hub, id):
     s_telem = TelematryData.objects.filter(parent_sensor=id, parent_hub=parent_hub)
     if s_telem:
         fig = px.line(
-            x=[t.received_date for t in s_telem],
+            x=[t.received_date.strftime("%Y-%m-%d %H:%M:%S") for t in s_telem],
             y=[t.humidity for t in s_telem],
             title="Andamento umidità",
             labels={'x':'data ricezione', 'y':'valore umidità'}
@@ -73,6 +73,37 @@ def setSensorTelematry(request, parent_hub, id):
     if request.method == "POST":
         sensor = SensorDevice.objects.get(id=id, parent_hub=parent_hub)
         data = json.loads(request.body)
+
+        newhumidity = data["humidity"]
+        newhumidity = float(newhumidity)
+
+        def __get_or_none(model, *args, **kwargs):
+            try:
+                return model.objects.get(*args, **kwargs)
+            except model.DoesNotExist:
+                return None
+
+        #prevTemetry = TelematryData.objects.get(parent_sensor=id, parent_hub=parent_hub, is_last_transmitted=True)
+        prevTemetry = __get_or_none(TelematryData, parent_sensor=id, parent_hub=parent_hub, is_last_transmitted=True)
+        if prevTemetry:
+            previd = prevTemetry.pk
+            prevTemetry.is_last_transmitted = False
+            prevTemetry.save()
+        else:
+            previd = None
+
+        newTelemetry = TelematryData()
+
+        newTelemetry.parent_sensor = SensorDevice.objects.get(pk=id)
+        newTelemetry.parent_hub = Hub.objects.get(pk=parent_hub)
+        newTelemetry.received_date = datetime.datetime.now()
+        newTelemetry.is_last_transmitted = True
+        newTelemetry.previously_transmitted = previd
+        newTelemetry.next_transmitted = None
+        newTelemetry.humidity = newhumidity
+
+        newTelemetry.save()
+
         sensor.last_transmitted_telematry = data
         sensor.last_update_date = datetime.datetime.now()
         sensor.save()
