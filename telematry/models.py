@@ -6,7 +6,7 @@ class TelematryData(models.Model):
     parent_sensor = models.ForeignKey(SensorDevice, on_delete = models.DO_NOTHING)
     parent_hub = models.ForeignKey(Hub, on_delete=models.DO_NOTHING)
 
-    received_date = models.DateField(auto_now=True)
+    received_date = models.DateTimeField(auto_now=True)
     ##the process that recives new telematry updates the old records
     is_last_transmitted = models.BooleanField(default=True)
     previously_transmitted = models.IntegerField(null=True)

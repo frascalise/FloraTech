@@ -38,11 +38,13 @@ def sensorDetails(request, parent_hub, id):
     s_telem = TelematryData.objects.filter(parent_sensor=id, parent_hub=parent_hub)
     if s_telem:
         fig = px.line(
-            x=[t.received_date.strftime("%Y-%m-%d %H:%M:%S") for t in s_telem],
+            x=[t.received_date for t in s_telem],
             y=[t.humidity for t in s_telem],
             title="Andamento umidità",
             labels={'x':'data ricezione', 'y':'valore umidità'}
         )
+
+        fig.update_xaxes(tickformat="%Y %m\n%d %H %S")
 
         fig.update_layout(title={
             'font_size':22,
