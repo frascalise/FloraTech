@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     "appuser.apps.AppuserConfig",
     "devices.apps.DevicesConfig",
     "garden.apps.GardenConfig",
-    "telematry.apps.TelematryConfig"
+    "telematry.apps.TelematryConfig",
+    "aiComponent.apps.AicomponentConfig"
 ]
 
 MIDDLEWARE = [
