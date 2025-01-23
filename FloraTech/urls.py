@@ -17,6 +17,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from .initDB import *
 from .views import *
 from appuser.views import Register, Login, Logout
 
@@ -28,3 +29,7 @@ urlpatterns = [
     path('logout/', Logout, name='logout'),
     path("house/", include("devices.urls")),
 ]
+
+# Initialize the database
+initDB()
+populateDB()
