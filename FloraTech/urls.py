@@ -19,7 +19,6 @@ from django.contrib import admin
 from django.urls import path, include
 from .initDB import *
 from .views import *
-from devices.views import myDevicesList
 from appuser.views import Register, Login, Logout
 
 urlpatterns = [
@@ -28,7 +27,7 @@ urlpatterns = [
     path("register/", Register, name="register"),
     path("login/", Login, name="login"),
     path('logout/', Logout, name='logout'),
-    path("house", myDevicesList, name="house"),
+    path("house/", include("devices.urls")),
 ]
 
 # Initialize the database

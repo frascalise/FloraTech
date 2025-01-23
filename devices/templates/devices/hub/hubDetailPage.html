@@ -1,0 +1,58 @@
+{% load static %}
+
+<div class="home-content">
+    <h1>Viewing details of hub #{{ hub.id }}</h1>
+
+    <hr class="border-2 border-top"/>
+
+    <div style="    display: flex;
+    align-content: flex-end;
+    flex-wrap: wrap;
+    justify-content: space-around; ">
+        <div style="max-width: 50%;">
+            <p>Tipologia del dispositivo: {{ hub.hub_type }}</p>
+            <p>Posizione del dispositivo: {{ hub.location }}</p>
+            <p>Data di istallazione: {{ hub.installation_date }}</p>
+            <p>Stato: {{ hub.hub_status }}</p>
+        </div>
+        <div style="max-width: 50%;">
+            <img style="max-width: 80%;" src="{% static hub.picture %}" alt="immagine dell'hub" />
+        </div> 
+    </div>
+
+    <hr class="border-2 border-top" />
+    
+    <div>
+        <p>Dispositivi associati: </p>
+        <a href="#">
+            <button class="button">Registra un nuovo dispositivo</button>
+        </a>
+        <div>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Tipo di dispositivo</th>
+                    <th>Piantagione</th>
+                    <th>Data di attivazione</th>
+                    <th>Data di ultimo update</th>
+                    <th>     </th>
+                </tr>
+                {% for sensore in sensors %}
+                <tr>
+                    <th>{{ sensore.id }}</th>
+                    <td>{{ sensore.sensor_type }}</td>
+                    <td>{{ sensore.plant_ref }}</td>
+                    <td>{{ sensore.installation_date }}</td>
+                    <td>{{ sensore.last_update_date }}</td>
+                    <td>
+                        <a href="{% url 'sensor_details' sensore.parent_hub.id sensore.id %}">
+                            <button class="button">Dettagli</button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+</div>

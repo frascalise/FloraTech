@@ -1,0 +1,24 @@
+<div class="home-content">
+    <h1>Viewing details of sensor #{{ sensor.id }}  of hub #{{ sensor.parent_hub.id }}</h1>
+
+    <hr class="border-2 border-top" />
+
+    <div class="container">
+
+        <p>Sensore installato il: {{ sensore.installation_date }}</p>
+        
+        <p>Ultimo update effettuato: {{ sensore.last_update_date }}</p>
+
+        <p>Ultimi dati ricevuti:</p>
+        <p>
+            Last transmitted telematry: 
+            {{ sensor.last_transmitted_telematry }}
+        </p>
+        <hr class="border-2 border-top" />
+        <div id="grafico variazione telemetrie raccolte">
+            <p>Grafico variazione telemetrie raccolte:</p>
+            {{ graph|safe }}
+        </div>
+    </div>
+
+</div>

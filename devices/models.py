@@ -9,7 +9,7 @@ class Hub(models.Model):
     hub_status = models.CharField(max_length=100, default="working")
     name = models.CharField(max_length=100, default="My House")
     location = models.CharField(max_length=100)
-    picture = models.ImageField(upload_to='hub_pics/', default='hub_pics/default.jpg')
+    picture = models.ImageField(upload_to='hub_pics/', default='photo/hub_pics/default.jpg')
 
     def getHubType(self):
         return self.hub_type
@@ -29,3 +29,16 @@ class Hub(models.Model):
     def getPicture(self):
         return self.picture
     
+
+class SensorDevice(models.Model):
+    
+    parent_hub = models.ForeignKey(Hub, on_delete=models.CASCADE)
+
+    #composite_id = parent_hub + '#' + id
+
+    sensor_type = models.CharField(max_length=100, default="Arduino")
+    installation_date = models.DateField(auto_now=True)
+    last_update_date = models.DateField(auto_now=True)
+    last_transmitted_telematry = models.JSONField(default='{}')
+    
+    plant_ref = models.CharField(max_length=100, default="Generic culture") #this should be a select field
