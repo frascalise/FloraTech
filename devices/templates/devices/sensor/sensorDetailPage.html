@@ -1,4 +1,12 @@
 <div class="home-content">
+    <div class="breadcrumb-container">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'house' %}">Lista hub</a></li>
+            <li><a href="{% url 'house_details' sensor.parent_hub.id %}">Hub-{{ sensor.parent_hub.id }}</a></li>
+            <li>Sensor-{{ sensor.id }}</li>
+        </ul>
+    </div>
     <h1>Viewing details of sensor #{{ sensor.id }}  of hub #{{ sensor.parent_hub.id }}</h1>
 
     <hr class="border-2 border-top" />

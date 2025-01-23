@@ -1,6 +1,15 @@
 {% load static %}
 
 <div class="home-content">
+
+    <div class="breadcrumb-container">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'house' %}">Lista hub</a></li>
+            <li>Hub-{{ hub.id }}</li>
+        </ul>
+    </div>
+
     <h1>Viewing details of hub #{{ hub.id }}</h1>
 
     <hr class="border-2 border-top"/>

@@ -2,7 +2,10 @@ from django.db import connection
 from appuser.models import Appuser
 from devices.models import Hub
 
+
 def initDB():
+    pass
+    """
     # Delete all the data from the database
     Appuser.objects.all().delete()
     Hub.objects.all().delete()
@@ -13,9 +16,11 @@ def initDB():
     cursor.execute("VACUUM")
 
     print(">> Database initialized")
-
+    """
 
 def populateDB():
+    pass
+    """
     # Create new users [ username, password ]
     users = [
     #   Username,   Password
@@ -43,3 +48,4 @@ def populateDB():
         Hub.objects.create(owner=owner, name=hub[0], location=hub[1])
     
     print(">> Hubs populated")
+    """

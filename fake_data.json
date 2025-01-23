@@ -29,6 +29,7 @@
         "model": "devices.hub",
         "pk": 1,
         "fields": {
+            "owner": 1,
             "hub_type": "Raspberry PI",
             "installation_date": "2024-12-03",
             "hub_status": "working",
@@ -41,6 +42,7 @@
         "model": "devices.hub",
         "pk": 2,
         "fields": {
+            "owner": 1,
             "hub_type": "Raspberry PI",
             "installation_date": "2024-12-03",
             "hub_status": "working",
