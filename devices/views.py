@@ -4,6 +4,7 @@ from telematry.models import TelematryData
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 import plotly.express as px
+import pandas as pd
 import json
 import datetime
 
@@ -23,10 +24,26 @@ def deviceDetails(request, id):
 
     sensorDevices = SensorDevice.objects.filter(parent_hub__id=id)
 
+    df = pd.DataFrame(
+    list( TelematryData.objects.filter(parent_hub=id).values())
+    )
+
+    fig = px.line(df, x='received_date', y='humidity', color='parent_sensor_id', title="Andamento umidità",
+            labels={'x':'data ricezione', 'y':'valore umidità'})
+    fig.update_xaxes(tickformat="%Y %m\n%d %H %S")
+    fig.update_layout(title={
+            'font_size':22,
+            'xanchor':'center',
+            'x': 0.5}
+        )
+
+    chart = fig.to_html()
+  
     context = {
         "details": True,
         "hub": hub,
         "sensors": sensorDevices,
+        "graph": chart,
     }
     return render(request, 'devices/hub/hubPage.html', context)
 
