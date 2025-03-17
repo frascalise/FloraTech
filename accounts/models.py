@@ -50,7 +50,7 @@ class Sensor(models.Model):
     is_associated = models.BooleanField()
     fk_garden = models.ForeignKey(Garden, on_delete=models.CASCADE)
 
-class Weather(models.Model):
+class Weather(models.Model):    # HAVE TO MIGRATE
     timestamp = models.DateTimeField(primary_key=True)
     location = models.CharField(max_length=50)
     temp_min = models.FloatField()
