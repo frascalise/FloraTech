@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}Gestisci Giardino | FloraTech{% endblock %}
+
+{% block extra_css %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+    <h1 class="text-4xl font-bold text-green-600 text-center mb-2">Orto 1</h1>
+    
+    <div class="flex justify-center items-center mb-4 p-4">
+        <div class="flex items-center space-x-2 text-white bg-gray-600 rounded-full px-2 py-1 mx-2">
+            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+            <span class="text-sm font-medium">Working</span>
+        </div>
+        <div class="flex items-center space-x-2 text-white bg-gray-600 rounded-full px-2 py-1 mx-2">
+            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+            <span class="text-sm font-medium">Irrigator Off</span>
+        </div>
+    </div>
+
+    <!-- Grafici -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div class="bg-gray-600 p-4 rounded-lg shadow-lg">
+            <canvas id="humidityChart" width="400" height="200"></canvas>
+        </div>
+        <div class="bg-gray-600 p-4 rounded-lg shadow-lg">
+            <canvas id="temperatureChart" width="400" height="200"></canvas>
+        </div>
+        <div class="bg-gray-600 p-4 rounded-lg shadow-lg">
+            <canvas id="precipitationChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+
+    <!-- Bottone di irrigazione -->
+    <div class="flex justify-center">
+        <button class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300">
+            Attiva Irrigazione
+        </button>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function generateChart(canvasId, labels, datasets, chartType = 'line') {
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        new Chart(ctx, {
+            type: chartType,
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    x: {
+                        ticks: {
+                            color: "white",
+                        },
+                        grid: {
+                            color: "gray",
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: "white",
+                        },
+                        grid: {
+                            color: "gray",
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: "white",
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const labels = ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"];
+
+        // Esempio di dati per umidità, temperatura e precipitazioni
+        const humidityData = [50, 55, 60, 58, 62, 65, 70];
+        const temperatureMaxData = [18, 20, 22, 21, 19, 23, 24]; // Dati per la temperatura massima
+        const temperatureMinData = [10, 12, 15, 14, 13, 16, 17]; // Dati per la temperatura minima
+        const precipitationData = [0, 5, 9, 2, 13, 1, 0];
+
+        // Datasets per il grafico della temperatura (max e min)
+        const temperatureDatasets = [
+            {
+                label: "Temperatura Max (°C)",
+                data: temperatureMaxData,
+                borderColor: "red",
+                borderWidth: 2,
+                fill: false
+            },
+            {
+                label: "Temperatura Min (°C)",
+                data: temperatureMinData,
+                borderColor: "#4BC0C0",
+                borderWidth: 2,
+                fill: false
+            }
+        ];
+
+        // Chiamate per ogni grafico
+        generateChart("humidityChart", labels, [
+            {
+                label: "Umidità (%)",
+                data: humidityData,
+                borderColor: "blue",
+                borderWidth: 2,
+                fill: false
+            }
+        ]);
+        generateChart("temperatureChart", labels, temperatureDatasets);
+        generateChart("precipitationChart", labels, [
+            {
+                label: "Precipitazioni (mm)",
+                data: precipitationData,
+                borderColor: "orange",
+                backgroundColor: 'orange',
+                borderWidth: 2,
+                fill: false,
+            }
+        ], 'bar');
+    });
+</script>
+{% endblock %}
