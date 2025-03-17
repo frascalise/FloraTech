@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | FloraTech{% endblock %}
+
+{% block extra_css %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-green-600 text-center mb-6">Dashboard Orti 🌱</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Orto 1 -->
+        <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center">
+            <h2 class="text-xl font-semibold text-gray-800">Orto 1</h2>
+            <canvas id="chart1" class="mt-4"></canvas>
+            <div class="mt-4 flex gap-4">
+                <a href="#" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg shadow">Gestisci</a>
+                <a href="#" class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg shadow">Modifica</a>
+            </div>
+        </div>
+
+        <!-- Orto 2 -->
+        <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center">
+            <h2 class="text-xl font-semibold text-gray-800">Orto 2</h2>
+            <canvas id="chart2" class="mt-4"></canvas>
+            <div class="mt-4 flex gap-4">
+                <a href="#" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg shadow">Gestisci</a>
+                <a href="#" class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg shadow">Modifica</a>
+            </div>
+        </div>
+
+        <!-- Orto 3 -->
+        <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center">
+            <h2 class="text-xl font-semibold text-gray-800">Orto 3</h2>
+            <canvas id="chart3" class="mt-4"></canvas>
+            <div class="mt-4 flex gap-4">
+                <a href="#" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg shadow">Gestisci</a>
+                <a href="#" class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg shadow">Modifica</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function generateChart(canvasId) {
+        const ctx = document.getElementById(canvasId).getContext("2d");
+        new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"],
+                datasets: [
+                    {
+                        label: "Temperatura (°C)",
+                        data: [18, 20, 22, 21, 19, 23, 24],
+                        borderColor: "red",
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: "Umidità (%)",
+                        data: [50, 55, 52, 60, 58, 62, 65],
+                        borderColor: "blue",
+                        borderWidth: 2,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        generateChart("chart1");
+        generateChart("chart2");
+        generateChart("chart3");
+    });
+</script>
+{% endblock %}
