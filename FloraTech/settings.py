@@ -75,6 +75,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'FloraTech.wsgi.application'
+ASGI_APPLICATION = 'FloraTech.asgi.application'
 
 
 # Database
