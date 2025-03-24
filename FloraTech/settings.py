@@ -26,12 +26,17 @@ SECRET_KEY = 'django-insecure-l@3gtd7(47!s4txbp4374le8%mosfudlka7l+d#%1mcy_1j04#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://floratech.leonardonels.com',
+]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
