@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% block head %} {% endblock %}
+    <title>{% block title %} {% endblock %}</title>
+</head>
+<body>
+{% block content %}
+Con il termine lorem ipsum si indica un testo segnaposto utilizzato da grafici,
+designer, programmatori e tipografi a modo riempitivo per bozzetti e prove grafiche.
+È un testo privo di senso, composto da parole (o parti di parole) in lingua latina,
+riprese pseudocasualmente da uno scritto
+di Cicerone del 45 a.C, a volte alterate con l'inserzione di passaggi ironici.
+La caratteristica principale è data dal fatto che
+offre una distribuzione delle lettere uniforme, apparendo come un normale blocco di
+testo leggibile.
+{% endblock %}
+</body>
+</html>
