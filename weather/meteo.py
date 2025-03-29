@@ -68,8 +68,6 @@ def spacchettamento(date):
         anni.append(i[0:4])
         mesi.append(i[5:7])
         giorni.append(i[8:10])
-    print(anni)
-    print(mesi)
-    print(giorni)
+        
 
     return anni,mesi,giorni

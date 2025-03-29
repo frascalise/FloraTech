@@ -2,7 +2,7 @@ from django.db import models
 from .meteo import richiesta_meteo,spacchettamento
 
 class Previsione(models.Model):
-    #dm=models.IntegerField(default=0)
+    dm=models.IntegerField(default=0)
     anno = models.IntegerField(default=2023)
     mese = models.IntegerField(default=12)
     giorno = models.IntegerField(default=4)
@@ -14,7 +14,8 @@ class Previsione(models.Model):
 
     class Meta:
         verbose_name_plural = 'Previsione'
-    
+   
+
     def refresh():
         Previsione.objects.all().delete()
         #Previsioni=richiesta_meteo()

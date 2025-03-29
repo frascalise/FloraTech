@@ -8,4 +8,5 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('garden/', garden_view, name='garden'),
     path('admin/', admin.site.urls),
+    path('weather/',include('weather.urls'))
 ]
