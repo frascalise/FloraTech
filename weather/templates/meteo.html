@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Previsioni Meteo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            background-color: #2b2b2b;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        h1 {
+            text-align: center;
+            color: #81d4fa;
+            margin-bottom: 30px;
+        }
+
+        .previsione {
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-left: 5px solid #4fc3f7;
+            background-color: #383838;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .previsione.expanded {
+            background-color: #424242;
+            transform: scale(1.02);
+        }
+
+        .giorno {
+            font-weight: bold;
+            color: #ffffff;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+        }
+
+        .icona {
+            font-size: 1.4em;
+            margin-right: 10px;
+        }
+
+        .dettagli {
+            color: #cfcfcf;
+            margin-top: 5px;
+        }
+
+        .extra {
+            margin-top: 10px;
+            display: none;
+            color: #b0bec5;
+            font-size: 0.95em;
+        }
+
+        .previsione.expanded .extra {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nessuna {
+            text-align: center;
+            color: #ef5350;
+            font-style: italic;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Previsioni Meteo</h1>
+        {% for previsione in previsioni %}
+            <div class="previsione" onclick="toggleDetails(this)">
+                <div class="giorno">
+                    {% if previsione.stato == "Sole" %}
+                        <span class="icona">☀️</span>
+                    {% elif previsione.stato == "Nuvoloso" %}
+                        <span class="icona">☁️</span>
+                    {% elif previsione.stato == "Pioggia" %}
+                        <span class="icona">🌧️</span>
+                    {% elif previsione.stato == "Temporale" %}
+                        <span class="icona">⛈️</span>
+                    {% elif previsione.stato == "Neve" %}
+                        <span class="icona">❄️</span>
+                    {% else %}
+                        <span class="icona">🌈</span>
+                    {% endif %}
+                    {{ previsione.giorno }}
+                </div>
+                <div class="dettagli">{{ previsione.meteo }}°C - {{ previsione.stato }}</div>
+                <div class="extra">
+                    <div>🌡️ Umidità: {{ previsione.umidita }}%</div>
+                    <div>💨 Vento: {{ previsione.vento }} km/h</div>
+                    <div>📊 Pressione: {{ previsione.pressione }} hPa</div>
+                </div>
+            </div>
+        {% empty %}
+            <p class="nessuna">Nessuna previsione disponibile.</p>
+        {% endfor %}
+    </div>
+
+    <script>
+        function toggleDetails(el) {
+            el.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>
