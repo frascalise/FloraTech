@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from accounts.views import get_weather_forecast
+from weather.views import richiesta_meteo
 
 def welcome_view(request):
     if request.user.is_authenticated:
@@ -9,7 +10,7 @@ def welcome_view(request):
 
 @login_required
 def home_view(request):
-    weather_data = get_weather_forecast(request)
+    weather_data = richiesta_meteo()
     return render(request, "home/home.html", {"weather": weather_data})
 
 @login_required

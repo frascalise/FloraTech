@@ -1,5 +1,5 @@
 from django.db import models
-from .meteo import richiesta_meteo,spacchettamento
+from .meteo import richiesta_meteo,spacchettamento,update
 
 class Previsione(models.Model):
     dm=models.IntegerField(default=0)
@@ -19,7 +19,7 @@ class Previsione(models.Model):
     def refresh():
         Previsione.objects.all().delete()
         #Previsioni=richiesta_meteo()
-        metei,date=richiesta_meteo()
+        metei,date=update()
         anni,mesi,giorni=spacchettamento(date)
         c=0
         #print(metei)

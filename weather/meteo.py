@@ -1,13 +1,26 @@
 import requests
 import json
 
-def richiesta_meteo():
+def update():
     url=costruzione_richiesta()
     response = requests.get(url)
     json_result = response.json()
     answer = ""
     print(json_result)
     return traduzione_codici_meteo(json_result["daily"]["weather_code"]),json_result["daily"]["time"]
+
+def richiesta_meteo():
+    url=costruzione_richiesta()
+    response = requests.get(url)
+    json_result = response.json()
+    codici=traduzione_codici_meteo(json_result["daily"]["weather_code"])
+    pacco=[]
+    for i in range(7):
+        pacco.append({"codice":codici[i],\
+                      "giorno":json_result["daily"]["time"][i],\
+                        "TempMax":json_result["daily"]["temperature_2m_max"][i],\
+                        "TempMin":json_result["daily"]["temperature_2m_min"][i]})
+    return pacco
 
    
 
@@ -17,27 +30,27 @@ def traduzione_codici_meteo(WC):
         print(i)
         match i:
             case 0:
-                prevision.append("clear sky")
+                prevision.append("http://openweathermap.org/img/wn/01d@2x.png")
             case 1|2|3:
-                prevision.append("presence of clouds")
+                prevision.append("http://openweathermap.org/img/wn/02d@2x.png")
             case 45|48:
-                prevision.append("Fog")
+                prevision.append("http://openweathermap.org/img/wn/50d@2x.png")
             case 61|63|65:
-                prevision.append("Rain")    
+                prevision.append("http://openweathermap.org/img/wn/10d@2x.png")    
             case 66|67:
-                prevision.append("Freezing Rain") 
+                prevision.append("http://openweathermap.org/img/wn/13d@2x.png") 
             case 71|73|75:
-                prevision.append("Neve") 
+                prevision.append("http://openweathermap.org/img/wn/13d@2x.png") 
             case 77:
-                prevision.append("Nevischio")
+                prevision.append("http://openweathermap.org/img/wn/13d@2x.png")
             case 80|81|82:
-                prevision.append("Rovesci di pioggia")
+                prevision.append("http://openweathermap.org/img/wn/10d@2x.png")
             case 85|86:
-                prevision.append("Nevicata")
+                prevision.append("http://openweathermap.org/img/wn/10d@2x.png")
             case 95:
-                prevision.append("Temporale")
+                prevision.append("http://openweathermap.org/img/wn/11d@2x.png")
             case 96|99:
-                prevision.append("Temporale con grandine")
+                prevision.append("http://openweathermap.org/img/wn/11d@2x.png")
     return prevision
 
 def costruzione_richiesta():
