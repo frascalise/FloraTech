@@ -3,33 +3,35 @@ from .meteo import richiesta_meteo,spacchettamento,update
 
 class Previsione(models.Model):
     dm=models.IntegerField(default=0)
-    anno = models.IntegerField(default=2023)
-    mese = models.IntegerField(default=12)
-    giorno = models.IntegerField(default=4)
-    meteo=models.CharField(max_length=50)
+    AMG=models.CharField(max_length=50,default='2023-04-04')
+    codici=models.IntegerField(default=0)
+    temp_max=models.FloatField(default=15.5)
+    temp_min=models.FloatField(default=0.1)
 
     def __str__(self):
-        return "ID: " + str(self.pk) + ": Mese="+ str(self.mese) + ", Giorno= " + str(self.giorno)
+        return "ID: " + str(self.pk)
 
 
     class Meta:
         verbose_name_plural = 'Previsione'
    
-
+    def stampa():
+        stampe=Previsione.objects.all()
+        dati_meteo=[]
+        for i in stampe:
+            dati_meteo.append({})
     def refresh():
         Previsione.objects.all().delete()
         #Previsioni=richiesta_meteo()
         metei,date=update()
-        anni,mesi,giorni=spacchettamento(date)
+        #anni,mesi,giorni=spacchettamento(date)
         c=0
         #print(metei)
-        for i in giorni:
+        for i in metei:
             p_db=Previsione()
             p_db.pk=(c-3)
-            p_db.anno=anni[c]
-            p_db.mese=mesi[c]
-            p_db.giorno=i
-            p_db.meteo=metei[c]
+            p_db.AMG=date[c]
+            p_db.codici=i
             p_db.save()
             c=c+1
         prevision=Previsione.objects.all()

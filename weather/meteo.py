@@ -5,9 +5,7 @@ def update():
     url=costruzione_richiesta()
     response = requests.get(url)
     json_result = response.json()
-    answer = ""
-    print(json_result)
-    return traduzione_codici_meteo(json_result["daily"]["weather_code"]),json_result["daily"]["time"]
+    return json_result["daily"]["weather_code"],json_result["daily"]["time"]
 
 def richiesta_meteo():
     url=costruzione_richiesta()
@@ -17,7 +15,7 @@ def richiesta_meteo():
     pacco=[]
     for i in range(7):
         pacco.append({"codice":codici[i],\
-                      "giorno":json_result["daily"]["time"][i],\
+                      "data":json_result["daily"]["time"][i],\
                         "TempMax":json_result["daily"]["temperature_2m_max"][i],\
                         "TempMin":json_result["daily"]["temperature_2m_min"][i]})
     return pacco

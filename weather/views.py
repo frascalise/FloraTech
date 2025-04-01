@@ -27,5 +27,5 @@ def refresh(request):
     Previsione.refresh()
     return HttpResponse("fatto")
 def fornire(request):
-    Previsione.Stampa()
+    Previsione.stampa()
     return HttpResponse("Domani sarà bello")

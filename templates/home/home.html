@@ -1,5 +1,10 @@
 {% extends "base.html" %}
-
+<script>
+    function toggleExpand() {
+        const details = document.getElementById('dataDetails');
+        details.classList.toggle('hidden');
+    }
+</script>
 {% block title %}Dashboard | FloraTech{% endblock %}
 
 {% block extra_css %}
@@ -14,8 +19,8 @@
     <div class="p-4 mb-6 center">
         <div class="flex justify-center gap-4 p-2 text-white">
             {% for i in weather %}
-                <div class="bg-gray-600 flex flex-col items-center shadow-md rounded-3xl p-4 min-w-[14%]">
-                    <p class="text-sm font-semibold">{{ i.date }}</p>
+                <div class="bg-gray-600 flex flex-col items-center shadow-md rounded-3xl p-4 min-w-[14%]" onclick="toggleExpand">
+                    <p class="text-sm font-semibold">{{ i.data }}</p>
                     <img 
                         src={{i.codice}}
                         alt="Icona meteo" 
