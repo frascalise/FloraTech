@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
@@ -85,29 +85,31 @@
             margin-top: 20px;
         }
     </style>
-</head>
-<body>
+</head>-->
+{% extends "base.html" %}
+{%block title %}Meteo{%endblock%}
+{%block content%}
     <div class="container">
-        <h1>Previsioni Meteo</h1>
+        <h1 class="text-4xl font-bold text-green-600 text-center mb-2">Previsioni Meteo </h1>
         {% for previsione in previsioni %}
-            <div class="previsione" onclick="toggleDetails(this)">
+            <div class="bg-gray-600 flex flex-col items-center shadow-md rounded-3xl p-4 min-w-[14%]" onclick="toggleDetails(this)">
                 <div class="giorno">
-                    {% if previsione.stato == "Sole" %}
+                    {% if previsione.codici == 0 %}
                         <span class="icona">☀️</span>
-                    {% elif previsione.stato == "Nuvoloso" %}
+                    {% elif previsione.codici == 3 %}
                         <span class="icona">☁️</span>
-                    {% elif previsione.stato == "Pioggia" %}
+                    {% elif previsione.codici == 60 %}
                         <span class="icona">🌧️</span>
-                    {% elif previsione.stato == "Temporale" %}
+                    {% elif previsione.codici == 80 %}
                         <span class="icona">⛈️</span>
-                    {% elif previsione.stato == "Neve" %}
+                    {% elif previsione.codici == "Neve" %}
                         <span class="icona">❄️</span>
                     {% else %}
                         <span class="icona">🌈</span>
                     {% endif %}
-                    {{ previsione.giorno }}
+                    {{ previsione.AMG }}
                 </div>
-                <div class="dettagli">{{ previsione.meteo }}°C - {{ previsione.stato }}</div>
+                <div class="dettagli">{{ previsione.temp_max }}°C - {{ previsione.codici }}</div>
                 <div class="extra">
                     <div>🌡️ Umidità: {{ previsione.umidita }}%</div>
                     <div>💨 Vento: {{ previsione.vento }} km/h</div>
@@ -124,5 +126,4 @@
             el.classList.toggle('expanded');
         }
     </script>
-</body>
-</html>
+{%endblock%}
