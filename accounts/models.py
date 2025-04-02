@@ -11,16 +11,17 @@ raspberry:
 
 orto: 
     id
-    raspberry con cui comunicare
+    fk_raspberry con cui comunicare
     etichetta (nome custom)
     lista con umidità medie (e relativo timestamp)
     lista con temperature (e relativo timestamp)
     lista con ml di acqua per irrigare tutto (e relativo timestamp)
 
 sensori:
-    id
+    id  (mandato da leo)
     is_associato? (bool)
-    orto a cui è associato
+    status (bool) --> default è working  (mandato da leo)
+    fk_orto a cui è associato   (mandato da leo)
 
 meteo:
     timestamp
@@ -48,9 +49,10 @@ class Garden(models.Model):
 class Sensor(models.Model):
     id = models.AutoField(primary_key=True)
     is_associated = models.BooleanField()
+    status = models.CharField(default="working", max_length=50) # [ working, not working ]
     fk_garden = models.ForeignKey(Garden, on_delete=models.CASCADE)
 
-class Weather(models.Model):    # HAVE TO MIGRATE
+class Weather(models.Model):
     timestamp = models.DateTimeField(primary_key=True)
     location = models.CharField(max_length=50)
     temp_min = models.FloatField()
