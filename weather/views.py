@@ -5,7 +5,18 @@ from django.http import HttpResponse
 from django.views.generic.detail import DetailView 
 from django.views.generic.list import ListView
 from .meteo import richiesta_meteo
-# Create your views here.
+from .aiModel import WeatherModel
+
+weatherModel = WeatherModel()
+
+
+def nextPrecipitationSum(request):
+    predSum = weatherModel.get_accurate_predictions(1,1)
+
+    return HttpResponse(predSum)
+
+
+
 class PrevisionDetail(DetailView):
     model = Previsione
     template_name = 'meteo.html'
