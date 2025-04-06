@@ -7,6 +7,7 @@ from django.conf import settings
 import requests
 
 from .meteo import costruzione_richiesta
+from accounts.models import Garden, Sensor
 
 class WeatherModel:
     
@@ -44,7 +45,7 @@ class WeatherModel:
         return df_api
 
     
-    def get_accurate_predictions(self, cropType="CABBAGE", lat=44.6478, lon=10.9254):
+    def get_accurate_predictions(self, garden_id, cropType="CABBAGE", lat=44.6478, lon=10.9254):
 
         df_api = self.build_df(lat, lon)
 
@@ -56,20 +57,38 @@ class WeatherModel:
         for pred in preds:
             predSum += pred
 
-        self.get_water_needs(cropType, lat, lon)
+        weeklyWaterNeeds = self.get_water_needs(garden_id, cropType, lat, lon)
 
-        return predSum #return the sum of precipitation for the next 4 days (today included)
+        return weeklyWaterNeeds - predSum
 
 
-    def get_water_needs(self, cropType="CABBAGE", lat=44.6478, lon=10.9254):
+    def get_water_needs(self, garden_id, sensor_id, cropType="CABBAGE", lat=44.6478, lon=10.9254):
 
         #CROP TYPES: ['BANANA' 'SOYABEAN' 'CABBAGE' 'POTATO' 'RICE' 'MELON' 'MAIZE' 'CITRUS' 'BEAN' 'WHEAT' 'MUSTARD' 'COTTON' 'SUGARCANE' 'TOMATO' 'ONION']
 
-        soilType = None # => from the sensor ['DRY' 'HUMID' 'WET']
-        weatherCondition = None #['NORMAL' 'SUNNY' 'WINDY' 'RAINY']
+        soilType = 'HUMID' # => from the sensor ['DRY' 'HUMID' 'WET']
+        weatherCondition = 'NORMAL' #['NORMAL' 'SUNNY' 'WINDY' 'RAINY']
         region = 'SEMI HUMID' #['DESERT' 'SEMI ARID' 'SEMI HUMID' 'HUMID']
-        temperature = None # will be binned week average ['10-20' '20-30' '30-40' '40-50']
+        binnedTemperature = None # will be binned week average ['10-20' '20-30' '30-40' '40-50']
 
         WATER_REQUIREMENT_AVG = np.mean(self.plant_data['WATER REQUIREMENT'])
 
-        #print(self.plant_data[(self.plant_data['CROP TYPE'] == 'POTATO') & (self.plant_data['WEATHER CONDITION'] == 'NORMAL')])
+        garden = Garden.objects.get(id=garden_id)
+        temperature = int(garden.temperature)
+        if 10 <= temperature < 20:
+            binnedTemperature = '10-20'
+        elif 20 <= temperature < 30:
+            binnedTemperature = '20-30'
+        elif 30 <= temperature < 40:
+            binnedTemperature = '30-40'
+        else:
+            binnedTemperature = '40-50'
+
+
+        return np.mean(self.plant_data[
+            (self.plant_data['CROP TYPE'] == 'POTATO') & 
+            (self.plant_data['WEATHER CONDITION'] == weatherCondition) &
+            (self.plant_data['REGION'] == region) &
+            (self.plant_data['SOIL TYPE'] == soilType) &
+            (self.plant_data['TEMPERATURE'] == binnedTemperature)
+            ]['WATER REQUIREMENT'].values)

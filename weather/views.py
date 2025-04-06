@@ -11,7 +11,7 @@ weatherModel = WeatherModel()
 
 
 def nextPrecipitationSum(request):
-    predSum = weatherModel.get_accurate_predictions(1,1)
+    predSum = weatherModel.get_accurate_predictions(garden_id=1, sensor_id=1)
 
     return HttpResponse(predSum)
 
