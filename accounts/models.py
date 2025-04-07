@@ -31,11 +31,10 @@ meteo:
     temperatura (max)
     precipitazioni (neve, pioggia, ecc...)
     precipitazioni (mm)
-
 '''
 
 class Raspberry(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True) 
     fk_owner = models.CharField(max_length=50)
     label = models.CharField(max_length=50)
 
@@ -43,16 +42,16 @@ class Garden(models.Model):
     id = models.AutoField(primary_key=True)
     fk_raspberry = models.ForeignKey(Raspberry, on_delete=models.CASCADE)
     label = models.CharField(max_length=50)
-    humidity = models.JSONField()
-    temperature = models.JSONField()
-    water = models.JSONField()
+    humidity = models.JSONField(default=list)  
+    temperature = models.JSONField(default=list)  
+    water = models.JSONField(default=list) 
 
 class Sensor(models.Model):
     id = models.AutoField(primary_key=True)
     is_associated = models.BooleanField()
     status = models.CharField(default="working", max_length=50) # [ working, not working ]
     type = models.CharField(default="sensor", max_length=50) # [ sensor, actuator ]
-    fk_garden = models.ForeignKey(Garden, on_delete=models.CASCADE)
+    fk_garden = models.ForeignKey(Garden, on_delete=models.CASCADE, null=True, blank=True)
 
 class Weather(models.Model):
     timestamp = models.DateTimeField(primary_key=True)

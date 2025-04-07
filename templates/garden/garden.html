@@ -8,8 +8,8 @@
 
 {% block content %}
 <div class="container mx-auto px-4 py-6">
-    <h1 class="text-4xl font-bold text-green-600 text-center mb-2">Orto 1</h1>
-    
+    <h1 class="text-4xl font-bold text-green-600 text-center mb-2">{{ garden.name }}</h1>  <!-- Giardino dinamico -->
+
     <div class="flex justify-center items-center mb-4 p-4">
         <div class="flex items-center space-x-2 text-white bg-gray-600 rounded-full px-2 py-1 mx-2">
             <div class="w-3 h-3 rounded-full bg-green-500"></div>
@@ -46,69 +46,39 @@
         <div class="bg-gray-700 p-4 rounded-lg shadow-lg">
             <h2 class="text-xl font-semibold text-white mb-2">Sensori Funzionanti</h2>
             <div class="text-white">
-                <div class="flex justify-between items-center">
-                    <p>Sensore Temperatura 1<br>
-                        <div class="flex items-center space-x-2 text-white bg-gray-600 rounded-full px-2 py-1 mx-2">
-                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                            <span class="text-sm font-medium">Working</span>
+                {% for sensor in sensors %}
+                    {% if sensor.status == "working" %}
+                        <div class="flex justify-between items-center">
+                            <p>{{ sensor.id }}<br>
+                                <div class="flex items-center space-x-2 text-white bg-gray-600 rounded-full px-2 py-1 mx-2">
+                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                    <span class="text-sm font-medium">Working</span>
+                                </div>
+                            </p>
+                            <a href="{% url 'deactivate_sensor' sensor.id garden.id %}" class="bg-red-500 text-white px-4 py-1 rounded">Disattiva</a>
                         </div>
-                    </p>
-                    <button class="bg-red-500 text-white px-4 py-1 rounded">Disattiva</button>
-                </div>
-                <hr class="my-2 border-gray-500">
-                <div class="flex justify-between items-center">
-                    <p>Sensore Temperatura 1<br>
-                        <div class="flex items-center space-x-2 text-white bg-gray-600 rounded-full px-2 py-1 mx-2">
-                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                            <span class="text-sm font-medium">Working</span>
-                        </div>
-                    </p>
-                    <button class="bg-red-500 text-white px-4 py-1 rounded">Disattiva</button>
-                </div>
-                <hr class="my-2 border-gray-500">
-                <div class="flex justify-between items-center">
-                    <p>Sensore Temperatura 1<br>
-                        <div class="flex items-center space-x-2 text-white bg-gray-600 rounded-full px-2 py-1 mx-2">
-                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                            <span class="text-sm font-medium">Working</span>
-                        </div>
-                    </p>
-                    <button class="bg-red-500 text-white px-4 py-1 rounded">Disattiva</button>
-                </div>
+                        <hr class="my-2 border-gray-500">
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
         <div class="bg-gray-700 p-4 rounded-lg shadow-lg">
             <h2 class="text-xl font-semibold text-white mb-2">Sensori da Attivare</h2>
             <div class="text-white">
-                <div class="flex justify-between items-center">
-                    <p>Sensore Temperatura 1<br>
-                        <div class="flex items-center space-x-2 text-white bg-gray-600 rounded-full px-2 py-1 mx-2">
-                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                            <span class="text-sm font-medium">Not Working</span>
+                {% for sensor in sensors %}
+                    {% if sensor.status != "working" %}
+                        <div class="flex justify-between items-center">
+                            <p>{{ sensor.id }}<br>
+                                <div class="flex items-center space-x-2 text-white bg-gray-600 rounded-full px-2 py-1 mx-2">
+                                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                    <span class="text-sm font-medium">Not Working</span>
+                                </div>
+                            </p>
+                            <a href="{% url 'activate_sensor' sensor.id garden.id %}" class="bg-green-500 text-white px-4 py-1 rounded">Attiva</a>
                         </div>
-                    </p>
-                    <button class="bg-green-500 text-white px-4 py-1 rounded">Attiva</button>
-                </div>
-                <hr class="my-2 border-gray-500">
-                <div class="flex justify-between items-center">
-                    <p>Sensore Temperatura 1<br>
-                        <div class="flex items-center space-x-2 text-white bg-gray-600 rounded-full px-2 py-1 mx-2">
-                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                            <span class="text-sm font-medium">Not Working</span>
-                        </div>
-                    </p>
-                    <button class="bg-green-500 text-white px-4 py-1 rounded">Attiva</button>
-                </div>
-                <hr class="my-2 border-gray-500">
-                <div class="flex justify-between items-center">
-                    <p>Sensore Temperatura 1<br>
-                        <div class="flex items-center space-x-2 text-white bg-gray-600 rounded-full px-2 py-1 mx-2">
-                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                            <span class="text-sm font-medium">Not Working</span>
-                        </div>
-                    </p>
-                    <button class="bg-green-500 text-white px-4 py-1 rounded">Attiva</button>
-                </div>
+                        <hr class="my-2 border-gray-500">
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -162,10 +132,10 @@
         const labels = ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"];
 
         // Esempio di dati per umidità, temperatura e precipitazioni
-        const humidityData = [50, 55, 60, 58, 62, 65, 70];
-        const temperatureMaxData = [18, 20, 22, 21, 19, 23, 24];
-        const temperatureMinData = [10, 12, 15, 14, 13, 16, 17];
-        const precipitationData = [0, 5, 9, 2, 13, 1, 0];
+        const humidityData = {{ humidity_data|safe }};
+        const temperatureMaxData = {{ temperature_max_data|safe }};
+        const temperatureMinData = {{ temperature_min_data|safe }};
+        const precipitationData = {{ precipitation_data|safe }};
 
         const temperatureDatasets = [
             {
