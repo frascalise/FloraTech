@@ -11,9 +11,15 @@ weatherModel = WeatherModel()
 
 
 def nextPrecipitationSum(request):
-    predSum = weatherModel.get_accurate_predictions(garden_id=1, sensor_id=1)
+    predSum = weatherModel.get_daily_water_predictions(garden_id=2, sensor_id=1)
 
-    return HttpResponse(predSum)
+    if predSum <= 0:
+        return HttpResponse("NO NEED TO WATER TODAY")
+    
+    else:
+        return HttpResponse(predSum)
+
+    
 
 
 
