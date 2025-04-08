@@ -42,9 +42,9 @@ class Garden(models.Model):
     id = models.AutoField(primary_key=True)
     fk_raspberry = models.ForeignKey(Raspberry, on_delete=models.CASCADE)
     label = models.CharField(max_length=50)
-    humidity = models.JSONField(default=list)  
-    temperature = models.JSONField(default=list)  
-    water = models.JSONField(default=list) 
+    moisture = models.JSONField(default=list)
+    status = models.CharField(default="working", max_length=50) # [ working, not working ]
+    plants = models.JSONField(default=list)
 
 class Sensor(models.Model):
     id = models.AutoField(primary_key=True)
@@ -52,6 +52,7 @@ class Sensor(models.Model):
     status = models.CharField(default="working", max_length=50) # [ working, not working ]
     type = models.CharField(default="sensor", max_length=50) # [ sensor, actuator ]
     fk_garden = models.ForeignKey(Garden, on_delete=models.CASCADE, null=True, blank=True)
+    label = models.CharField(max_length=50, default="sensor")  # Custom label for the sensor
 
 class Weather(models.Model):
     timestamp = models.DateTimeField(primary_key=True)
@@ -60,3 +61,4 @@ class Weather(models.Model):
     temp_max = models.FloatField()
     precipitations = models.CharField(max_length=50)
     precipitations_mm = models.FloatField()
+
