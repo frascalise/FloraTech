@@ -13,8 +13,8 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, mean_square
 model = LinearRegression()
 def StartingTraining():
     #creazione dataset
-    week1_df = pd.read_csv("csv_data\data_union_from14to21_032025.csv",sep=",")
-    week2_df = pd.read_csv("csv_data\data_union_from21to27_032025.csv",sep=',')
+    week1_df = pd.read_csv("weather/csv_data\data_union_from14to21_032025.csv",sep=",")
+    week2_df = pd.read_csv("weather/csv_data\data_union_from21to27_032025.csv",sep=',')
     dataset = pd.concat([week1_df, week2_df], axis=0)
 
     columns = dataset.columns
@@ -101,4 +101,4 @@ def StartingTraining():
 
 
 def Prediction(data):
-    model.predict(data)
+    print(model.predict(data))
