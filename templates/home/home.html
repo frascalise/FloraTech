@@ -16,8 +16,9 @@
 {% block content %}
 
 <div class="container mx-auto px-4 py-3">
-    <h1 class="text-4xl font-bold text-green-600 text-center mb-2">Dashboard Orti 🌱</h1>
+    <h1 class="text-4xl font-bold text-green-600 text-center mb-2">Dashboard Gardens 🌱</h1>
 
+    <!-- Sezione meteo -->
     <div class="p-4 mb-6 center">
         
         <div class="flex justify-center gap-4 p-2 text-white">
@@ -36,11 +37,12 @@
         </div>
     </div>
 
+    <!-- Sezione orti -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         {% for garden in gardens %}
         <div class="bg-gray-600 shadow-lg rounded-3xl p-5 flex flex-col items-center relative text-white">
-            <h2 class="text-xl font-semibold">Orto {{ garden.label }}</h2>
-            <canvas id="chart{{ garden.id }}" class="mt-4 text-white"></canvas>
+            <h2 class="text-xl font-semibold">{{ garden.label }}</h2>
+            <canvas id="chart{{ garden.id }}" class="mt-4 w-full h-40"></canvas>
             <div class="mt-4 flex gap-4">
                 <a href="{% url 'garden' garden.id %}" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg shadow">View</a>
                 <a href="#" class="border-2 border-yellow-600 hover:bg-gray-700 text-white py-2 px-4 rounded-lg shadow">Edit</a>
@@ -50,67 +52,65 @@
     </div>
 </div>
 
+<!-- Script per i grafici -->
 <script>
-    function generateChart(canvasId, gardenData) {
-        const ctx = document.getElementById(canvasId).getContext("2d");
-        new Chart(ctx, {
-            type: "line",
-            data: {
-                labels: ["1", "2", "3", "4", "5", "6", "7"],
-                datasets: [
-                    {
-                        label: "Temperatura (°C)",
-                        data: gardenData.temperature,  // I dati di temperatura
-                        borderColor: "red",
-                        borderWidth: 2,
-                    },
-                    {
-                        label: "Umidità (%)",
-                        data: gardenData.humidity,  // I dati di umidità
-                        borderColor: "blue",
-                        borderWidth: 2,
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                scales: {
-                    x: {
-                        ticks: {
-                            color: "white"
+    document.addEventListener("DOMContentLoaded", function () {
+        {% for garden in gardens %}
+            const moistureLabels = {{ garden.moisture_labels|safe }};
+            // from 2023-04-21 12:00:00 to 21-04
+            const formattedLabels = moistureLabels.map(label => {
+                const date = new Date(label);
+                return date.toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' });
+            });
+
+            const moistureValues = {{ garden.moisture_values|safe }};
+            
+            const ctx = document.getElementById("chart{{ garden.id }}").getContext("2d");
+            new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: formattedLabels,
+                    datasets: [
+                        {
+                            label: "Soil Moisture (%)",
+                            data: moistureValues,
+                            borderColor: 'rgb(126, 182, 255)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointBackgroundColor: 'rgba(126, 182, 255)',
+                            fill: {
+                                target: 'origin',
+                                above: 'rgba(34, 105, 197, 0.2)'
+                            },
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        x: {
+                            ticks: { color: "white" },
+                            grid: { color: "gray" }
                         },
-                        grid: {
-                            color: "gray"
+                        y: {
+                            ticks: { color: "white" },
+                            grid: { color: "gray" },
+                            beginAtZero: true
                         }
                     },
-                    y: {
-                        ticks: {
-                            color: "white"
+                    plugins: {
+                        legend: {
+                            labels: { color: "white" }
                         },
-                        grid: {
-                            color: "gray"
-                        },
-                    }
-                },
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: "white"
+                        tooltip: {
+                            mode: 'index',
+                            intersect: true,
                         }
                     }
                 }
-            }
-        });
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        {% for garden in gardens %}
-            const gardenData = {
-                humidity: {{ garden.humidity|safe }},
-                temperature: {{ garden.temperature|safe }},
-            };
-            generateChart("chart{{ garden.id }}", gardenData);
+            });
         {% endfor %}
     });
 </script>

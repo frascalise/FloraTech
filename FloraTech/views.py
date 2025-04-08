@@ -16,17 +16,27 @@ def welcome_view(request):
 def home_view(request):
     weather_data = get_weather_forecast(request)
     user = request.user
-    user_gardens = Garden.objects.filter(fk_raspberry__fk_owner=user.username)
+    
+    user_gardens = Garden.objects.filter(fk_raspberry__fk_owner=user)
 
-    gardens_data = [
-        {
+    gardens_data = []
+    for garden in user_gardens:
+        moisture_data = garden.moisture
+        moisture_labels = [entry['timestamp'] for entry in moisture_data]
+        moisture_values = [entry['value'] for entry in moisture_data]
+        
+        plants_data = garden.plants
+        plants_names = [entry['name'] for entry in plants_data]
+        plants_quantities = [entry['quantity'] for entry in plants_data]
+
+        gardens_data.append({
             "id": garden.id,
             "label": garden.label,
-            "humidity": [entry['value'] for entry in garden.humidity],  
-            "temperature": [entry['value'] for entry in garden.temperature]
-        }
-        for garden in user_gardens
-    ]
+            "moisture_labels": moisture_labels,
+            "moisture_values": moisture_values,
+            "plants_names": plants_names,
+            "plants_quantities": plants_quantities,
+        })
     
     return render(request, "home/home.html", {"weather": weather_data, "user": user, "gardens": gardens_data})
 
@@ -34,7 +44,16 @@ def home_view(request):
 def garden_view(request, garden_id):
     garden = Garden.objects.get(id=garden_id)
     sensors = Sensor.objects.filter(fk_garden=garden) | Sensor.objects.filter(fk_garden__isnull=True)
-    return render(request, "garden/garden.html", {"garden": garden, "sensors": sensors})
+
+    moisture_labels = [entry['timestamp'] for entry in garden.moisture]
+    moisture_values = [entry['value'] for entry in garden.moisture]
+
+    return render(request, "garden/garden.html", {
+        "garden": garden,
+        "sensors": sensors,
+        "moisture_labels": moisture_labels,
+        "moisture_values": moisture_values,
+    })
 
 @login_required
 def activate_sensor(request, sensor_id, garden_id):
@@ -46,6 +65,11 @@ def activate_sensor(request, sensor_id, garden_id):
         sensor.fk_garden = garden
         sensor.is_associated = True
         sensor.save()
+    
+    if garden.status == 'not working':
+        garden.status = 'working'
+        garden.save()
+        
 
     return redirect('garden', garden_id=garden_id)
 
@@ -59,10 +83,15 @@ def deactivate_sensor(request, sensor_id, garden_id):
         sensor.fk_garden = None
         sensor.is_associated = False
         sensor.save()
+
+    gardenSensors = Sensor.objects.filter(fk_garden=garden)
+    if all(s.status == 'not working' for s in gardenSensors):
+        garden.status = 'not working'
+        garden.save()
         
     return redirect('garden', garden_id=garden_id)
 
-#** -------------------------------- TEST API -------------------------------- **#
+#** -------------------------------- PRODUCTION API -------------------------------- **#
 # For testing purposes only
 # Add all the elements to the database
 def setup(request):
@@ -75,35 +104,38 @@ def setup(request):
     data_garden = {
         'fk_raspberry': 1,  # Assicurati che questa FK punti a un Raspberry esistente
         'label': 'Garden Test',
-        'humidity': [
-            {'timestamp': '2023-04-03 11:08:55.570102', 'value': 50},
-            {'timestamp': '2023-04-03 11:10:36.912720', 'value': 55},
-            {'timestamp': '2023-04-03 11:56:05.367690', 'value': 60},
+        'moisture': [
+            {'timestamp': '2023-04-21 12:00:00', 'value': 50},
+            {'timestamp': '2023-04-22 12:00:00', 'value': 60},
+            {'timestamp': '2023-04-23 12:00:00', 'value': 65},
+            {'timestamp': '2023-04-24 12:00:00', 'value': 40},
+            {'timestamp': '2023-04-25 12:00:00', 'value': 64},
+            {'timestamp': '2023-04-26 12:00:00', 'value': 70},
+            {'timestamp': '2023-04-27 12:00:00', 'value': 50},
+            {'timestamp': '2023-04-28 12:00:00', 'value': 40},
+            {'timestamp': '2023-04-29 12:00:00', 'value': 85},
         ],
-        'temperature': [
-            {'timestamp': '2023-04-03 11:08:55.570102', 'value': 20},
-            {'timestamp': '2023-04-03 11:10:36.912720', 'value': 25},
-            {'timestamp': '2023-04-03 11:56:05.367690', 'value': 30},
-        ],
-        'water': [
-            {'timestamp': '2023-04-03 11:08:55.570102', 'value': 100},
-            {'timestamp': '2023-04-03 11:10:36.912720', 'value': 150},
-            {'timestamp': '2023-04-03 11:56:05.367690', 'value': 200},
+        'plants': [
+            {'name': 'Tomato', 'quantity': 5},
+            {'name': 'Cucumber', 'quantity': 3},
+            {'name': 'Lettuce', 'quantity': 10},
         ],
     }
 
     raspberry = Raspberry.objects.create(fk_owner=data_raspberry['username'], label=data_raspberry['label'])
     
     garden = Garden.objects.create(fk_raspberry=raspberry, label=data_garden['label'])
-    garden.humidity = data_garden['humidity']
-    garden.temperature = data_garden['temperature']
-    garden.water = data_garden['water']
+    garden.moisture = data_garden['moisture']
+    garden.plants = data_garden['plants']
     garden.save()
 
     data_sensor = [
-        {'is_associated': True, 'status': 'working', 'fk_garden': garden},
-        {'is_associated': True, 'status': 'not working', 'fk_garden': garden},
-        {'is_associated': True, 'status': 'working', 'fk_garden': garden},
+        {'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Humidity Sensor near the plants'},
+        {'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Humidity Sensor near the water tank'},
+        {'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Humidity Sensor near the fence'},
+        {'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Temperature Sensor near the plants'},
+        {'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Water Sensor'},
+        {'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Soil Moisture Sensor'},
     ]
 
     print("Data Sensor: ", data_sensor)
@@ -112,7 +144,8 @@ def setup(request):
         Sensor.objects.create(
             is_associated=sensor_data['is_associated'],
             status=sensor_data['status'],
-            fk_garden=sensor_data['fk_garden']
+            fk_garden=sensor_data['fk_garden'],
+            label=sensor_data['label']
         )
     
     data = {

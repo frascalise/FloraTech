@@ -8,54 +8,82 @@
 
 {% block content %}
 <div class="container mx-auto px-4 py-6">
-    <h1 class="text-4xl font-bold text-green-600 text-center mb-2">{{ garden.name }}</h1>  <!-- Giardino dinamico -->
+    <h1 class="text-4xl font-bold text-green-600 text-center mb-2">{{ garden.label }}</h1>  <!-- Giardino dinamico -->
 
     <div class="flex justify-center items-center mb-4 p-4">
-        <div class="flex items-center space-x-2 text-white bg-gray-600 rounded-full px-2 py-1 mx-2">
-            <div class="w-3 h-3 rounded-full bg-green-500"></div>
-            <span class="text-sm font-medium">Working</span>
-        </div>
+
+        {% if garden.status == "working" %}
+            <div class="flex items-center space-x-2 text-white bg-gray-600 rounded-full px-2 py-1 mx-2">
+                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                <span class="text-sm font-medium">Working</span>
+            </div>
+        {% else %}
+            <div class="flex items-center space-x-2 text-white bg-gray-600 rounded-full px-2 py-1 mx-2">
+                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                <span class="text-sm font-medium">Not Working</span>
+            </div>
+        {% endif%}
+
         <div class="flex items-center space-x-2 text-white bg-gray-600 rounded-full px-2 py-1 mx-2">
             <div class="w-3 h-3 rounded-full bg-red-500"></div>
             <span class="text-sm font-medium">Irrigator Off</span>
         </div>
     </div>
 
-    <!-- Grafici -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <div class="bg-gray-600 p-4 rounded-lg shadow-lg">
-            <canvas id="humidityChart" width="400" height="200"></canvas>
+        <!-- Grafico e Lista Piante affiancati -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+
+        <!-- Grafico -->
+        <div class="bg-gray-700 p-4 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-bold text-white mb-4 text-center">🌱 Soil Moisture</h2>
+            <canvas id="chart{{ garden.id }}" class="mt-4 w-full h-40"></canvas>
         </div>
-        <div class="bg-gray-600 p-4 rounded-lg shadow-lg">
-            <canvas id="temperatureChart" width="400" height="200"></canvas>
-        </div>
-        <div class="bg-gray-600 p-4 rounded-lg shadow-lg">
-            <canvas id="precipitationChart" width="400" height="200"></canvas>
+
+        <!-- Lista delle Piante -->
+        <div class="bg-gray-700 p-4 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-bold text-white mb-4 text-center">🪴 Plants in Your Garden</h2>
+            <ul class="text-white space-y-3">
+                {% for plant in garden.plants %}
+                    <li class="flex justify-between items-center bg-gray-600 p-3 rounded-lg shadow-sm">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-2xl">🌿</span>
+                            <span class="font-semibold text-lg">{{ plant.name }}</span>
+                        </div>
+                        <span class="text-sm text-gray-200 bg-gray-800 px-3 py-1 rounded-full">
+                            🌱 {{ plant.quantity }} pz
+                        </span>
+                    </li>
+                {% empty %}
+                    <li class="text-gray-300 text-center">🚫 There aren't any plants</li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 
     <!-- Bottone di irrigazione -->
     <div class="flex justify-center mb-6">
         <button class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300">
-            Attiva Irrigazione
+            Enable Irrigation
         </button>
     </div>
 
     <!-- Box Sensori -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="bg-gray-700 p-4 rounded-lg shadow-lg">
-            <h2 class="text-xl font-semibold text-white mb-2">Sensori Funzionanti</h2>
+            <h2 class="text-xl font-semibold text-white mb-2">Active Sensors</h2>
             <div class="text-white">
                 {% for sensor in sensors %}
                     {% if sensor.status == "working" %}
-                        <div class="flex justify-between items-center">
-                            <p>{{ sensor.id }}<br>
-                                <div class="flex items-center space-x-2 text-white bg-gray-600 rounded-full px-2 py-1 mx-2">
+                        <div class="flex justify-between items-center mb-2">
+                            <div>
+                                <p class="font-semibold text-green-300">ID: {{ sensor.id }}</p>
+                                <p class="text-sm text-gray-300 mb-1">Label: {{ sensor.label }}</p>
+                                <div class="flex items-center space-x-2 text-white bg-gray-600 rounded-full px-2 py-1 w-fit">
                                     <div class="w-3 h-3 rounded-full bg-green-500"></div>
                                     <span class="text-sm font-medium">Working</span>
                                 </div>
-                            </p>
-                            <a href="{% url 'deactivate_sensor' sensor.id garden.id %}" class="bg-red-500 text-white px-4 py-1 rounded">Disattiva</a>
+                            </div>
+                            <a href="{% url 'deactivate_sensor' sensor.id garden.id %}" class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition">Disattiva</a>
                         </div>
                         <hr class="my-2 border-gray-500">
                     {% endif %}
@@ -63,18 +91,20 @@
             </div>
         </div>
         <div class="bg-gray-700 p-4 rounded-lg shadow-lg">
-            <h2 class="text-xl font-semibold text-white mb-2">Sensori da Attivare</h2>
+            <h2 class="text-xl font-semibold text-white mb-2">Deactivated Sensors</h2>
             <div class="text-white">
                 {% for sensor in sensors %}
                     {% if sensor.status != "working" %}
-                        <div class="flex justify-between items-center">
-                            <p>{{ sensor.id }}<br>
-                                <div class="flex items-center space-x-2 text-white bg-gray-600 rounded-full px-2 py-1 mx-2">
+                        <div class="flex justify-between items-center mb-2">
+                            <div>
+                                <p class="font-semibold text-red-300">ID: {{ sensor.id }}</p>
+                                <p class="text-sm text-gray-300 mb-1">Label: {{ sensor.label }}</p>
+                                <div class="flex items-center space-x-2 text-white bg-gray-600 rounded-full px-2 py-1 w-fit">
                                     <div class="w-3 h-3 rounded-full bg-red-500"></div>
                                     <span class="text-sm font-medium">Not Working</span>
                                 </div>
-                            </p>
-                            <a href="{% url 'activate_sensor' sensor.id garden.id %}" class="bg-green-500 text-white px-4 py-1 rounded">Attiva</a>
+                            </div>
+                            <a href="{% url 'activate_sensor' sensor.id garden.id %}" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600 transition">Attiva</a>
                         </div>
                         <hr class="my-2 border-gray-500">
                     {% endif %}
@@ -88,92 +118,61 @@
 
 {% block extra_js %}
 <script>
-    function generateChart(canvasId, labels, datasets, chartType = 'line') {
-        const ctx = document.getElementById(canvasId).getContext('2d');
+    document.addEventListener("DOMContentLoaded", function () {
+        const moistureLabels = {{ moisture_labels|safe }};
+        const formattedLabels = moistureLabels.map(label => {
+            const date = new Date(label);
+            return date.toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' });
+        });
+    
+        const moistureValues = {{ moisture_values|safe }};
+        
+        const ctx = document.getElementById("chart{{ garden.id }}").getContext("2d");
         new Chart(ctx, {
-            type: chartType,
+            type: "line",
             data: {
-                labels: labels,
-                datasets: datasets
+                labels: formattedLabels,
+                datasets: [
+                    {
+                        label: "Soil Moisture (%)",
+                        data: moistureValues,
+                        borderColor: 'rgb(126, 182, 255)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointBackgroundColor: 'rgba(126, 182, 255)',
+                        fill: {
+                            target: 'origin',
+                            above: 'rgba(34, 105, 197, 0.2)'
+                        },
+                    }
+                ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: true,
                 scales: {
                     x: {
-                        ticks: {
-                            color: "white",
-                        },
-                        grid: {
-                            color: "gray",
-                        }
+                        ticks: { color: "white" },
+                        grid: { color: "gray" }
                     },
                     y: {
-                        ticks: {
-                            color: "white",
-                        },
-                        grid: {
-                            color: "gray",
-                        }
+                        ticks: { color: "white" },
+                        grid: { color: "gray" },
+                        beginAtZero: true
                     }
                 },
                 plugins: {
                     legend: {
-                        labels: {
-                            color: "white",
-                        }
+                        labels: { color: "white" }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: true,
                     }
                 }
             }
         });
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const labels = ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"];
-
-        // Esempio di dati per umidità, temperatura e precipitazioni
-        const humidityData = {{ humidity_data|safe }};
-        const temperatureMaxData = {{ temperature_max_data|safe }};
-        const temperatureMinData = {{ temperature_min_data|safe }};
-        const precipitationData = {{ precipitation_data|safe }};
-
-        const temperatureDatasets = [
-            {
-                label: "Temperatura Max (°C)",
-                data: temperatureMaxData,
-                borderColor: "red",
-                borderWidth: 2,
-                fill: false
-            },
-            {
-                label: "Temperatura Min (°C)",
-                data: temperatureMinData,
-                borderColor: "#4BC0C0",
-                borderWidth: 2,
-                fill: false
-            }
-        ];
-
-        generateChart("humidityChart", labels, [
-            {
-                label: "Umidità (%)",
-                data: humidityData,
-                borderColor: "blue",
-                borderWidth: 2,
-                fill: false
-            }
-        ]);
-        generateChart("temperatureChart", labels, temperatureDatasets);
-        generateChart("precipitationChart", labels, [
-            {
-                label: "Precipitazioni (mm)",
-                data: precipitationData,
-                borderColor: "orange",
-                backgroundColor: 'orange',
-                borderWidth: 2,
-                fill: false,
-            }
-        ], 'bar');
     });
 </script>
 {% endblock %}
