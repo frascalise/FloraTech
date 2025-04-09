@@ -4,7 +4,7 @@ from .models import Previsione
 from django.http import HttpResponse
 from django.views.generic.detail import DetailView 
 from django.views.generic.list import ListView
-from .meteo import richiesta_meteo
+from .AI import Prediction
 # Create your views here.
 class PrevisionDetail(DetailView):
     model = Previsione
@@ -29,3 +29,6 @@ def refresh(request):
 def fornire(request):
     Previsione.stampa()
     return HttpResponse("Domani sarà bello")
+def chiamata(request):
+    Prediction()
+    return HttpResponse("previsione eseguita")

@@ -1,4 +1,4 @@
 from .AI import StartingTraining
 
-#StartingTraining()
+StartingTraining()
 print("modello operativo")

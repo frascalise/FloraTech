@@ -1,5 +1,7 @@
 import pandas as pd
 import sklearn as sk
+import joblib
+from .meteo import RichiestaPerModello
 from sklearn.preprocessing import MaxAbsScaler
 from sklearn.model_selection import train_test_split
 from sklearn import svm
@@ -10,7 +12,6 @@ import numpy as np
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import mean_absolute_error, mean_squared_error, mean_squared_log_error
 
-model = LinearRegression()
 def StartingTraining():
     #creazione dataset
     week1_df = pd.read_csv("weather/csv_data\data_union_from14to21_032025.csv",sep=",")
@@ -63,7 +64,7 @@ def StartingTraining():
 
 
 
-    RFReg = RandomForestRegressor()
+    """RFReg = RandomForestRegressor()
     parameters = {"n_estimators": [25, 50, 100, 125],
         "criterion": ['squared_error', 'absolute_error', 'friedman_mse', 'poisson'],
         "max_depth": [2,3,4],
@@ -95,10 +96,14 @@ def StartingTraining():
 
     OptSVMReg = svm.SVR(C=10,coef0=0,degree=2,epsilon=0.25,gamma="scale",tol=0.1)
 
-    OptSVMReg.fit(X_train, y_train)
+    OptSVMReg.fit(X_train, y_train)"""
 
-    model=OptLinReg
+    joblib.dump(OptLinReg,'logistic_regression_model.pkl')
 
 
-def Prediction(data):
-    print(model.predict(data))
+def Prediction():
+    model=joblib.load('logistic_regression_model.pkl')
+    previsioni=RichiestaPerModello()
+    previsioni['PREV_DIST']=0
+    print(previsioni['PREV_DIST'])
+    
