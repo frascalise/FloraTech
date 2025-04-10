@@ -281,9 +281,12 @@ def new_sensor(request, raspberry_id):
 def add_garden(request, raspberry_id):
     if request.method == 'POST':
         data = json.loads(request.body)
-        data = {'id': 1, 'role': 'sensor', 'last_ping': '2025-04-03 11:08:55.570102', 'garden': 0}
-    else:
-        data = {'id': 1, 'role': 'sensor', 'last_ping': '2025-04-03 11:08:55.570102', 'garden': 0}
 
-    response = {'raspberry_id': raspberry_id, 'sensor_id': 1, 'garden': 2} # Aggiunta del giardino al sensore
+    sensor = Sensor.objects.get(id=data['id'], fk_raspberry__id=raspberry_id)
+    sensorGardenId = sensor.fk_garden
+
+    if sensorGardenId is None:
+        sensorGardenId = 0
+
+    response = {'raspberry_id': raspberry_id, 'sensor_id': sensor.idSensor, 'garden': sensorGardenId} # Aggiunta del giardino al sensore
     return render(request, 'api/api.html', {'data': response})
