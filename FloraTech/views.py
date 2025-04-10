@@ -130,11 +130,12 @@ def setup(request):
     garden.save()
 
     data_sensor = [
-        {'idSensor': 1, 'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Humidity Sensor near the plants'},
-        {'idSensor': 2, 'is_associated': False, 'status': 'not working', 'fk_garden': None, 'label': 'Humidity Sensor near the water tank'},
-        {'idSensor': 3, 'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Water Pump'},
-        {'idSensor': 4, 'is_associated': False, 'status': 'not working', 'fk_garden': None, 'label': 'Temperature Sensor'},
-        {'idSensor': 2, 'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Soil Moisture Sensor'},
+        {'idSensor': 1, 'is_associated': True, 'status': 'working', 'fk_garden': garden, 'fk_raspberry': raspberry, 'label': 'Humidity Sensor near the plants'},
+        {'idSensor': 2, 'is_associated': True, 'status': 'working', 'fk_garden': garden, 'fk_raspberry': raspberry, 'label': 'Temperature Sensor near the plants'},
+        {'idSensor': 3, 'is_associated': False, 'status': 'not working', 'fk_garden': None, 'fk_raspberry': raspberry, 'label': 'Water Pump'},
+        {'idSensor': 4, 'is_associated': False, 'status': 'not working', 'fk_garden': None, 'fk_raspberry': raspberry, 'label': 'Water Pump'},
+        {'idSensor': 5, 'is_associated': False, 'status': 'not working', 'fk_garden': None, 'fk_raspberry': raspberry, 'label': 'Water Pump'},
+        {'idSensor': 6, 'is_associated': False, 'status': 'not working', 'fk_garden': None, 'fk_raspberry': raspberry, 'label': 'Water Pump'},
     ]
 
     print("Data Sensor: ", data_sensor)
@@ -261,6 +262,7 @@ def new_sensor(request, raspberry_id):
         type = data['role'],
         status = 'not working',
         fk_garden = None,
+        fk_raspberry = Raspberry.objects.get(id=raspberry_id)
     )
     sensor.save()
 
