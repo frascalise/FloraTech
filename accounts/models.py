@@ -48,10 +48,11 @@ class Garden(models.Model):
 
 class Sensor(models.Model):
     id = models.AutoField(primary_key=True)
+    idSensor = models.IntegerField()
+    fk_garden = models.ForeignKey(Garden, on_delete=models.CASCADE, null=True, blank=True)
     is_associated = models.BooleanField()
     status = models.CharField(default="working", max_length=50) # [ working, not working ]
     type = models.CharField(default="sensor", max_length=50) # [ sensor, actuator ]
-    fk_garden = models.ForeignKey(Garden, on_delete=models.CASCADE, null=True, blank=True)
     label = models.CharField(max_length=50, default="sensor")  # Custom label for the sensor
 
 class Weather(models.Model):
