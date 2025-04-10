@@ -198,7 +198,7 @@ def delete_all(request):
 # DONE: The sensor is working! 
 # Sensor status is 'working'
 def sensor_working(request, raspberry_id, sensor_id):
-    sensor = Sensor.objects.get(id=sensor_id, fk_garden__fk_raspberry__id=raspberry_id)
+    sensor = Sensor.objects.get(idSensor=sensor_id, fk_raspberry_id=raspberry_id)
     sensor.status = 'working'
     sensor.save()
     
@@ -213,7 +213,7 @@ def sensor_working(request, raspberry_id, sensor_id):
 # DONE: The sensor is not working!
 # Sensor status is in warning_message
 def sensor_warning(request, raspberry_id, sensor_id, warning_message):
-    sensor = Sensor.objects.get(id=sensor_id, fk_garden__fk_raspberry__id=raspberry_id)
+    sensor = Sensor.objects.get(idSensor=sensor_id, fk_raspberry_id=raspberry_id)
     sensor.status = warning_message
     sensor.save()
 
@@ -283,15 +283,26 @@ def add_garden(request, raspberry_id):
     if request.method == 'POST':
         data = json.loads(request.body)
 
-    print("Data: ", data)
-
     sensor = Sensor.objects.get(idSensor=data['id'], fk_raspberry__id=raspberry_id)
     sensorGardenId = sensor.fk_garden.id
 
     if sensorGardenId is None:
         sensorGardenId = 0
 
-    response = {'raspberry_id': raspberry_id, 'sensor_id': sensor.idSensor, 'garden': sensorGardenId} # Aggiunta del giardino al sensore
-    print("Response: ", response)
+    response = {'raspberry_id': raspberry_id, 'sensor_id': sensor.idSensor, 'garden': sensorGardenId}
 
     return JsonResponse(response)
+
+# Add moisture to the garden
+@csrf_exempt
+def add_moisture(request, raspberry_id):
+    if request == 'POST':
+        data = json.loads(request.body)
+
+    # {"timestamp":str(datetime.now()), "moisture": moisture, "sensor_id": sensor_id, "garden": garden}
+    garden = Garden.objects.get(id=data['garden'], fk_raspberry_id=raspberry_id)
+    garden.moisture.append(data)
+    garden.moisture.sort(key=lambda x: x['timestamp'])
+    garden.save()
+
+    return JsonResponse({'message': 'Moisture data added successfully!'})
