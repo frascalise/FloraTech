@@ -146,7 +146,7 @@ def show_all(request):
     return render(request, 'api/show_all.html', {'data': data})
     
 # For testing purposes only
-# Delete all the data
+# Delete all the data 
 def delete_all(request):
     Raspberry.objects.all().delete()
     Garden.objects.all().delete()
