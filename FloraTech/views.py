@@ -16,16 +16,19 @@ def welcome_view(request):
 
 @login_required
 def home_view(request):
+    # Ottieni i dati meteo (presumibilmente da una funzione esterna)
     weather_data = get_weather_forecast(request)
     user = request.user
-    
+
+    # Recupera i giardini associati all'utente
     user_gardens = Garden.objects.filter(fk_raspberry__fk_owner=user)
 
     gardens_data = []
     for garden in user_gardens:
         moisture_data = garden.moisture
+        
         moisture_labels = [entry['timestamp'] for entry in moisture_data]
-        moisture_values = [entry['value'] for entry in moisture_data]
+        moisture_values = [entry['moisture'] for entry in moisture_data] 
         
         plants_data = garden.plants
         plants_names = [entry['name'] for entry in plants_data]
@@ -40,6 +43,7 @@ def home_view(request):
             "plants_quantities": plants_quantities,
         })
     
+    # Passa i dati alla template
     return render(request, "home/home.html", {"weather": weather_data, "user": user, "gardens": gardens_data})
 
 @login_required
