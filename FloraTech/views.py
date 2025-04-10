@@ -1,5 +1,6 @@
 import json
 from django.db import connection
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from accounts.models import *
 from django.contrib.auth.decorators import login_required
@@ -293,4 +294,4 @@ def add_garden(request, raspberry_id):
     response = {'raspberry_id': raspberry_id, 'sensor_id': sensor.idSensor, 'garden': sensorGardenId} # Aggiunta del giardino al sensore
     print("Response: ", response)
 
-    return render(request, 'api/api.html', {'data': response})
+    return JsonResponse(response)
