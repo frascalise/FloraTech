@@ -103,19 +103,9 @@ def setup(request):
     }
 
     data_garden = {
-        'fk_raspberry': 1,  # Assicurati che questa FK punti a un Raspberry esistente
+        'fk_raspberry': 1,
         'label': 'Garden Test',
-        'moisture': [
-            {'timestamp': '2023-04-21 12:00:00', 'value': 50},
-            {'timestamp': '2023-04-22 12:00:00', 'value': 60},
-            {'timestamp': '2023-04-23 12:00:00', 'value': 65},
-            {'timestamp': '2023-04-24 12:00:00', 'value': 40},
-            {'timestamp': '2023-04-25 12:00:00', 'value': 64},
-            {'timestamp': '2023-04-26 12:00:00', 'value': 70},
-            {'timestamp': '2023-04-27 12:00:00', 'value': 50},
-            {'timestamp': '2023-04-28 12:00:00', 'value': 40},
-            {'timestamp': '2023-04-29 12:00:00', 'value': 85},
-        ],
+        'moisture': [],
         'plants': [
             {'name': 'Tomato', 'quantity': 5},
             {'name': 'Cucumber', 'quantity': 3},
@@ -129,26 +119,6 @@ def setup(request):
     garden.moisture = data_garden['moisture']
     garden.plants = data_garden['plants']
     garden.save()
-
-    data_sensor = [
-        {'idSensor': 1, 'is_associated': True, 'status': 'working', 'fk_garden': garden, 'fk_raspberry': raspberry, 'label': 'Humidity Sensor near the plants'},
-        {'idSensor': 2, 'is_associated': True, 'status': 'working', 'fk_garden': garden, 'fk_raspberry': raspberry, 'label': 'Temperature Sensor near the plants'},
-        {'idSensor': 3, 'is_associated': False, 'status': 'not working', 'fk_garden': None, 'fk_raspberry': raspberry, 'label': 'Water Pump'},
-        {'idSensor': 4, 'is_associated': False, 'status': 'not working', 'fk_garden': None, 'fk_raspberry': raspberry, 'label': 'Water Pump'},
-        {'idSensor': 5, 'is_associated': False, 'status': 'not working', 'fk_garden': None, 'fk_raspberry': raspberry, 'label': 'Water Pump'},
-        {'idSensor': 6, 'is_associated': False, 'status': 'not working', 'fk_garden': None, 'fk_raspberry': raspberry, 'label': 'Water Pump'},
-    ]
-
-    print("Data Sensor: ", data_sensor)
-
-    for sensor_data in data_sensor:
-        Sensor.objects.create(
-            idSensor=sensor_data['idSensor'],
-            is_associated=sensor_data['is_associated'],
-            status=sensor_data['status'],
-            fk_garden=sensor_data['fk_garden'],
-            label=sensor_data['label']
-        )
     
     data = {
         'raspberry_id': raspberry.id,
