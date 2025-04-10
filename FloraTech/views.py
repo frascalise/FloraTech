@@ -248,9 +248,6 @@ def check_sensor(request):
 def new_sensor(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        data = {'id': 1, 'role': 'sensor', 'last_ping': '2025-04-03 11:08:55.570102', 'garden': 0}
-    else:
-        data = {'id': 1, 'role': 'sensor', 'last_ping': '2025-04-03 11:08:55.570102', 'garden': 0}
 
     # Il garden è 0 perchè l'utente deve associarlo manualmente
     sensor = Sensor.objects.create(
