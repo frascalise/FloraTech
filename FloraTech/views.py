@@ -129,18 +129,18 @@ def setup(request):
     garden.save()
 
     data_sensor = [
-        {'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Humidity Sensor near the plants'},
-        {'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Humidity Sensor near the water tank'},
-        {'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Humidity Sensor near the fence'},
-        {'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Temperature Sensor near the plants'},
-        {'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Water Sensor'},
-        {'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Soil Moisture Sensor'},
+        {'idSensor': 1, 'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Humidity Sensor near the plants'},
+        {'idSensor': 2, 'is_associated': False, 'status': 'not working', 'fk_garden': None, 'label': 'Humidity Sensor near the water tank'},
+        {'idSensor': 3, 'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Water Pump'},
+        {'idSensor': 4, 'is_associated': False, 'status': 'not working', 'fk_garden': None, 'label': 'Temperature Sensor'},
+        {'idSensor': 2, 'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Soil Moisture Sensor'},
     ]
 
     print("Data Sensor: ", data_sensor)
 
     for sensor_data in data_sensor:
         Sensor.objects.create(
+            idSensor=sensor_data['idSensor'],
             is_associated=sensor_data['is_associated'],
             status=sensor_data['status'],
             fk_garden=sensor_data['fk_garden'],
@@ -254,7 +254,7 @@ def new_sensor(request):
 
     # Il garden è 0 perchè l'utente deve associarlo manualmente
     sensor = Sensor.objects.create(
-        # id = data['id'],
+        idSensor = data['id'],
         is_associated = False,
         type = data['role'],
         status = 'not working',
