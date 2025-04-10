@@ -68,29 +68,6 @@
 
     <!-- Box Sensori -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Sensori Attivi -->
-        <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
-            <h2 class="text-xl font-semibold text-white mb-4">Active Sensors</h2>
-            <div class="space-y-4">
-                {% for sensor in sensors %}
-                    {% if sensor.status == "working" %}
-                        <div class="bg-gray-600 p-3 rounded-lg flex justify-between items-center">
-                            <div>
-                                <p class="font-semibold text-green-300">ID: {{ sensor.id }}</p>
-                                <p class="text-sm text-gray-200">Label: {{ sensor.label }}</p>
-                                <div class="flex items-center gap-2 bg-gray-500 rounded-full px-2 py-1 w-fit mt-1">
-                                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                                    <span class="text-sm">Working</span>
-                                </div>
-                            </div>
-                            <a href="{% url 'deactivate_sensor' sensor.id garden.id %}" class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition">
-                                Disattiva
-                            </a>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-        </div>
 
         <!-- Sensori Disattivati -->
         <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
@@ -109,6 +86,30 @@
                             </div>
                             <a href="{% url 'activate_sensor' sensor.id garden.id %}" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600 transition">
                                 Attiva
+                            </a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Sensori Attivi -->
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold text-white mb-4">Active Sensors</h2>
+            <div class="space-y-4">
+                {% for sensor in sensors %}
+                    {% if sensor.status == "working" %}
+                        <div class="bg-gray-600 p-3 rounded-lg flex justify-between items-center">
+                            <div>
+                                <p class="font-semibold text-green-300">ID: {{ sensor.id }}</p>
+                                <p class="text-sm text-gray-200">Label: {{ sensor.label }}</p>
+                                <div class="flex items-center gap-2 bg-gray-500 rounded-full px-2 py-1 w-fit mt-1">
+                                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    <span class="text-sm">Working</span>
+                                </div>
+                            </div>
+                            <a href="{% url 'deactivate_sensor' sensor.id garden.id %}" class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition">
+                                Disattiva
                             </a>
                         </div>
                     {% endif %}
@@ -137,7 +138,7 @@
             data: {
                 labels: formattedLabels,
                 datasets: [{
-                    label: "Soil Moisture (%)",
+                    label: "Soil Moisture",
                     data: moistureValues,
                     borderColor: "rgb(126, 182, 255)",
                     backgroundColor: "rgba(34, 105, 197, 0.2)",
