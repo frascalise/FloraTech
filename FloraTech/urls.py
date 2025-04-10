@@ -25,8 +25,8 @@ urlpatterns = [
     path("api/sensor_working/<int:raspberry_id>/<int:sensor_id>/", sensor_working, name="sensor_working"),
     path("api/sensor_warning/<int:raspberry_id>/<int:sensor_id>/<str:warning_message>/", sensor_warning, name="sensor_warning"),
     path("api/check_sensor/", check_sensor, name="check_sensor"),
-    path("api/new_sensor/", new_sensor, name="new_sensor"),
-    path("api/add_garden/", add_garden, name="add_garden"),
+    path("api/new_sensor/<int:raspberry_id>", new_sensor, name="new_sensor"),
+    path("api/add_garden/<int:raspberry_id>", add_garden, name="add_garden"),
 
     #** Admin **#
     path('admin/', admin.site.urls),
