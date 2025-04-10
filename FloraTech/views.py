@@ -285,7 +285,7 @@ def add_garden(request, raspberry_id):
     print("Data: ", data)
 
     sensor = Sensor.objects.get(idSensor=data['id'], fk_raspberry__id=raspberry_id)
-    sensorGardenId = sensor.fk_garden
+    sensorGardenId = sensor.fk_garden.id
 
     if sensorGardenId is None:
         sensorGardenId = 0
