@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from accounts.models import *
 from django.contrib.auth.decorators import login_required
 from accounts.views import get_weather_forecast
+from django.views.decorators.csrf import csrf_exempt
 
 
 def welcome_view(request):
@@ -225,6 +226,7 @@ def sensor_warning(request, raspberry_id, sensor_id, warning_message):
 # Check if sensor is in the right garden and everything is ok
 # Faccio delle query e in teoria devo restituire quello che c'è nella lista di json che mi è stato mandato
 # (se tutto coincide allora ok --> il controllo lo fa il raspberry)
+@csrf_exempt
 def check_sensor(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -245,6 +247,7 @@ def check_sensor(request):
     return render(request, 'api/api.html', {'data': data})
 
 # Add a new sensor to the database
+@csrf_exempt
 def new_sensor(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -272,6 +275,7 @@ def new_sensor(request):
     return render(request, 'api/api.html', {'data': response})
 
 # Add garden to a sensor
+@csrf_exempt
 def add_garden(request, raspberry_id):
     if request.method == 'POST':
         data = json.loads(request.body)
