@@ -13,12 +13,17 @@
 
     <!-- Stato del giardino e irrigatore -->
     <div class="flex justify-center items-center gap-4 mb-6">
-        <div class="flex items-center gap-2 text-white bg-gray-600 rounded-full px-3 py-1">
-            <div class="w-3 h-3 rounded-full {{ 'bg-green-500' if garden.status == 'working' else 'bg-red-500' }}"></div>
-            <span class="text-sm font-medium">
-                {{ 'Working' if garden.status == 'working' else 'Not Working' }}
-            </span>
-        </div>
+        {% if garden.status == 'working' %}
+            <div class="flex items-center gap-2 text-white bg-green-600 rounded-full px-3 py-1">
+                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                <span class="text-sm font-medium">Working</span>
+            </div>
+        {% else %}
+            <div class="flex items-center gap-2 text-white bg-red-600 rounded-full px-3 py-1">
+                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                <span class="text-sm font-medium">Not Working</span>
+            </div>
+        {% endif %}
         <div class="flex items-center gap-2 text-white bg-gray-600 rounded-full px-3 py-1">
             <div class="w-3 h-3 rounded-full bg-red-500"></div>
             <span class="text-sm font-medium">Irrigator Off</span>
