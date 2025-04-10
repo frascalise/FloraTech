@@ -249,6 +249,8 @@ def new_sensor(request):
     if request.method == 'POST':
         data = json.loads(request.body)
 
+    print("Data: ", data)
+
     # Il garden è 0 perchè l'utente deve associarlo manualmente
     sensor = Sensor.objects.create(
         idSensor = data['id'],
