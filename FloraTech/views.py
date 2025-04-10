@@ -294,7 +294,7 @@ def add_garden(request, raspberry_id):
 @csrf_exempt
 def add_moisture(request, raspberry_id):
     data = {}
-    if request == 'POST':
+    if request.method == 'POST':
         data = json.loads(request.body)
 
     print("Data: ", data)
