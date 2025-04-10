@@ -297,7 +297,7 @@ def add_moisture(request, raspberry_id):
         data = json.loads(request.body)
 
     # {"timestamp":str(datetime.now()), "moisture": moisture, "sensor_id": sensor_id, "garden": garden}
-    garden = Garden.objects.get(id=data['garden'], fk_raspberry_id=raspberry_id)
+    garden = Garden.objects.get(id=data['garden'], fk_raspberry=raspberry_id)
     garden.moisture.append(data)
     garden.moisture.sort(key=lambda x: x['timestamp'])
     garden.save()
