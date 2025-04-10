@@ -284,10 +284,7 @@ def add_garden(request, raspberry_id):
         data = json.loads(request.body)
 
     sensor = Sensor.objects.get(idSensor=data['id'], fk_raspberry__id=raspberry_id)
-    sensorGardenId = sensor.fk_garden.id
-
-    if sensorGardenId is None:
-        sensorGardenId = 0
+    sensorGardenId = sensor.fk_garden.id if sensor.fk_garden else 0
 
     response = {'raspberry_id': raspberry_id, 'sensor_id': sensor.idSensor, 'garden': sensorGardenId}
 
@@ -305,4 +302,4 @@ def add_moisture(request, raspberry_id):
     garden.moisture.sort(key=lambda x: x['timestamp'])
     garden.save()
 
-    return JsonResponse({'message': 'Moisture data added successfully!'})
+    return JsonResponse({'message': 'Moisture data added successfully!', 'data': data})
