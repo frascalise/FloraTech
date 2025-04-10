@@ -293,6 +293,7 @@ def add_garden(request, raspberry_id):
 # Add moisture to the garden
 @csrf_exempt
 def add_moisture(request, raspberry_id):
+    data = {}
     if request == 'POST':
         data = json.loads(request.body)
 
