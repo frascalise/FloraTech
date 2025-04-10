@@ -6,6 +6,7 @@ from accounts.models import *
 from django.contrib.auth.decorators import login_required
 from accounts.views import get_weather_forecast
 from django.views.decorators.csrf import csrf_exempt
+from datetime import datetime
 
 
 def welcome_view(request):
@@ -46,8 +47,13 @@ def garden_view(request, garden_id):
     garden = Garden.objects.get(id=garden_id)
     sensors = Sensor.objects.filter(fk_garden=garden) | Sensor.objects.filter(fk_garden__isnull=True)
 
-    moisture_labels = [entry['timestamp'] for entry in garden.moisture]
-    moisture_values = [entry['value'] for entry in garden.moisture]
+    sorted_moisture = sorted(garden.moisture, key=lambda x: x['timestamp'])
+
+    moisture_labels = [
+        datetime.fromisoformat(entry['timestamp']).isoformat()
+        for entry in sorted_moisture
+    ]
+    moisture_values = [entry['moisture'] for entry in sorted_moisture]
 
     return render(request, "garden/garden.html", {
         "garden": garden,
