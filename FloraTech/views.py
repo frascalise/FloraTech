@@ -173,7 +173,6 @@ def delete_all(request):
 
     return render(request, 'api/api.html', {'data': data})
 
-
 #** -------------------------------- API -------------------------------- **#
 # DONE: The sensor is working! 
 # Sensor status is 'working'
@@ -264,7 +263,7 @@ def add_garden(request, raspberry_id):
         data = json.loads(request.body)
 
     sensor = Sensor.objects.get(idSensor=data['id'], fk_raspberry__id=raspberry_id)
-    sensorGardenId = sensor.fk_garden.id if sensor.fk_garden else 0
+    sensorGardenId = sensor.fk_garden.id if sensor.fk_garden else None
 
     response = {'raspberry_id': raspberry_id, 'sensor_id': sensor.idSensor, 'garden': sensorGardenId}
 
