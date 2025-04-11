@@ -11,16 +11,18 @@ raspberry:
 
 orto: 
     id
-    raspberry con cui comunicare
+    fk_raspberry con cui comunicare
     etichetta (nome custom)
     lista con umidità medie (e relativo timestamp)
     lista con temperature (e relativo timestamp)
     lista con ml di acqua per irrigare tutto (e relativo timestamp)
 
 sensori:
-    id
+    id  (mandato da leo)
     is_associato? (bool)
-    orto a cui è associato
+    status (bool) --> default è working  (mandato da leo)
+    tipo ("sensore" o "attuatore") (mandato da leo)
+    fk_orto a cui è associato   (mandato da leo)
 
 meteo:
     timestamp
@@ -29,11 +31,10 @@ meteo:
     temperatura (max)
     precipitazioni (neve, pioggia, ecc...)
     precipitazioni (mm)
-
 '''
 
 class Raspberry(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True) 
     fk_owner = models.CharField(max_length=50)
     label = models.CharField(max_length=50)
 
@@ -41,16 +42,18 @@ class Garden(models.Model):
     id = models.AutoField(primary_key=True)
     fk_raspberry = models.ForeignKey(Raspberry, on_delete=models.CASCADE)
     label = models.CharField(max_length=50)
-    humidity = models.JSONField()
-    temperature = models.JSONField()
-    water = models.JSONField()
+    humidity = models.JSONField(default=list)  
+    temperature = models.JSONField(default=list)  
+    water = models.JSONField(default=list) 
 
 class Sensor(models.Model):
     id = models.AutoField(primary_key=True)
     is_associated = models.BooleanField()
-    fk_garden = models.ForeignKey(Garden, on_delete=models.CASCADE)
+    status = models.CharField(default="working", max_length=50) # [ working, not working ]
+    type = models.CharField(default="sensor", max_length=50) # [ sensor, actuator ]
+    fk_garden = models.ForeignKey(Garden, on_delete=models.CASCADE, null=True, blank=True)
 
-class Weather(models.Model):    # HAVE TO MIGRATE
+class Weather(models.Model):
     timestamp = models.DateTimeField(primary_key=True)
     location = models.CharField(max_length=50)
     temp_min = models.FloatField()

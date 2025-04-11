@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Tutti i Dati | FloraTech{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+    <h1 class="text-3xl font-bold text-green-600 mb-6 text-center">Dati del Sistema</h1>
+
+    {% for key, items in data.items %}
+    <div class="mb-8">
+        <h2 class="text-2xl font-semibold text-white bg-gray-700 px-4 py-2 rounded-t-md shadow">
+            {{ key|capfirst }}
+        </h2>
+        {% if items %}
+        <div class="bg-gray-800 text-white p-4 rounded-b-md shadow overflow-x-auto">
+            <table class="min-w-full text-sm text-left">
+                <thead class="border-b border-gray-600">
+                    <tr>
+                        {% for field in items.0.keys %}
+                        <th class="px-4 py-2">{{ field }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr class="border-b border-gray-700 hover:bg-gray-700">
+                        {% for value in item.values %}
+                        <td class="px-4 py-2 whitespace-nowrap">{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-gray-300 italic px-4 py-2 bg-gray-800 rounded-b-md">Nessun dato disponibile.</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
