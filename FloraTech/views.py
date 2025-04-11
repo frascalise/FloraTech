@@ -294,6 +294,7 @@ def check_sensor(request, raspberry_id):
             sensorData['garden'] = None
             
         response.append(sensorData)
+        print("Response: ", response)
 
     return JsonResponse(response)
 
