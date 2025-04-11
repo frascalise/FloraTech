@@ -1,29 +1,42 @@
-import telebot
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from telegram import Bot,Update
+from telegram import CommandHandler, MessageHandler, Filters, Dispatcher
+import json
+@csrf_exempt
+def webhook(request):
+    # Token del tuo bot Telegram
+    TOKEN = '7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo'
+    bot = Bot(token=TOKEN)
+    dispatcher = Dispatcher(bot, update_queue=None, workers=0)
 
-API_TOKEN = '7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo'
+    # Recupera i dati JSON dalla richiesta POST
+    data = json.loads(request.body.decode('UTF-8'))
 
-bot = telebot.TeleBot(API_TOKEN)
+    # Crea l'oggetto Update
+    update = Update.de_json(data, bot)
 
+    # Inizializza il dispatcher e registra i gestori
+    dispatcher.process_update(update)
 
-# Handle '/start' and '/help'
-@bot.message_handler(commands=['help', 'start'])
-def send_welcome(message):
-    bot.reply_to(message, """\
-Ciao a tutti bastardi!!\
-""")
+    return JsonResponse({"status": "ok"})
 
+def start(update, context):
+    update.message.reply_text('Ciao! Sono un bot Telegram integrato con Django!')
 
-# Handle all other messages with content_type 'text' (content_types defaults to ['text'])
-@bot.message_handler(func=lambda message: True)
-def echo_message(message):
-    if(message.text=='Ciao'):
-        bot.reply_to(message, 'Sparati')
-    elif(message.text=='come sei gentile'):
-        bot.reply_to(message,'grazie culattacchione')
+def echo(update, context):
+    update.message.reply_text(update.message.text)
 
+# Aggiungi i gestori nel dispatcher
+Dispatcher.add_handler(CommandHandler("start", start))
+Dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, echo))
 
-bot.infinity_polling()
+#from telegram import Bot
 
+def set_webhook(request):
+    bot = Bot(token='7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo')
+    webhook_url = 'http://127.0.0.1:8000/weather/webhook/'  # URL del webhook
 
-
-
+    # Imposta il webhook
+    bot.set_webhook(url=webhook_url)
+    return JsonResponse({"status": "webhook set"})

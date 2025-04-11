@@ -1,6 +1,7 @@
 from django.urls import path,re_path
 from django.contrib import admin
 from . import views
+from . import BOT
 
 app_name = 'meteo'
 urlpatterns = [
@@ -9,7 +10,10 @@ urlpatterns = [
     path('on/',views.refresh,name='caricamento'),
     path('read/',views.fornire,name='lettura'),
     path('test/',views.LookForecast,name='prova'),
-    path('model/',views.chiamata,name='chiamata')
+    path('model/',views.chiamata,name='chiamata'),
+    path('webhook/', BOT.webhook, name='webhook'),
+    path('set_webhook/', BOT.set_webhook, name='set_webhook'),
+
 
     #path("meteo/",views.PrevisionDetail.as_view(),name="meteo")
 ]
