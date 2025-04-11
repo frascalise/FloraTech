@@ -1,12 +1,15 @@
 import json
 from django.db import connection
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import render, redirect
 from accounts.models import *
 from django.contrib.auth.decorators import login_required
 from accounts.views import get_weather_forecast
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
+from collections import defaultdict
+from datetime import datetime
+from django.db.models import Q
 
 
 def welcome_view(request):
@@ -49,15 +52,25 @@ def home_view(request):
 @login_required
 def garden_view(request, garden_id):
     garden = Garden.objects.get(id=garden_id)
-    sensors = Sensor.objects.filter(fk_garden=garden) | Sensor.objects.filter(fk_garden__isnull=True)
+    sensors = Sensor.objects.filter(Q(fk_garden=garden) | Q(fk_garden__isnull=True))
 
+    # Ordina moisture per timestamp
     sorted_moisture = sorted(garden.moisture, key=lambda x: x['timestamp'])
 
-    moisture_labels = [
-        datetime.fromisoformat(entry['timestamp']).isoformat()
-        for entry in sorted_moisture
-    ]
-    moisture_values = [entry['moisture'] for entry in sorted_moisture]
+    # Crea dizionario {data: [valori]}
+    moisture_by_day = defaultdict(list)
+    for entry in sorted_moisture:
+        date_str = entry["timestamp"]
+        date = datetime.fromisoformat(date_str).date()  # solo giorno
+        moisture_by_day[date].append(entry["moisture"])
+
+    # Calcola media per ogni giorno
+    daily_avg = {day: sum(vals) / len(vals) for day, vals in moisture_by_day.items()}
+
+    # Ordina per data (in caso non siano in ordine)
+    sorted_days = sorted(daily_avg.keys())
+    moisture_labels = [day.strftime("%Y-%m-%d") for day in sorted_days]
+    moisture_values = [round(daily_avg[day], 2) for day in sorted_days]
 
     return render(request, "garden/garden.html", {
         "garden": garden,
@@ -287,7 +300,10 @@ def check_sensor(request, raspberry_id):
         if sensor:
             sensorData['id'] = sensor.idSensor
             sensorData['role'] = sensor.type
-            sensorData['garden'] = sensor.fk_garden.id
+            if sensor.fk_garden:
+                sensorData['garden'] = sensor.fk_garden.id
+            else:
+                sensorData['garden'] = None
         else:
             sensorData['id'] = data[i]['id']
             sensorData['role'] = None
