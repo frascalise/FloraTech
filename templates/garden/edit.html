@@ -9,7 +9,7 @@
     <!-- Modifica Nome Garden -->
     <form method="POST" class="space-y-6 mb-8">
         {% csrf_token %}
-        <div class="flex flex-col bg-gray-800 p-6 rounded-lg shadow-md">
+        <div class="flex flex-col bg-gray-700 p-6 rounded-lg shadow-md">
             <label for="label" class="text-sm font-medium text-gray-300 mb-2">Nome del Garden</label>
             <input type="text" id="label" name="label" value="{{ garden.label }}" class="w-full p-3 bg-gray-700 rounded-md border border-gray-500 text-gray-300 focus:ring-2 focus:ring-green-600 focus:outline-none">
         </div>
@@ -22,7 +22,7 @@
         <h2 class="text-2xl font-semibold text-gray-100 mb-4">🌿 Modifica Quantità Piante</h2>
         <div class="grid grid-cols-2 gap-6">
             {% for plant in garden.plants %}
-            <div class="flex items-center bg-gray-800 p-4 rounded-lg shadow-md">
+            <div class="flex items-center bg-gray-700 p-4 rounded-lg shadow-md">
                 <div class="flex-1">
                     <label for="plant_{{ plant.name }}" class="text-sm font-medium text-white">{{ plant.name }}</label>
                 </div>
@@ -39,7 +39,7 @@
     <form method="POST" class="space-y-6 mb-8">
         {% csrf_token %}
         <h2 class="text-2xl font-semibold text-gray-100 mb-4">🌱 Aggiungi Nuova Pianta</h2>
-        <div class="flex flex-col bg-gray-800 p-6 rounded-lg shadow-md">
+        <div class="flex flex-col bg-gray-700 p-6 rounded-lg shadow-md">
             <label for="new_plant" class="text-sm font-medium text-gray-300 mb-2">Seleziona una pianta</label>
             <select id="new_plant" name="new_plant" class="w-full p-3 bg-gray-700 rounded-md border border-gray-500 text-gray-300 focus:ring-2 focus:ring-green-600 focus:outline-none">
                 <option value="">Seleziona una pianta</option>

@@ -79,30 +79,34 @@ def edit_garden(request, garden_id):
 
         # Modifica la quantità delle piante esistenti
         updated_plants = []
+
         for plant_data in garden.plants:
             plant_name = plant_data.get('name')
             new_quantity = request.POST.get(f"plant_{plant_name}")
+
             if new_quantity is not None:
                 try:
                     new_quantity = int(new_quantity)
-                    # Aggiorna la quantità
-                    updated_plants.append({'name': plant_name, 'quantity': new_quantity})
+                    if new_quantity > 0:
+                        updated_plants.append({'name': plant_name, 'quantity': new_quantity})
+                    # Se è 0 o negativa, non la aggiunge (quindi viene rimossa)
                 except ValueError:
-                    # Se la quantità non è valida, manteniamo quella esistente
                     updated_plants.append(plant_data)
             else:
                 updated_plants.append(plant_data)
 
-        # Aggiungi la nuova pianta
+        # Aggiungi nuova pianta, solo se non già presente
         new_plant_id = request.POST.get("new_plant")
         if new_plant_id:
             try:
                 new_plant = Plant.objects.get(id=new_plant_id)
-                updated_plants.append({'name': new_plant.name, 'quantity': 1})  # Aggiungi la pianta con quantità 1
+                existing_plant_names = {p['name'] for p in updated_plants}
+                if new_plant.name not in existing_plant_names:
+                    updated_plants.append({'name': new_plant.name, 'quantity': 1})
             except Plant.DoesNotExist:
                 pass
 
-        # Aggiorna la lista di piante nel giardino
+        # Salva le modifiche
         garden.plants = updated_plants
         garden.save()
 
@@ -118,6 +122,16 @@ def delete_garden(request, garden_id):
     garden = Garden.objects.get(id=garden_id)
     garden.delete()
     
+    return redirect('home')
+
+@login_required
+def new_garden(request):
+    garden = Garden.objects.create(fk_raspberry=Raspberry.objects.get(fk_owner=request.user))
+    garden.label = "Garden " + str(garden.id)
+    garden.moisture = []
+    garden.plants = []
+    garden.save()
+
     return redirect('home')
 
 @login_required
@@ -261,24 +275,27 @@ def sensor_warning(request, raspberry_id, sensor_id, warning_message):
 # Faccio delle query e in teoria devo restituire quello che c'è nella lista di json che mi è stato mandato
 # (se tutto coincide allora ok --> il controllo lo fa il raspberry)
 @csrf_exempt
-def check_sensor(request):
+def check_sensor(request, raspberry_id):
     if request.method == 'POST':
         data = json.loads(request.body)
-        data = [
-                    {'id': 1, 'role': 'sensor', 'last_ping': '2025-04-03 11:08:55.570102', 'garden': 0},
-                    {'id': 2, 'role': 'sensor', 'last_ping': '2025-04-03 11:10:36.912720', 'garden': 0},
-                    {'id': 3, 'role': 'sensor', 'last_ping': '2025-04-03 11:56:05.367690', 'garden': 0},
-                    {'id': 4, 'role': 'sensor', 'last_ping': '2025-04-03 12:00:49.042357', 'garden': 0},
-                ]
-    else:
-        data = [
-                    {'id': 1, 'role': 'sensor', 'last_ping': '2025-04-03 11:08:55.570102', 'garden': 0},
-                    {'id': 2, 'role': 'sensor', 'last_ping': '2025-04-03 11:10:36.912720', 'garden': 0},
-                    {'id': 3, 'role': 'sensor', 'last_ping': '2025-04-03 11:56:05.367690', 'garden': 0},
-                    {'id': 4, 'role': 'sensor', 'last_ping': '2025-04-03 12:00:49.042357', 'garden': 0},
-                ]
-    
-    return render(request, 'api/api.html', {'data': data})
+
+    # [{'id': 1, 'role': 'sensor', 'last_ping': '2025-04-03 11:08:55.570102', 'garden': 0}]
+    response = []
+    for i in range(len(data)):
+        sensorData = {}
+        sensor = Sensor.objects.get(idSensor=data[i]['id'], fk_raspberry_id=raspberry_id)
+        if sensor:
+            sensorData['id'] = sensor.idSensor
+            sensorData['role'] = sensor.type
+            sensorData['garden'] = sensor.fk_garden.id
+        else:
+            sensorData['id'] = data[i]['id']
+            sensorData['role'] = None
+            sensorData['garden'] = None
+            
+        response.append(sensorData)
+
+    return JsonResponse(response)
 
 # Add a new sensor to the database
 @csrf_exempt

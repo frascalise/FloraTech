@@ -43,7 +43,7 @@ class Garden(models.Model):
     fk_raspberry = models.ForeignKey(Raspberry, on_delete=models.CASCADE)
     label = models.CharField(max_length=50)
     moisture = models.JSONField(default=list)
-    status = models.CharField(default="working", max_length=50) # [ working, not working ]
+    status = models.CharField(default="not working", max_length=50) # [ working, not working ]
     plants = models.JSONField(default=list)
 
 class Sensor(models.Model):
