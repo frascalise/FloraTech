@@ -1,12 +1,12 @@
 import pandas as pd
+import numpy as np
 import sklearn as sk
 import joblib
 from .meteo import RichiestaPerModello
 from sklearn.preprocessing import MaxAbsScaler
 from sklearn.model_selection import train_test_split
 from sklearn import svm
-from sklearn.linear_model import LinearRegression
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import SGDRegressor
 from sklearn.model_selection import GridSearchCV
 import numpy as np
 from sklearn.pipeline import Pipeline
@@ -42,68 +42,43 @@ def StartingTraining():
     new_dataset_transf = pd.DataFrame(new_dataset_transf, columns=dataset.columns)
 
     dataset = new_dataset_transf
+    dataset = dataset[['weather_code',"temperature_2m_max","temperature_2m_min","daylight_duration","wind_speed_10m_max","wind_gusts_10m_max","wind_direction_10m_dominant","et0_fao_evapotranspiration","rain_sum","precipitation_sum","showers_sum",'PREV_DIST']]
     #preparazione training e test set
 
-    X = np.array(dataset)
-    Y = target.values
-    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.15, random_state=42)
-    #creazione modelli
+    X = dataset
+    Y = target
+    X_train,X_test,Y_train,Y_test=train_test_split(X,Y,test_size=0.25,random_state=42)
 
+    model= SGDRegressor()
+    parameter={
+        'alpha': [0.0001, 0.001, 0.01, 0.1],  # Parametro di regolarizzazione
+        'max_iter': [1000, 2000, 5000],  # Numero massimo di iterazioni
+        'tol': [1e-4, 1e-3],  # Tolleranza per la convergenza
+        'learning_rate': ['constant', 'optimal', 'invscaling', 'adaptive']
+    }
+    grid=GridSearchCV(estimator=model,param_grid=parameter)
+    grid.fit(X_train,Y_train)
 
-    LinReg = LinearRegression()
-    parameters = {"fit_intercept": [True, False], 
-        "copy_X": [True, False],
-        "positive": [True, False],
-             }
-    grid = GridSearchCV(estimator=LinReg, param_grid = parameters)
-    grid.fit(X_train, y_train)
-
-    OptLinReg = LinearRegression(copy_X=True, fit_intercept=False, positive=True)
-
-    OptLinReg.fit(X_train, y_train)
-
-
-
-    """RFReg = RandomForestRegressor()
-    parameters = {"n_estimators": [25, 50, 100, 125],
-        "criterion": ['squared_error', 'absolute_error', 'friedman_mse', 'poisson'],
-        "max_depth": [2,3,4],
-        "max_features": ['sqrt', 'log2'],
-        "warm_start": [True,False],
-             }
-    grid = GridSearchCV(estimator=RFReg, param_grid = parameters)
-    grid.fit(X_train, y_train)
-
-
-    grid.best_params_
-
-    OptRFReg = RandomForestRegressor(criterion='absolute_error',max_depth=3,max_features="log2",n_estimators=50,warm_start=True)
-
-    OptRFReg.fit(X_train, y_train)
-
-
-    SVMReg = svm.SVR()
-    parameters = {
-        "degree": [2, 3, 4],
-        "gamma": ['scale', 'auto'],
-        "coef0": [0,0.1,0.25],
-        "tol": [0.001, 0.01,0.1],
-        "C": [1, 10, 5],
-        "epsilon": [0.1, 0.2, 0.25, 0.08],
-             }
-    grid = GridSearchCV(estimator=SVMReg, param_grid = parameters)
-    grid.fit(X_train, y_train)
-
-    OptSVMReg = svm.SVR(C=10,coef0=0,degree=2,epsilon=0.25,gamma="scale",tol=0.1)
-
-    OptSVMReg.fit(X_train, y_train)"""
-
-    joblib.dump(OptLinReg,'logistic_regression_model.pkl')
+    model=grid.best_estimator_
+    model.fit(X_train,Y_train)
+    print(model.predict(X_test))
+    joblib.dump(model,'model_parameters.pkl')
 
 
 def Prediction():
-    model=joblib.load('logistic_regression_model.pkl')
+    model=joblib.load('model_parameters.pkl')
     previsioni=RichiestaPerModello()
-    previsioni['PREV_DIST']=0
-    print(previsioni['PREV_DIST'])
+    previsioni['PREV_DIST']=[i%7 for i in range(7)]
+    previsioni=RielaborazionePrevisione(previsioni)
+   
+    risultato=model.predict(previsioni)
+    model.partial_fit(previsioni,risultato)
+    joblib.dump(model,'model_parameters.pkl')
+    return risultato.round(2)
     
+def RielaborazionePrevisione(data):
+    result=pd.DataFrame(data)
+    result=result.drop('time',axis=1)
+    max=MaxAbsScaler()
+    result=max.fit_transform(result)
+    return result

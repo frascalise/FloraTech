@@ -88,37 +88,46 @@
 </head>-->
 {% extends "base.html" %}
 {%block title %}Meteo{%endblock%}
-{%block content%}
-    <div class="container">
-        <h1 class="text-4xl font-bold text-green-600 text-center mb-2">Previsioni Meteo </h1>
-        {% for previsione in previsioni %}
-            <div class="bg-gray-600 flex flex-col items-center shadow-md rounded-3xl p-4 min-w-[14%]" onclick="toggleDetails(this)">
-                <div class="giorno">
-                    {% if previsione.codici == 0 %}
-                        <span class="icona">☀️</span>
-                    {% elif previsione.codici == 3 %}
-                        <span class="icona">☁️</span>
-                    {% elif previsione.codici == 60 %}
-                        <span class="icona">🌧️</span>
-                    {% elif previsione.codici == 80 %}
-                        <span class="icona">⛈️</span>
-                    {% elif previsione.codici == "Neve" %}
-                        <span class="icona">❄️</span>
-                    {% else %}
-                        <span class="icona">🌈</span>
-                    {% endif %}
-                    {{ previsione.AMG }}
+{% block content %}
+    <div class="flex justify-center space-x-4">
+        <!-- Left Empty Container -->
+        <div class="w-1/4"></div>
+
+        <!-- Center Container with Content -->
+        <div class="w-2/4 space-y-4">
+            <h1 class="text-4xl font-bold text-green-600 text-center mb-2">Previsioni Meteo</h1>
+            {% for previsione in previsioni %}
+                <div class="bg-gray-600 flex flex-col items-center shadow-md rounded-3xl p-4 min-w-[14%]">
+                    <div class="giorno">
+                        {% if previsione.codici == 0 %}
+                            <span class="icona">☀️</span>
+                        {% elif previsione.codici == 3 %}
+                            <span class="icona">☁️</span>
+                        {% elif previsione.codici == 60 %}
+                            <span class="icona">🌧️</span>
+                        {% elif previsione.codici == 80 %}
+                            <span class="icona">⛈️</span>
+                        {% elif previsione.codici == "Neve" %}
+                            <span class="icona">❄️</span>
+                        {% else %}
+                            <span class="icona">🌈</span>
+                        {% endif %}
+                        <p class="text-white font-semibold">{{ previsione.AMG }}</p>
+                    </div>
+                    <div class="dettagli">{{ previsione.temp_max }}°C - {{ previsione.codici }}</div>
+                    <div class="extra">
+                        <div>🌡️ Umidità: {{ previsione.umidita }}%</div>
+                        <div>💨 Vento: {{ previsione.vento }} km/h</div>
+                        <div>📊 Pressione: {{ previsione.pressione }} hPa</div>
+                    </div>
                 </div>
-                <div class="dettagli">{{ previsione.temp_max }}°C - {{ previsione.codici }}</div>
-                <div class="extra">
-                    <div>🌡️ Umidità: {{ previsione.umidita }}%</div>
-                    <div>💨 Vento: {{ previsione.vento }} km/h</div>
-                    <div>📊 Pressione: {{ previsione.pressione }} hPa</div>
-                </div>
-            </div>
-        {% empty %}
-            <p class="nessuna">Nessuna previsione disponibile.</p>
-        {% endfor %}
+            {% empty %}
+                <p class="nessuna">Nessuna previsione disponibile.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Right Empty Container -->
+        <div class="w-1/4"></div>
     </div>
 
     <script>
@@ -126,4 +135,5 @@
             el.classList.toggle('expanded');
         }
     </script>
-{%endblock%}
+{% endblock %}
+

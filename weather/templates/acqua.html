@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{%block title %}Meteo{%endblock%}
+{%block content%}
+    <div class="flex justify-center space-x-4">
+        <div class="w-1/4"></div>
+        <div class="w-2/4 space-y-4">
+            <div class="space-y-4 container">
+                <h1 class="text-4xl font-bold text-green-600 text-center mb-2">Previsioni Meteo </h1>
+                {% for previsione in valori %}
+                    <div class="bg-gray-600 flex flex-col items-center shadow-md rounded-3xl p-4 min-w-[14%]" onclick="toggleDetails(this)">
+                        <div class="giorno">
+                            
+                            <p class="text-white font-semibold">{{ previsione }}</p>
+                        
+                        
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="nessuna">Nessuna previsione disponibile.</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="w-1/4"></div>
+    </div>
+    <script>
+        function toggleDetails(el) {
+            el.classList.toggle('expanded');
+        }
+    </script>
+{%endblock%}

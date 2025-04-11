@@ -70,7 +70,7 @@ def variabili_meteo():
 def TimeZone():
     return "timezone=Europe"+'%'+"2FBerlin"
 def Days():
-    return "forecast_days=1"#past_days=3&
+    return "past_days=3&forecast_days=4"#past_days=3&
 def get_position():
     return 44.64,10.99
 
