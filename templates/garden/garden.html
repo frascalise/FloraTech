@@ -49,7 +49,7 @@
                             <span class="font-semibold text-lg">{{ plant.name }}</span>
                         </div>
                         <span class="text-sm bg-gray-800 px-3 py-1 rounded-full">
-                            🌱 {{ plant.quantity }} pz
+                            🌱 {{ plant.quantity }}
                         </span>
                     </li>
                 {% empty %}
@@ -90,7 +90,7 @@
                             </div>
                             {% if sensor.status == "not working" %}
                                 <a href="{% url 'activate_sensor' sensor.id garden.id %}" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600 transition">
-                                    Attiva
+                                    Activate
                                 </a>
                             {% endif %}
                         </div>
@@ -115,7 +115,7 @@
                                 </div>
                             </div>
                             <a href="{% url 'deactivate_sensor' sensor.id garden.id %}" class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition">
-                                Disattiva
+                                Deactivate
                             </a>
                         </div>
                     {% endif %}
