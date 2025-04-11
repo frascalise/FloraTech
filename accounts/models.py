@@ -43,15 +43,17 @@ class Garden(models.Model):
     fk_raspberry = models.ForeignKey(Raspberry, on_delete=models.CASCADE)
     label = models.CharField(max_length=50)
     moisture = models.JSONField(default=list)
-    status = models.CharField(default="working", max_length=50) # [ working, not working ]
+    status = models.CharField(default="not working", max_length=50) # [ working, not working ]
     plants = models.JSONField(default=list)
 
 class Sensor(models.Model):
     id = models.AutoField(primary_key=True)
+    idSensor = models.IntegerField(null=True, blank=True) # ID of the sensor as sent by Leo
+    fk_garden = models.ForeignKey(Garden, on_delete=models.CASCADE, null=True, blank=True)
+    fk_raspberry = models.ForeignKey(Raspberry, on_delete=models.CASCADE, null=True, blank=True)
     is_associated = models.BooleanField()
     status = models.CharField(default="working", max_length=50) # [ working, not working ]
     type = models.CharField(default="sensor", max_length=50) # [ sensor, actuator ]
-    fk_garden = models.ForeignKey(Garden, on_delete=models.CASCADE, null=True, blank=True)
     label = models.CharField(max_length=50, default="sensor")  # Custom label for the sensor
 
 class Weather(models.Model):
@@ -62,8 +64,33 @@ class Weather(models.Model):
     precipitations = models.CharField(max_length=50)
     precipitations_mm = models.FloatField()
 
+
 class Water(models.Model):
     fk_garden = models.ForeignKey(Garden, on_delete=models.CASCADE, null=True, blank=True)
     timestamp = models.DateTimeField(primary_key=True)
     waterQuantity = models.FloatField()
 
+class Plant(models.Model):
+    PLANT_CHOICES = [
+        ("ONION", "Onion"),
+        ("TOMATO", "Tomato"),
+        ("SUGARCANE", "Sugarcane"),
+        ("COTTON", "Cotton"),
+        ("MUSTARD", "Mustard"),
+        ("WHEAT", "Wheat"),
+        ("BEAN", "Bean"),
+        ("CITRUS", "Citrus"),
+        ("MAIZE", "Maize"),
+        ("MELON", "Melon"),
+        ("RICE", "Rice"),
+        ("POTATO", "Potato"),
+        ("CABBAGE", "Cabbage"),
+        ("SOYBEAN", "Soybean"),
+        ("BANANA", "Banana"),
+    ]
+
+    name = models.CharField(max_length=20, choices=PLANT_CHOICES)
+
+    def __str__(self):
+        return f"{self.name}"
+    

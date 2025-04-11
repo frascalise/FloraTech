@@ -1,10 +1,19 @@
 import json
 from django.db import connection
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from accounts.models import *
 from django.contrib.auth.decorators import login_required
 from accounts.views import get_weather_forecast
+
 from weather.meteo import richiesta_meteo
+
+from django.views.decorators.csrf import csrf_exempt
+from datetime import datetime
+from collections import defaultdict
+from datetime import datetime
+from django.db.models import Q
+
 
 
 def welcome_view(request):
@@ -14,16 +23,19 @@ def welcome_view(request):
 
 @login_required
 def home_view(request):
+    # Ottieni i dati meteo (presumibilmente da una funzione esterna)
     weather_data = get_weather_forecast(request)
     user = request.user
-    
+
+    # Recupera i giardini associati all'utente
     user_gardens = Garden.objects.filter(fk_raspberry__fk_owner=user)
 
     gardens_data = []
     for garden in user_gardens:
         moisture_data = garden.moisture
+        
         moisture_labels = [entry['timestamp'] for entry in moisture_data]
-        moisture_values = [entry['value'] for entry in moisture_data]
+        moisture_values = [entry['moisture'] for entry in moisture_data] 
         
         plants_data = garden.plants
         plants_names = [entry['name'] for entry in plants_data]
@@ -38,15 +50,31 @@ def home_view(request):
             "plants_quantities": plants_quantities,
         })
     
+    # Passa i dati alla template
     return render(request, "home/home.html", {"weather": weather_data, "user": user, "gardens": gardens_data})
 
 @login_required
 def garden_view(request, garden_id):
     garden = Garden.objects.get(id=garden_id)
-    sensors = Sensor.objects.filter(fk_garden=garden) | Sensor.objects.filter(fk_garden__isnull=True)
+    sensors = Sensor.objects.filter(Q(fk_garden=garden) | Q(fk_garden__isnull=True))
 
-    moisture_labels = [entry['timestamp'] for entry in garden.moisture]
-    moisture_values = [entry['value'] for entry in garden.moisture]
+    # Ordina moisture per timestamp
+    sorted_moisture = sorted(garden.moisture, key=lambda x: x['timestamp'])
+
+    # Crea dizionario {data: [valori]}
+    moisture_by_day = defaultdict(list)
+    for entry in sorted_moisture:
+        date_str = entry["timestamp"]
+        date = datetime.fromisoformat(date_str).date()  # solo giorno
+        moisture_by_day[date].append(entry["moisture"])
+
+    # Calcola media per ogni giorno
+    daily_avg = {day: sum(vals) / len(vals) for day, vals in moisture_by_day.items()}
+
+    # Ordina per data (in caso non siano in ordine)
+    sorted_days = sorted(daily_avg.keys())
+    moisture_labels = [day.strftime("%Y-%m-%d") for day in sorted_days]
+    moisture_values = [round(daily_avg[day], 2) for day in sorted_days]
 
     return render(request, "garden/garden.html", {
         "garden": garden,
@@ -54,6 +82,74 @@ def garden_view(request, garden_id):
         "moisture_labels": moisture_labels,
         "moisture_values": moisture_values,
     })
+
+@login_required
+def edit_garden(request, garden_id):
+    garden = Garden.objects.get(id=garden_id)
+    available_plants = Plant.objects.all()
+
+    if request.method == "POST":
+        # Modifica il nome del giardino
+        new_label = request.POST.get("label")
+        if new_label:
+            garden.label = new_label
+
+        # Modifica la quantità delle piante esistenti
+        updated_plants = []
+
+        for plant_data in garden.plants:
+            plant_name = plant_data.get('name')
+            new_quantity = request.POST.get(f"plant_{plant_name}")
+
+            if new_quantity is not None:
+                try:
+                    new_quantity = int(new_quantity)
+                    if new_quantity > 0:
+                        updated_plants.append({'name': plant_name, 'quantity': new_quantity})
+                    # Se è 0 o negativa, non la aggiunge (quindi viene rimossa)
+                except ValueError:
+                    updated_plants.append(plant_data)
+            else:
+                updated_plants.append(plant_data)
+
+        # Aggiungi nuova pianta, solo se non già presente
+        new_plant_id = request.POST.get("new_plant")
+        if new_plant_id:
+            try:
+                new_plant = Plant.objects.get(id=new_plant_id)
+                existing_plant_names = {p['name'] for p in updated_plants}
+                if new_plant.name not in existing_plant_names:
+                    updated_plants.append({'name': new_plant.name, 'quantity': 1})
+            except Plant.DoesNotExist:
+                pass
+
+        # Salva le modifiche
+        garden.plants = updated_plants
+        garden.save()
+
+        return redirect("edit_garden", garden_id=garden.id)
+
+    return render(request, "garden/edit.html", {
+        "garden": garden,
+        "plants": available_plants
+    })
+
+@login_required
+def delete_garden(request, garden_id):
+    garden = Garden.objects.get(id=garden_id)
+    garden.delete()
+    
+    return redirect('home')
+
+@login_required
+def new_garden(request):
+    garden = Garden.objects.create(fk_raspberry=Raspberry.objects.get(fk_owner=request.user))
+    garden.label = "Garden " + str(garden.id)
+    garden.moisture = []
+    garden.plants = []
+    garden.save()
+
+    return redirect('home')
 
 @login_required
 def activate_sensor(request, sensor_id, garden_id):
@@ -102,23 +198,12 @@ def setup(request):
     }
 
     data_garden = {
-        'fk_raspberry': 1,  # Assicurati che questa FK punti a un Raspberry esistente
+        'fk_raspberry': 1,
         'label': 'Garden Test',
-        'moisture': [
-            {'timestamp': '2023-04-21 12:00:00', 'value': 50},
-            {'timestamp': '2023-04-22 12:00:00', 'value': 60},
-            {'timestamp': '2023-04-23 12:00:00', 'value': 65},
-            {'timestamp': '2023-04-24 12:00:00', 'value': 40},
-            {'timestamp': '2023-04-25 12:00:00', 'value': 64},
-            {'timestamp': '2023-04-26 12:00:00', 'value': 70},
-            {'timestamp': '2023-04-27 12:00:00', 'value': 50},
-            {'timestamp': '2023-04-28 12:00:00', 'value': 40},
-            {'timestamp': '2023-04-29 12:00:00', 'value': 85},
-        ],
+        'moisture': [],
         'plants': [
-            {'name': 'Tomato', 'quantity': 5},
-            {'name': 'Cucumber', 'quantity': 3},
-            {'name': 'Lettuce', 'quantity': 10},
+            {'name': 'TOMATO', 'quantity': 5},
+            {'name': 'BANANA', 'quantity': 3},
         ],
     }
 
@@ -128,25 +213,6 @@ def setup(request):
     garden.moisture = data_garden['moisture']
     garden.plants = data_garden['plants']
     garden.save()
-
-    data_sensor = [
-        {'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Humidity Sensor near the plants'},
-        {'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Humidity Sensor near the water tank'},
-        {'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Humidity Sensor near the fence'},
-        {'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Temperature Sensor near the plants'},
-        {'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Water Sensor'},
-        {'is_associated': True, 'status': 'working', 'fk_garden': garden, 'label': 'Soil Moisture Sensor'},
-    ]
-
-    print("Data Sensor: ", data_sensor)
-
-    for sensor_data in data_sensor:
-        Sensor.objects.create(
-            is_associated=sensor_data['is_associated'],
-            status=sensor_data['status'],
-            fk_garden=sensor_data['fk_garden'],
-            label=sensor_data['label']
-        )
     
     data = {
         'raspberry_id': raspberry.id,
@@ -174,7 +240,7 @@ def show_all(request):
     return render(request, 'api/show_all.html', {'data': data})
     
 # For testing purposes only
-# Delete all the data
+# Delete all the data 
 def delete_all(request):
     Raspberry.objects.all().delete()
     Garden.objects.all().delete()
@@ -191,12 +257,11 @@ def delete_all(request):
 
     return render(request, 'api/api.html', {'data': data})
 
-
 #** -------------------------------- API -------------------------------- **#
 # DONE: The sensor is working! 
 # Sensor status is 'working'
 def sensor_working(request, raspberry_id, sensor_id):
-    sensor = Sensor.objects.get(id=sensor_id, fk_garden__fk_raspberry__id=raspberry_id)
+    sensor = Sensor.objects.get(idSensor=sensor_id, fk_raspberry_id=raspberry_id)
     sensor.status = 'working'
     sensor.save()
     
@@ -211,7 +276,7 @@ def sensor_working(request, raspberry_id, sensor_id):
 # DONE: The sensor is not working!
 # Sensor status is in warning_message
 def sensor_warning(request, raspberry_id, sensor_id, warning_message):
-    sensor = Sensor.objects.get(id=sensor_id, fk_garden__fk_raspberry__id=raspberry_id)
+    sensor = Sensor.objects.get(idSensor=sensor_id, fk_raspberry_id=raspberry_id)
     sensor.status = warning_message
     sensor.save()
 
@@ -226,40 +291,49 @@ def sensor_warning(request, raspberry_id, sensor_id, warning_message):
 # Check if sensor is in the right garden and everything is ok
 # Faccio delle query e in teoria devo restituire quello che c'è nella lista di json che mi è stato mandato
 # (se tutto coincide allora ok --> il controllo lo fa il raspberry)
-def check_sensor(request):
+@csrf_exempt
+def check_sensor(request, raspberry_id):
     if request.method == 'POST':
         data = json.loads(request.body)
-        data = [
-                    {'id': 1, 'role': 'sensor', 'last_ping': '2025-04-03 11:08:55.570102', 'garden': 0},
-                    {'id': 2, 'role': 'sensor', 'last_ping': '2025-04-03 11:10:36.912720', 'garden': 0},
-                    {'id': 3, 'role': 'sensor', 'last_ping': '2025-04-03 11:56:05.367690', 'garden': 0},
-                    {'id': 4, 'role': 'sensor', 'last_ping': '2025-04-03 12:00:49.042357', 'garden': 0},
-                ]
-    else:
-        data = [
-                    {'id': 1, 'role': 'sensor', 'last_ping': '2025-04-03 11:08:55.570102', 'garden': 0},
-                    {'id': 2, 'role': 'sensor', 'last_ping': '2025-04-03 11:10:36.912720', 'garden': 0},
-                    {'id': 3, 'role': 'sensor', 'last_ping': '2025-04-03 11:56:05.367690', 'garden': 0},
-                    {'id': 4, 'role': 'sensor', 'last_ping': '2025-04-03 12:00:49.042357', 'garden': 0},
-                ]
-    
-    return render(request, 'api/api.html', {'data': data})
+
+    # [{'id': 1, 'role': 'sensor', 'last_ping': '2025-04-03 11:08:55.570102', 'garden': 0}]
+    response = []
+    for i in range(len(data)):
+        sensorData = {}
+        sensor = Sensor.objects.get(idSensor=data[i]['id'], fk_raspberry_id=raspberry_id)
+        if sensor:
+            sensorData['id'] = sensor.idSensor
+            sensorData['role'] = sensor.type
+            if sensor.fk_garden:
+                sensorData['garden'] = sensor.fk_garden.id
+            else:
+                sensorData['garden'] = None
+        else:
+            sensorData['id'] = data[i]['id']
+            sensorData['role'] = None
+            sensorData['garden'] = None
+            
+        response.append(sensorData)
+        print("Response: ", response)
+
+    return JsonResponse(response, safe=False)
 
 # Add a new sensor to the database
-def new_sensor(request):
+@csrf_exempt
+def new_sensor(request, raspberry_id):
     if request.method == 'POST':
         data = json.loads(request.body)
-        data = {'id': 1, 'role': 'sensor', 'last_ping': '2025-04-03 11:08:55.570102', 'garden': 0}
-    else:
-        data = {'id': 1, 'role': 'sensor', 'last_ping': '2025-04-03 11:08:55.570102', 'garden': 0}
 
-    # Il garden è 0 perchè l'utente deve associarlo manualmente
+    print("Data: ", data)
+
+    # Il garden è None perchè l'utente deve associarlo manualmente
     sensor = Sensor.objects.create(
-        # id = data['id'],
+        idSensor = data['id'],
         is_associated = False,
         type = data['role'],
         status = 'not working',
         fk_garden = None,
+        fk_raspberry = Raspberry.objects.get(id=raspberry_id)
     )
     sensor.save()
 
@@ -273,13 +347,33 @@ def new_sensor(request):
 
     return render(request, 'api/api.html', {'data': response})
 
-# Add garden to a sensor
+# DONE: Add garden to a sensor
+@csrf_exempt
 def add_garden(request, raspberry_id):
     if request.method == 'POST':
         data = json.loads(request.body)
-        data = {'id': 1, 'role': 'sensor', 'last_ping': '2025-04-03 11:08:55.570102', 'garden': 0}
-    else:
-        data = {'id': 1, 'role': 'sensor', 'last_ping': '2025-04-03 11:08:55.570102', 'garden': 0}
 
-    response = {'raspberry_id': raspberry_id, 'sensor_id': 1, 'garden': 2} # Aggiunta del giardino al sensore
-    return render(request, 'api/api.html', {'data': response})
+    sensor = Sensor.objects.get(idSensor=data['id'], fk_raspberry__id=raspberry_id)
+    sensorGardenId = sensor.fk_garden.id if sensor.fk_garden else None
+
+    response = {'raspberry_id': raspberry_id, 'sensor_id': sensor.idSensor, 'garden': sensorGardenId}
+
+    return JsonResponse(response)
+
+# DONE: Add moisture to the garden
+@csrf_exempt
+def add_moisture(request, raspberry_id):
+    data = {}
+    if request.method == 'POST':
+        data = json.loads(request.body)
+
+    print("Data: ", data)
+
+    garden = Garden.objects.get(id=data['garden'], fk_raspberry=raspberry_id)
+    garden.moisture.append(data)
+    garden.moisture.sort(key=lambda x: x['timestamp'])
+    garden.save()
+
+    print("Garden: ", garden)
+
+    return JsonResponse({'message': 'Moisture data added successfully!', 'data': data})
