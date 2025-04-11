@@ -36,7 +36,7 @@
             <canvas id="chart{{ garden.id }}" class="mt-4 w-full h-40"></canvas>
             <div class="mt-4 flex gap-4">
                 <a href="{% url 'garden' garden.id %}" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg shadow">View</a>
-                <a href="#" class="border-2 border-yellow-600 hover:bg-gray-700 text-white py-2 px-4 rounded-lg shadow">Edit</a>
+                <a href="{% url 'edit_garden' garden.id %}" class="border-2 border-yellow-600 hover:bg-gray-700 text-white py-2 px-4 rounded-lg shadow">Edit</a>
             </div>
         </div>
         {% endfor %}

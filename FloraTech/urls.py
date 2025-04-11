@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import welcome_view, home_view, garden_view, activate_sensor, deactivate_sensor
+from .views import welcome_view, home_view, garden_view, activate_sensor, deactivate_sensor, edit_garden, delete_garden
 
 #* API *#
 from .views import setup, sensor_working, sensor_warning, check_sensor, new_sensor, add_garden, show_all, delete_all, add_moisture
@@ -13,6 +13,8 @@ urlpatterns = [
     path('home/', home_view, name='home'),
     path('accounts/', include('accounts.urls')),
     path('garden/<int:garden_id>/', garden_view, name='garden'),
+    path('edit/<int:garden_id>/', edit_garden, name='edit_garden'),
+    path('delete/<int:garden_id>/', delete_garden, name='delete_garden'),
     path('activate_sensor/<int:sensor_id>/<int:garden_id>/', activate_sensor, name='activate_sensor'),
     path('deactivate_sensor/<int:sensor_id>/<int:garden_id>/', deactivate_sensor, name='deactivate_sensor'),
     

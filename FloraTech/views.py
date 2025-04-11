@@ -1,7 +1,7 @@
 import json
 from django.db import connection
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from accounts.models import *
 from django.contrib.auth.decorators import login_required
 from accounts.views import get_weather_forecast
@@ -67,6 +67,60 @@ def garden_view(request, garden_id):
     })
 
 @login_required
+def edit_garden(request, garden_id):
+    garden = Garden.objects.get(id=garden_id)
+    available_plants = Plant.objects.all()
+
+    if request.method == "POST":
+        # Modifica il nome del giardino
+        new_label = request.POST.get("label")
+        if new_label:
+            garden.label = new_label
+
+        # Modifica la quantità delle piante esistenti
+        updated_plants = []
+        for plant_data in garden.plants:
+            plant_name = plant_data.get('name')
+            new_quantity = request.POST.get(f"plant_{plant_name}")
+            if new_quantity is not None:
+                try:
+                    new_quantity = int(new_quantity)
+                    # Aggiorna la quantità
+                    updated_plants.append({'name': plant_name, 'quantity': new_quantity})
+                except ValueError:
+                    # Se la quantità non è valida, manteniamo quella esistente
+                    updated_plants.append(plant_data)
+            else:
+                updated_plants.append(plant_data)
+
+        # Aggiungi la nuova pianta
+        new_plant_id = request.POST.get("new_plant")
+        if new_plant_id:
+            try:
+                new_plant = Plant.objects.get(id=new_plant_id)
+                updated_plants.append({'name': new_plant.name, 'quantity': 1})  # Aggiungi la pianta con quantità 1
+            except Plant.DoesNotExist:
+                pass
+
+        # Aggiorna la lista di piante nel giardino
+        garden.plants = updated_plants
+        garden.save()
+
+        return redirect("edit_garden", garden_id=garden.id)
+
+    return render(request, "garden/edit.html", {
+        "garden": garden,
+        "plants": available_plants
+    })
+
+@login_required
+def delete_garden(request, garden_id):
+    garden = Garden.objects.get(id=garden_id)
+    garden.delete()
+    
+    return redirect('home')
+
+@login_required
 def activate_sensor(request, sensor_id, garden_id):
     sensor = Sensor.objects.get(id=sensor_id)
     garden = Garden.objects.get(id=garden_id)
@@ -117,9 +171,8 @@ def setup(request):
         'label': 'Garden Test',
         'moisture': [],
         'plants': [
-            {'name': 'Tomato', 'quantity': 5},
-            {'name': 'Cucumber', 'quantity': 3},
-            {'name': 'Lettuce', 'quantity': 10},
+            {'name': 'TOMATO', 'quantity': 5},
+            {'name': 'BANANA', 'quantity': 3},
         ],
     }
 
@@ -235,7 +288,7 @@ def new_sensor(request, raspberry_id):
 
     print("Data: ", data)
 
-    # Il garden è 0 perchè l'utente deve associarlo manualmente
+    # Il garden è None perchè l'utente deve associarlo manualmente
     sensor = Sensor.objects.create(
         idSensor = data['id'],
         is_associated = False,
@@ -256,7 +309,7 @@ def new_sensor(request, raspberry_id):
 
     return render(request, 'api/api.html', {'data': response})
 
-# Add garden to a sensor
+# DONE: Add garden to a sensor
 @csrf_exempt
 def add_garden(request, raspberry_id):
     if request.method == 'POST':
@@ -269,7 +322,7 @@ def add_garden(request, raspberry_id):
 
     return JsonResponse(response)
 
-# Add moisture to the garden
+# DONE: Add moisture to the garden
 @csrf_exempt
 def add_moisture(request, raspberry_id):
     data = {}
@@ -278,7 +331,6 @@ def add_moisture(request, raspberry_id):
 
     print("Data: ", data)
 
-    # {"timestamp":str(datetime.now()), "moisture": moisture, "sensor_id": sensor_id, "garden": garden}
     garden = Garden.objects.get(id=data['garden'], fk_raspberry=raspberry_id)
     garden.moisture.append(data)
     garden.moisture.sort(key=lambda x: x['timestamp'])

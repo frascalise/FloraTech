@@ -64,3 +64,27 @@ class Weather(models.Model):
     precipitations = models.CharField(max_length=50)
     precipitations_mm = models.FloatField()
 
+class Plant(models.Model):
+    PLANT_CHOICES = [
+        ("ONION", "Onion"),
+        ("TOMATO", "Tomato"),
+        ("SUGARCANE", "Sugarcane"),
+        ("COTTON", "Cotton"),
+        ("MUSTARD", "Mustard"),
+        ("WHEAT", "Wheat"),
+        ("BEAN", "Bean"),
+        ("CITRUS", "Citrus"),
+        ("MAIZE", "Maize"),
+        ("MELON", "Melon"),
+        ("RICE", "Rice"),
+        ("POTATO", "Potato"),
+        ("CABBAGE", "Cabbage"),
+        ("SOYBEAN", "Soybean"),
+        ("BANANA", "Banana"),
+    ]
+
+    name = models.CharField(max_length=20, choices=PLANT_CHOICES)
+
+    def __str__(self):
+        return f"{self.name}"
+    
