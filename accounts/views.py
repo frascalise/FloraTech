@@ -323,9 +323,9 @@ def get_weather_forecast(request):
 
 
 def register_view(request):
+    err_pres=[]
     if request.method == "POST":
         form = UserCreationForm(request.POST)
-        print("ciao")
         if form.is_valid():
             user = form.save()
             login(request, user)
@@ -334,22 +334,27 @@ def register_view(request):
         else:
             for field, errors in form.errors.items():
                 for error in errors:
-                    print(error)
-                    #messages.error(request, f"Errore nel campo {field}: {error}")
+                    err_pres.append(error)
+            
     else:
         form = UserCreationForm()
-    return render(request, "accounts/register/register.html", {"form": form})
+    return render(request, "accounts/register/register.html", {"form": form,'err_pres':len(err_pres),'err':err_pres})
 
 def login_view(request):
+    err_pres=[]
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
             return redirect("home")
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    err_pres.append(error)
     else:
         form = AuthenticationForm()
-    return render(request, "accounts/login/login.html", {"form": form})
+    return render(request, "accounts/login/login.html", {"form": form,'err_pres':len(err_pres),'err':err_pres})
 
 def logout_view(request):
     logout(request)

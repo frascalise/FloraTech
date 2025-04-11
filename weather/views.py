@@ -6,6 +6,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from .meteo import richiesta_meteo
 from .aiModel import WeatherModel
+from .AI import Prediction,StartingTraining
 
 weatherModel = WeatherModel()
 
@@ -20,8 +21,6 @@ def nextPrecipitationSum(request):
         return HttpResponse(predSum)
 
     
-
-
 
 class PrevisionDetail(DetailView):
     model = Previsione
@@ -46,3 +45,7 @@ def refresh(request):
 def fornire(request):
     Previsione.stampa()
     return HttpResponse("Domani sarà bello")
+def chiamata(request):
+    risultato=Prediction()
+    context={'valori':risultato}
+    return render(request,"acqua.html",context)

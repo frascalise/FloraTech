@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from accounts.models import *
 from django.contrib.auth.decorators import login_required
 from accounts.views import get_weather_forecast
-from weather.views import richiesta_meteo
+from weather.meteo import richiesta_meteo
 
 
 def welcome_view(request):
