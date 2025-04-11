@@ -5,9 +5,10 @@ import joblib
 import os
 from django.conf import settings
 import requests
+from datetime import datetime, timedelta
 
 from .meteo import costruzione_richiesta
-from accounts.models import Garden, Sensor
+from accounts.models import Garden, Water
 
 class WeatherModel:
     
@@ -77,8 +78,10 @@ class WeatherModel:
         weeklyWaterNeeds = self.get_water_needs(garden_id, TWeekMaxAvg, TWeekMinAvg)
 
         waterErogated = self.get_water_erogated(garden_id)
+
+        getWaterToErogate = weeklyWaterNeeds - predictedPrecipitationsSum - realPrecipitationsSum - waterErogated - groundWater
         
-        return weeklyWaterNeeds - predictedPrecipitationsSum - realPrecipitationsSum - waterErogated - groundWater
+        return getWaterToErogate
     
     
     def get_past_weater_data(self, lat, lon):
@@ -97,14 +100,17 @@ class WeatherModel:
         """
         Ritorna l'acqua erogata artificialmente gli scorsi 3 giorni
         """
-        garden = Garden.objects.get(id=garden_id)
 
+        now = datetime.now()
+        three_days_ago = now - timedelta(days=3)
+
+        waterList = Water.objects.filter(fk_garden=garden_id, timestamp__range=(three_days_ago, now)).values()
+
+        
         water = 0
-        #for telem in garden.water:
-        #    water += telem['value']
-#
-        #water = water/len(garden.water)
-
+        for w in waterList:
+            water += w['waterQuantity']
+            
         return water
 
     def get_ground_water(self, garden_id):

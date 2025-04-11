@@ -62,3 +62,8 @@ class Weather(models.Model):
     precipitations = models.CharField(max_length=50)
     precipitations_mm = models.FloatField()
 
+class Water(models.Model):
+    fk_garden = models.ForeignKey(Garden, on_delete=models.CASCADE, null=True, blank=True)
+    timestamp = models.DateTimeField(primary_key=True)
+    waterQuantity = models.FloatField()
+
