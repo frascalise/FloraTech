@@ -10,8 +10,12 @@ def webhook(request):
     bot = Bot(token=TOKEN)
     dispatcher = Dispatcher(bot, update_queue=None, workers=0)
 
+<<<<<<< HEAD
     # Recupera i dati JSON dalla richiesta POST
     data = json.loads(request.body.decode('UTF-8'))
+=======
+API_TOKEN = ''
+>>>>>>> 6fcbf2b674209a2051b08a4c013ba7915347c257
 
     # Crea l'oggetto Update
     update = Update.de_json(data, bot)
