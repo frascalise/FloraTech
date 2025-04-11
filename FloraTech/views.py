@@ -296,7 +296,7 @@ def check_sensor(request, raspberry_id):
         response.append(sensorData)
         print("Response: ", response)
 
-    return JsonResponse(response)
+    return JsonResponse(response, safe=False)
 
 # Add a new sensor to the database
 @csrf_exempt

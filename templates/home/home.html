@@ -33,78 +33,23 @@
         {% for garden in gardens %}
         <div class="bg-gray-600 shadow-lg rounded-3xl p-5 flex flex-col items-center relative text-white">
             <h2 class="text-xl font-semibold">{{ garden.label }}</h2>
-            <canvas id="chart{{ garden.id }}" class="mt-4 w-full h-40"></canvas>
+            <img 
+                src="https://static.vecteezy.com/system/resources/previews/057/722/445/non_2x/elegant-minimalist-vertical-garden-with-herbs-and-vegetables-isolated-mixed-planting-premium-free-png.png" 
+                alt="Icona giardino" 
+                class="w-64 h-64 mt-2"
+            >
             <div class="mt-4 flex gap-4">
                 <a href="{% url 'garden' garden.id %}" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg shadow">View</a>
                 <a href="{% url 'edit_garden' garden.id %}" class="border-2 border-yellow-600 hover:bg-gray-700 text-white py-2 px-4 rounded-lg shadow">Edit</a>
             </div>
         </div>
         {% endfor %}
-        
-        <a href="{% url 'add_garden' %}" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg shadow text-center">Add New Garden</a>
     </div>
+    <div class="flex justify-center mb-8 mt-4">
+        <a href="{% url 'add_garden' %}" class="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg shadow w-40 text-center">
+            New Garden
+        </a>
+    </div>  
 </div>
 
-<!-- Script per i grafici -->
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        {% for garden in gardens %}
-            const moistureLabels = {{ garden.moisture_labels|safe }};
-            // from 2023-04-21 12:00:00 to 21-04
-            const formattedLabels = moistureLabels.map(label => {
-                const date = new Date(label);
-                return date.toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' });
-            });
-
-            const moistureValues = {{ garden.moisture_values|safe }};
-            
-            const ctx = document.getElementById("chart{{ garden.id }}").getContext("2d");
-            new Chart(ctx, {
-                type: "line",
-                data: {
-                    labels: formattedLabels,
-                    datasets: [
-                        {
-                            label: "Soil Moisture (%)",
-                            data: moistureValues,
-                            borderColor: 'rgb(126, 182, 255)',
-                            borderWidth: 2,
-                            tension: 0.4,
-                            pointRadius: 4,
-                            pointBackgroundColor: 'rgba(126, 182, 255)',
-                            fill: {
-                                target: 'origin',
-                                above: 'rgba(34, 105, 197, 0.2)'
-                            },
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    scales: {
-                        x: {
-                            ticks: { color: "white" },
-                            grid: { color: "gray" }
-                        },
-                        y: {
-                            ticks: { color: "white" },
-                            grid: { color: "gray" },
-                            beginAtZero: true
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            labels: { color: "white" }
-                        },
-                        tooltip: {
-                            mode: 'index',
-                            intersect: true,
-                        }
-                    }
-                }
-            });
-        {% endfor %}
-    });
-</script>
 {% endblock %}
