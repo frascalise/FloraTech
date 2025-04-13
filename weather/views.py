@@ -20,8 +20,6 @@ def nextPrecipitationSum(request):
     else:
         return HttpResponse(predSum)
 
-    
-
 class PrevisionDetail(DetailView):
     model = Previsione
     template_name = 'meteo.html'

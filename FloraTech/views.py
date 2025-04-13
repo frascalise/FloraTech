@@ -7,6 +7,9 @@ from django.contrib.auth.decorators import login_required
 from accounts.views import get_weather_forecast
 
 from weather.meteo import richiesta_meteo
+from weather.aiModel import WeatherModel
+
+weatherModel = WeatherModel()
 
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
@@ -377,3 +380,15 @@ def add_moisture(request, raspberry_id):
     print("Garden: ", garden)
 
     return JsonResponse({'message': 'Moisture data added successfully!', 'data': data})
+
+@csrf_exempt
+def get_daily_water_needs(request, raspberry_id, garden_id):
+
+    waterQ = weatherModel.get_daily_water_predictions(garden_id)
+    if waterQ > 0.5: #threshold
+        newIrrigationEntry = Water(garden_id, datetime.now(), waterQ)
+        newIrrigationEntry.save()
+    else:
+        waterQ = 0
+
+    return JsonResponse({'message': 'Returning the daily water volume needed', 'data': waterQ})
