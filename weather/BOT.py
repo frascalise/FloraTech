@@ -7,7 +7,7 @@ import os
 import json
 TOKEN = '7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo'
 WEBHOOK_URL = 'https://floratech.leonardonels.com/weather' 
-USER_ID="@billy_p99"
+USER_ID=1
 
 # Inizializza il bot Telegram
 bot = telebot.TeleBot(TOKEN)
@@ -16,16 +16,16 @@ bot = telebot.TeleBot(TOKEN)
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     bot.reply_to(message, "Ciao! Sono un bot webhook Django di prova.")
+    USER_ID=message.chat.id
 
 # Handler per il comando /help
 @bot.message_handler(commands=['help'])
 def send_help(message):
     bot.reply_to(message, "Questo è un bot di prova basato su webhook con Django.")
-    print(message.chat.id)
 
 
 def WarningMessage():
-    #bot.send_message(USER_ID,'Sta per splodere tutto')
+    bot.send_message(USER_ID,'Sta per splodere tutto')
     print('qualcosa')
 
 # View Django per gestire gli aggiornamenti del webhook
