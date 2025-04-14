@@ -1,10 +1,12 @@
 import requests
+from .BOT import WarningMessage
 import json
 
 def update():
     url=costruzione_richiesta()
     response = requests.get(url)
     json_result = response.json()
+    if json_result['daily']['weather_code']=='63':WarningMessage()
     return json_result["daily"]["weather_code"],json_result["daily"]["time"]
 
 def richiesta_meteo():

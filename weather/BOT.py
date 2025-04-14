@@ -26,10 +26,8 @@ def send_meteo(message):
     meteo=update()
     bot.reply_to(message,meteo[0][3])
 
-# Handler per tutti gli altri messaggi di testo
-@bot.message_handler(func=lambda message: True)
-def echo_message(message):
-    bot.reply_to(message, f"Hai detto: '{message.text}' (via webhook Django)")
+def WarningMessage():
+    bot.send_message('Sta per splodere tutto')
 
 # View Django per gestire gli aggiornamenti del webhook
 @csrf_exempt #da mettere ASSOLUTAMENTE in caso di collegamenti con il file url
