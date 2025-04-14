@@ -1,6 +1,7 @@
 import telebot
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from .models import user
 import json
 import os
 #from .meteo import update
@@ -27,6 +28,10 @@ def send_help(message):
 def WarningMessage():
     bot.send_message(USER_ID,'Sta per splodere tutto')
     print('qualcosa')
+@bot.message_handler(commands=['new'])
+def AddNewUser(message):
+    user.AddNewUser(message.chat.id)
+    bot.send_message(USER_ID,'Aggiunto nuovo utente')
 
 # View Django per gestire gli aggiornamenti del webhook
 @csrf_exempt #da mettere ASSOLUTAMENTE in caso di collegamenti con il file url

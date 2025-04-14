@@ -33,7 +33,14 @@ meteo:
     precipitazioni (mm)
 '''
 class user(models.Model):
-    user_id=models.IntegerField(default=0)
+    user_id=models.IntegerField(default=0)#telegram
+
+    def AddNewUser(data):
+        user().objects.all().delete()
+        p_db=user()
+        p_db.user_id=data
+        p_db.save()
+
 class Raspberry(models.Model):
     id = models.AutoField(primary_key=True) 
     fk_owner = models.CharField(max_length=50)
