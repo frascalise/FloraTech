@@ -1,3 +1,4 @@
+'''
 import telebot
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -60,3 +61,4 @@ def delete_webhook():
 
 
 
+'''
