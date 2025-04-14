@@ -1,5 +1,5 @@
 import requests
-from accounts.BOT import WarningMessage
+from accounts.views import WarningMessage
 import json
 
 def update():
