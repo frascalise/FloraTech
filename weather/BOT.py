@@ -24,7 +24,7 @@ def send_help(message):
 
 
 def WarningMessage():
-    bot.send_message("billy_p99",'Sta per splodere tutto')
+    bot.send_message("@billy_p99",'Sta per splodere tutto')
 
 # View Django per gestire gli aggiornamenti del webhook
 @csrf_exempt #da mettere ASSOLUTAMENTE in caso di collegamenti con il file url
