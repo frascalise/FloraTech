@@ -33,7 +33,6 @@ meteo:
     precipitazioni (mm)
 '''
     
-
 class Raspberry(models.Model):
     id = models.AutoField(primary_key=True) 
     fk_owner = models.CharField(max_length=50)
