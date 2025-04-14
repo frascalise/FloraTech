@@ -6,7 +6,8 @@ import os
 #from .meteo import update
 import json
 TOKEN = '7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo'
-WEBHOOK_URL = 'https://floratech.leonardonels.com/weather' 
+WEBHOOK_URL = 'https://floratech.leonardonels.com/weather'
+USER_ID=903195749 
 
 # Inizializza il bot Telegram
 bot = telebot.TeleBot(TOKEN)
@@ -24,7 +25,7 @@ def send_help(message):
 
 
 def WarningMessage():
-    #bot.send_message(USER_ID,'Sta per splodere tutto')
+    bot.send_message(USER_ID,'Sta per splodere tutto')
     print('qualcosa')
 
 # View Django per gestire gli aggiornamenti del webhook
