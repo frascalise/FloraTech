@@ -21,6 +21,7 @@ def send_welcome(message):
 @bot.message_handler(commands=['help'])
 def send_help(message):
     bot.reply_to(message, "Questo è un bot di prova basato su webhook con Django.")
+    print(message.chat.id)
 
 
 def WarningMessage():
