@@ -16,7 +16,7 @@ bot = telebot.TeleBot(TOKEN)
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     bot.reply_to(message, "Ciao! Sono un bot webhook Django di prova.")
-    USER_ID=str(message.chat.id)
+    USER_ID+=str(message.chat.id)
 
 # Handler per il comando /help
 @bot.message_handler(commands=['help'])
