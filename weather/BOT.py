@@ -1,42 +1,55 @@
-from django.http import JsonResponse
+import telebot
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from telegram import Bot,Update
-from telegram import CommandHandler, MessageHandler, Filters, Dispatcher
 import json
+import os
+
+import json
+TOKEN = '7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo'
+WEBHOOK_URL = 'https://localhost:443/weather/webhook/' 
+
+# Inizializza il bot Telegram
+bot = telebot.TeleBot(TOKEN)
+
+# Handler per il comando /start
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+    bot.reply_to(message, "Ciao! Sono un bot webhook Django di prova.")
+
+# Handler per il comando /help
+@bot.message_handler(commands=['help'])
+def send_help(message):
+    bot.reply_to(message, "Questo è un bot di prova basato su webhook con Django.")
+
+# Handler per tutti gli altri messaggi di testo
+@bot.message_handler(func=lambda message: True)
+def echo_message(message):
+    bot.reply_to(message, f"Hai detto: '{message.text}' (via webhook Django)")
+
+# View Django per gestire gli aggiornamenti del webhook
 @csrf_exempt
-def webhook(request):
-    # Token del tuo bot Telegram
-    TOKEN = '7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo'
-    bot = Bot(token=TOKEN)
-    dispatcher = Dispatcher(bot, update_queue=None, workers=0)
+def webhook_view(request):
+    if request.method == 'POST':
+        try:
+            json_string = request.body.decode('utf-8')
+            update = telebot.types.Update.de_json(json_string)
+            bot.process_new_updates([update])
+            return HttpResponse(status=200)
+        except Exception as e:
+            print(f"Errore durante la ricezione del webhook: {e}")
+            return HttpResponse(status=500)
+    else:
+        return HttpResponse('OK', status=200)
 
-    # Recupera i dati JSON dalla richiesta POST
-    data = json.loads(request.body.decode('UTF-8'))
-
-    # Crea l'oggetto Update
-    update = Update.de_json(data, bot)
-
-    # Inizializza il dispatcher e registra i gestori
-    dispatcher.process_update(update)
-
-    return JsonResponse({"status": "ok"})
-
-def start(update, context):
-    update.message.reply_text('Ciao! Sono un bot Telegram integrato con Django!')
-
-def echo(update, context):
-    update.message.reply_text(update.message.text)
-
-# Aggiungi i gestori nel dispatcher
-Dispatcher.add_handler(CommandHandler("start", start))
-Dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, echo))
-
-#from telegram import Bot
-
+# Funzione per impostare il webhook (da eseguire una sola volta o tramite un comando Django custom)
 def set_webhook(request):
-    bot = Bot(token='7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo')
-    webhook_url = 'http://127.0.0.1:8000/weather/webhook/'  # URL del webhook
+    bot.set_webhook(url=f"{WEBHOOK_URL}/{TOKEN}")
+    print(f"Webhook impostato su: {WEBHOOK_URL}/{TOKEN}")
 
-    # Imposta il webhook
-    bot.set_webhook(url=webhook_url)
-    return JsonResponse({"status": "webhook set"})
+# Funzione per eliminare il webhook (utile per passare al polling o per debug)
+def delete_webhook():
+    bot.delete_webhook()
+    print("Webhook eliminato.")
+
+
+

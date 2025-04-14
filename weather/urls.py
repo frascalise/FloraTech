@@ -11,7 +11,7 @@ urlpatterns = [
     path('read/',views.fornire,name='lettura'),
     path('test/',views.LookForecast,name='prova'),
     path('model/',views.chiamata,name='chiamata'),
-    path('webhook/', BOT.webhook, name='webhook'),
+    path('webhook/', BOT.send_welcome, name='webhook'),
     path('set_webhook/', BOT.set_webhook, name='set_webhook'),
 
 
