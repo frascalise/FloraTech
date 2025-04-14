@@ -38,7 +38,7 @@ class Raspberry(models.Model):
     fk_owner = models.CharField(max_length=50)
     label = models.CharField(max_length=50)
 
-class user(models.Model):
+class Telegram(models.Model):
     id = models.AutoField(primary_key=True)
     fk_raspberry = models.ForeignKey(Raspberry, on_delete=models.CASCADE)
     telegram_id= models.CharField(max_length=10)
