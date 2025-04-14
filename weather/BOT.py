@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 import os
-
+from .meteo import update
 import json
 TOKEN = '7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo'
 WEBHOOK_URL = 'https://floratech.leonardonels.com/weather' 
@@ -21,13 +21,17 @@ def send_welcome(message):
 def send_help(message):
     bot.reply_to(message, "Questo è un bot di prova basato su webhook con Django.")
 
+@bot.message_handler(commands=['meteo'])
+def send_meteo(message):
+    bot.reply_to(message, update())
+
 # Handler per tutti gli altri messaggi di testo
 @bot.message_handler(func=lambda message: True)
 def echo_message(message):
     bot.reply_to(message, f"Hai detto: '{message.text}' (via webhook Django)")
 
 # View Django per gestire gli aggiornamenti del webhook
-@csrf_exempt
+@csrf_exempt #da mettere ASSOLUTAMENTE in caso di collegamenti con il file url
 def webhook_view(request):
     if request.method == 'POST':
         try:
