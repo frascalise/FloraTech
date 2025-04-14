@@ -6,7 +6,7 @@ import os
 
 import json
 TOKEN = '7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo'
-WEBHOOK_URL = 'https://localhost:443/weather/webhook/' 
+WEBHOOK_URL = 'https://floratech.leonardonels.com/weather' 
 
 # Inizializza il bot Telegram
 bot = telebot.TeleBot(TOKEN)
@@ -43,8 +43,9 @@ def webhook_view(request):
 
 # Funzione per impostare il webhook (da eseguire una sola volta o tramite un comando Django custom)
 def set_webhook(request):
-    bot.set_webhook(url=f"{WEBHOOK_URL}/{TOKEN}")
+    bot.set_webhook(url=f"{WEBHOOK_URL}/{TOKEN}/")
     print(f"Webhook impostato su: {WEBHOOK_URL}/{TOKEN}")
+    return HttpResponse(status=200)
 
 # Funzione per eliminare il webhook (utile per passare al polling o per debug)
 def delete_webhook():
