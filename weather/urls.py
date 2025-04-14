@@ -1,7 +1,6 @@
 from django.urls import path,re_path
 from django.contrib import admin
 from . import views
-from ..accounts import BOT
 
 app_name = 'meteo'
 urlpatterns = [
