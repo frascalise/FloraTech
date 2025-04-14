@@ -1,7 +1,7 @@
 from django.urls import path,re_path
 from django.contrib import admin
 from . import views
-from . import BOT
+from ..accounts import BOT
 
 app_name = 'meteo'
 urlpatterns = [
@@ -11,7 +11,7 @@ urlpatterns = [
     path('read/',views.fornire,name='lettura'),
     path('test/',views.LookForecast,name='prova'),
     path('model/',views.chiamata,name='chiamata'),
-    path(f'{BOT.TOKEN}/', BOT.webhook_view, name='webhook'),
+    #path(f'{BOT.TOKEN}/', BOT.webhook_view, name='webhook'),
     path('set_webhook/', BOT.set_webhook, name='set_webhook'),
 
 

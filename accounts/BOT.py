@@ -6,7 +6,7 @@ import os
 #from .meteo import update
 import json
 TOKEN = '7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo'
-WEBHOOK_URL = 'https://floratech.leonardonels.com/weather'
+WEBHOOK_URL = 'https://floratech.leonardonels.com/accounts'
 USER_ID=903195749 
 
 # Inizializza il bot Telegram
