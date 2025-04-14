@@ -32,7 +32,8 @@ meteo:
     precipitazioni (neve, pioggia, ecc...)
     precipitazioni (mm)
 '''
-
+class user(models.Model):
+    user_id=models.IntegerField(default=0)
 class Raspberry(models.Model):
     id = models.AutoField(primary_key=True) 
     fk_owner = models.CharField(max_length=50)
