@@ -1,8 +1,7 @@
-'''
 import telebot
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Telegram
+#from .models import Telegram
 import json
 import os
 import json
@@ -61,4 +60,3 @@ def delete_webhook():
 
 
 
-'''
