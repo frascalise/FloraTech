@@ -11,7 +11,7 @@ from django.http import JsonResponse
 import telebot
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Telegram
+#from .models import Telegram
 
 weather_icons = {      
     "0":{
