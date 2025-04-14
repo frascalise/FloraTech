@@ -23,6 +23,7 @@ def send_help(message):
 
 @bot.message_handler(commands=['meteo'])
 def send_meteo(message):
+    print(update())
     bot.reply_to(message, update())
 
 # Handler per tutti gli altri messaggi di testo
