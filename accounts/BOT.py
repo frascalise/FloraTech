@@ -1,7 +1,7 @@
 import telebot
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-#from .models import user
+from .models import user
 import json
 import os
 #from .meteo import update

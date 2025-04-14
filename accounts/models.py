@@ -34,6 +34,9 @@ meteo:
 '''
 class user(models.Model):
     user_id=models.IntegerField(default=0)#telegram
+    
+    def __str__(self):
+        return "ID: " + str(self.pk)
 
     def AddNewUser(data):
         user().objects.all().delete()
