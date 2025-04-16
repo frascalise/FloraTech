@@ -30,8 +30,9 @@ def WarningMessage():
     print('qualcosa')
 @bot.message_handler(commands=['new'])
 def AddNewUser(message):
-    NewTelegramUser(message.chat.id)
-    bot.send_message(GetTelegramID(),'Aggiunto nuovo utente')
+    
+    #NewTelegramUser(message.chat.id)
+    bot.send_message(USER_ID,'Aggiunto nuovo utente')
 
 # View Django per gestire gli aggiornamenti del webhook
 @csrf_exempt #da mettere ASSOLUTAMENTE in caso di collegamenti con il file url
