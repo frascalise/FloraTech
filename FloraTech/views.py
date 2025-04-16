@@ -20,7 +20,7 @@ def welcome_view(request):
 @login_required
 def home_view(request):
     # Ottieni i dati meteo (presumibilmente da una funzione esterna)
-    weather_data = get_weather_forecast(request)
+    weather_data = richiesta_meteo(request)
     user = request.user
 
     # Recupera i giardini associati all'utente
