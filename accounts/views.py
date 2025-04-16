@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 #from retry_requests import retry
-#from .models import Telegram
+from .models import Telegram
 from django.http import JsonResponse
 
 weather_icons = {      
