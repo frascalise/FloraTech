@@ -1,7 +1,7 @@
 import telebot
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-#from .models import Telegram
+from .models import Telegram
 #from .views import NewTelegramUser,GetTelegramID
 import json
 import os
