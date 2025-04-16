@@ -2,7 +2,7 @@ import telebot
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 # from .models import Telegram
-#from .views import NewTelegramUser,GetTelegramID
+from .views import NewUser
 import json
 import os
 import json
@@ -30,7 +30,7 @@ def WarningMessage():
     print('qualcosa')
 @bot.message_handler(commands=['new'])
 def AddNewUser(message):
-    
+    AddNewUser()
     #NewTelegramUser(message.chat.id)
     bot.send_message(USER_ID,'Aggiunto nuovo utente')
 
