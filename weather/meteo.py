@@ -10,7 +10,7 @@ def update():
     if json_result['daily']['weather_code'][4]==63:WarningMessage()
     return json_result["daily"]["weather_code"],json_result["daily"]["time"]
 
-def richiesta_meteo():
+def richiesta_meteo(request):
     url=costruzione_richiesta()
     response = requests.get(url)
     json_result = response.json()
