@@ -1,5 +1,5 @@
 import requests
-from accounts.BOT import WarningMessage
+from accounts.TestBot import WarningMessage
 import json
 
 def update():
