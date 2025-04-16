@@ -8,6 +8,6 @@ urlpatterns = [
     path("register/", register_view, name="register"),
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"), 
-    path(f"{TestBot.TOKEN}/",TestBot.webhook_view,name="telegram"),
+    path(f"{TestBot.TOKEN_ID}/",TestBot.webhook_view,name="telegram"),
     path('set_webhook/',TestBot.set_webhook,name='aggancio')
 ]
