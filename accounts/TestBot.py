@@ -1,7 +1,8 @@
 import telebot
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Telegram
+#from .models import Telegram
+from .views import NewTelegramUser,GetTelegramID
 import json
 import os
 import json
@@ -29,8 +30,8 @@ def WarningMessage():
     print('qualcosa')
 @bot.message_handler(commands=['new'])
 def AddNewUser(message):
-    #user.AddNewUser(message.chat.id)
-    bot.send_message(USER_ID,'Aggiunto nuovo utente')
+    NewTelegramUser(message.chat.id)
+    bot.send_message(GetTelegramID(),'Aggiunto nuovo utente')
 
 # View Django per gestire gli aggiornamenti del webhook
 @csrf_exempt #da mettere ASSOLUTAMENTE in caso di collegamenti con il file url

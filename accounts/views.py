@@ -360,3 +360,13 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("welcome")
+
+def NewTelegramUser(data):
+    p_db=Telegram()
+    p_db.telegram_id=data
+    p_db.save()
+    
+    print('salvato')
+def GetTelegramID():
+    p_db=Telegram()
+    return p_db.telegram_id
