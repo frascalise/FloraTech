@@ -1,10 +1,12 @@
-import openmeteo_requests
-import requests_cache
+#import openmeteo_requests
+#import requests_cache
 import requests
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from retry_requests import retry
+#from retry_requests import retry
+from .models import Telegram
 from django.http import JsonResponse
 
 weather_icons = {      
@@ -322,27 +324,49 @@ def get_weather_forecast(request):
 
 
 def register_view(request):
+    err_pres=[]
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
+            print("vaffa")
             return redirect("home")
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    err_pres.append(error)
+            
     else:
         form = UserCreationForm()
-    return render(request, "accounts/register/register.html", {"form": form})
+    return render(request, "accounts/register/register.html", {"form": form,'err_pres':len(err_pres),'err':err_pres})
 
 def login_view(request):
+    err_pres=[]
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
             return redirect("home")
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    err_pres.append(error)
     else:
         form = AuthenticationForm()
-    return render(request, "accounts/login/login.html", {"form": form})
+    return render(request, "accounts/login/login.html", {"form": form,'err_pres':len(err_pres),'err':err_pres})
 
 def logout_view(request):
     logout(request)
     return redirect("welcome")
+
+def NewTelegramUser(data):
+    p_db=Telegram()
+    p_db.telegram_id=data
+    p_db.save()
+    
+    print('salvato')
+def GetTelegramID():
+    p_db=Telegram()
+    return p_db.telegram_id

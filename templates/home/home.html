@@ -1,28 +1,37 @@
 {% extends "base.html" %}
+<script>
+    function toggleExpand() {
+        const details = document.getElementById('dataDetails');
+        details.classList.toggle('hidden');
+    }
+</script>
 
 {% block title %}Dashboard | FloraTech{% endblock %}
 
 {% block extra_css %}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
 {% endblock %}
 
 {% block content %}
+
 <div class="container mx-auto px-4 py-3">
     <h1 class="text-4xl font-bold text-green-600 text-center mb-2">Dashboard Gardens 🌱</h1>
 
     <!-- Sezione meteo -->
     <div class="p-4 mb-6 center">
+        
         <div class="flex justify-center gap-4 p-2 text-white">
             {% for i in weather %}
-                <div class="bg-gray-600 flex flex-col items-center shadow-md rounded-3xl p-4 min-w-[14%]">
-                    <p class="text-sm font-semibold">{{ i.date }}</p>
+                <div class="bg-gray-600 flex flex-col items-center shadow-md rounded-3xl p-4 min-w-[14%]" onclick="toggleExpand">
+                    <p class="text-sm font-semibold">{{ i.data }}</p>
                     <img 
-                        src="http://openweathermap.org/img/wn/02d@2x.png" 
+                        src={{i.codice}}
                         alt="Icona meteo" 
                         class="w-12 h-12"
                     >
-                    <p class="text-sm mt-2">🌡 Min: {{ i.temp_min }} °C</p>
-                    <p class="text-sm mt-2">🌡 Max: {{ i.temp_max }} °C</p>
+                    <p class="text-sm mt-2">🌡 Min: {{ i.TempMin }} °C</p>
+                    <p class="text-sm mt-2">🌡 Max: {{ i.TempMax }} °C</p>
                 </div>
             {% endfor %}
         </div>

@@ -17,7 +17,7 @@
         <a class="text-2xl font-bold text-green-600" href="{% url 'home' %}">FloraTech</a>
         <div>
             {% if user.is_authenticated %}
-                <a href="{% url 'logout' %}" class="ml-4 text-red-500 hover:underline">Logout</a>
+                <a href="{% url 'accounts:logout' %}" class="ml-4 text-red-500 hover:underline">Logout</a>
             {% endif %}
         </div>
     </nav>

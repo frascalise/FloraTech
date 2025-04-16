@@ -89,7 +89,7 @@
                                 </div>
                             </div>
                             {% if sensor.status == "not working" %}
-                                <a href="{% url 'activate_sensor' sensor.id garden.id %}" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600 transition">
+                                <a href="{% url 'accounts:activate_sensor' sensor.id garden.id %}" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600 transition">
                                     Activate
                                 </a>
                             {% endif %}

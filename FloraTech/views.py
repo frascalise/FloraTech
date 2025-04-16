@@ -10,7 +10,7 @@ from datetime import datetime
 from collections import defaultdict
 from datetime import datetime
 from django.db.models import Q
-
+from weather.meteo import richiesta_meteo
 
 def welcome_view(request):
     if request.user.is_authenticated:

@@ -1,0 +1,139 @@
+<!--<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Previsioni Meteo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            background-color: #2b2b2b;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        h1 {
+            text-align: center;
+            color: #81d4fa;
+            margin-bottom: 30px;
+        }
+
+        .previsione {
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-left: 5px solid #4fc3f7;
+            background-color: #383838;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .previsione.expanded {
+            background-color: #424242;
+            transform: scale(1.02);
+        }
+
+        .giorno {
+            font-weight: bold;
+            color: #ffffff;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+        }
+
+        .icona {
+            font-size: 1.4em;
+            margin-right: 10px;
+        }
+
+        .dettagli {
+            color: #cfcfcf;
+            margin-top: 5px;
+        }
+
+        .extra {
+            margin-top: 10px;
+            display: none;
+            color: #b0bec5;
+            font-size: 0.95em;
+        }
+
+        .previsione.expanded .extra {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nessuna {
+            text-align: center;
+            color: #ef5350;
+            font-style: italic;
+            margin-top: 20px;
+        }
+    </style>
+</head>-->
+{% extends "base.html" %}
+{%block title %}Meteo{%endblock%}
+{% block content %}
+    <div class="flex justify-center space-x-4">
+        <!-- Left Empty Container -->
+        <div class="w-1/4"></div>
+
+        <!-- Center Container with Content -->
+        <div class="w-2/4 space-y-4">
+            <h1 class="text-4xl font-bold text-green-600 text-center mb-2">Previsioni Meteo</h1>
+            {% for previsione in previsioni %}
+                <div class="bg-gray-600 flex flex-col items-center shadow-md rounded-3xl p-4 min-w-[14%]">
+                    <div class="giorno">
+                        {% if previsione.codici == 0 %}
+                            <span class="icona">☀️</span>
+                        {% elif previsione.codici == 3 %}
+                            <span class="icona">☁️</span>
+                        {% elif previsione.codici == 60 %}
+                            <span class="icona">🌧️</span>
+                        {% elif previsione.codici == 80 %}
+                            <span class="icona">⛈️</span>
+                        {% elif previsione.codici == "Neve" %}
+                            <span class="icona">❄️</span>
+                        {% else %}
+                            <span class="icona">🌈</span>
+                        {% endif %}
+                        <p class="text-white font-semibold">{{ previsione.AMG }}</p>
+                    </div>
+                    <div class="dettagli">{{ previsione.temp_max }}°C - {{ previsione.codici }}</div>
+                    <div class="extra">
+                        <div>🌡️ Umidità: {{ previsione.umidita }}%</div>
+                        <div>💨 Vento: {{ previsione.vento }} km/h</div>
+                        <div>📊 Pressione: {{ previsione.pressione }} hPa</div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="nessuna">Nessuna previsione disponibile.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Right Empty Container -->
+        <div class="w-1/4"></div>
+    </div>
+
+    <script>
+        function toggleDetails(el) {
+            el.classList.toggle('expanded');
+        }
+    </script>
+{% endblock %}
+
