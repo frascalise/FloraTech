@@ -50,8 +50,13 @@ class Telegram(models.Model):
         #Telegram().objects.all().delete()
         p_db.telegram_id=data
         p_db.save()
-        print(Telegram().objects.all())
-        
+
+        values=Telegram().objects.all()
+        print(values)  
+        #print(Telegram().objects.all())
+    def TelegramUser():
+        values=Telegram().objects.all()
+        print(values)    
     
 class Garden(models.Model):
     id = models.AutoField(primary_key=True)

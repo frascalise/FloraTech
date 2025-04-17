@@ -29,9 +29,8 @@ def WarningMessage():
 def AddNewUser(message):
     print('entrato')
     from .models import Telegram
-    #NewTelegramUser(message.chat.id)
-    Telegram.NewTelegramUser(USER_ID)
     bot.send_message(USER_ID,'Aggiunto nuovo utente')
+    Telegram.NewTelegramUser(USER_ID)
 
 # View Django per gestire gli aggiornamenti del webhook
 @csrf_exempt #da mettere ASSOLUTAMENTE in caso di collegamenti con il file url
