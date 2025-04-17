@@ -8,7 +8,7 @@ urlpatterns = [
     #path('forecast/',views.PrevisionDetail.as_view(),name='list'),
     path('on/',views.refresh,name='caricamento'),
     path('read/',views.fornire,name='lettura'),
-    path('test/',views.LookForecast,name='prova'),
+    #path('test/',views.LookForecast,name='prova'),
     path('sum/',views.nextPrecipitationSum),
     path('model/',views.chiamata,name='chiamata')
     #path(f'{BOT.TOKEN}/', BOT.webhook_view, name='webhook'),
