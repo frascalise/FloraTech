@@ -51,7 +51,7 @@ class Telegram(models.Model):
         
     def TelegramUser():
         values=Telegram().objects.all()
-        print(values)    
+        return values  
     
 class Garden(models.Model):
     id = models.AutoField(primary_key=True)
