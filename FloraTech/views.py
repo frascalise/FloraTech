@@ -91,7 +91,8 @@ def garden_view(request, garden_id):
 def edit_garden(request, garden_id):
     garden = Garden.objects.get(id=garden_id)
     available_plants = Plant.objects.all()
-
+    print("Available plants: ", available_plants)
+    
     if request.method == "POST":
         # Modifica il nome del giardino
         new_label = request.POST.get("label")
@@ -218,6 +219,28 @@ def setup(request):
     garden.plants = data_garden['plants']
     garden.save()
     
+    PLANT_CHOICES = [
+        ("ONION", "Onion"),
+        ("TOMATO", "Tomato"),
+        ("SUGARCANE", "Sugarcane"),
+        ("COTTON", "Cotton"),
+        ("MUSTARD", "Mustard"),
+        ("WHEAT", "Wheat"),
+        ("BEAN", "Bean"),
+        ("CITRUS", "Citrus"),
+        ("MAIZE", "Maize"),
+        ("MELON", "Melon"),
+        ("RICE", "Rice"),
+        ("POTATO", "Potato"),
+        ("CABBAGE", "Cabbage"),
+        ("SOYBEAN", "Soybean"),
+        ("BANANA", "Banana"),
+    ]
+    
+    for i in PLANT_CHOICES:
+        plant = Plant.objects.create(name=i[0])
+        plant.save()
+
     data = {
         'raspberry_id': raspberry.id,
         'garden_id': garden.id,
