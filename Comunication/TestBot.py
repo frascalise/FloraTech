@@ -20,14 +20,13 @@ def send_welcome(message):
 @bot.message_handler(commands=['help'])
 def send_help(message):
     bot.reply_to(message, "Questo è un bot di prova basato su webhook con Django.")
-
+    print(Telegram.TelegramUser())
 
 def WarningMessage():
     bot.send_message(USER_ID,'Sta per splodere tutto')
     print('qualcosa')
 @bot.message_handler(commands=['new'])
 def AddNewUser(message):
-    from ..accounts.models import Telegram
     bot.send_message(USER_ID,'Aggiunto nuovo utente')
     Telegram.NewTelegramUser(message.chat.id)
     bot.send_message(USER_ID,'Aggiunto nuovo utente')
