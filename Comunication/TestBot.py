@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 import os
 import json
 TOKEN_ID = '7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo'
-WEBHOOK_URL = 'https://floratech.leonardonels.com/accounts'
+WEBHOOK_URL = 'https://floratech.leonardonels.com/comunication/'
 USER_ID=903195749 
 # Inizializza il bot Telegram
 bot = telebot.TeleBot(TOKEN_ID)
