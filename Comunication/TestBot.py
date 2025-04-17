@@ -36,7 +36,7 @@ def AddNewUser(message):
 @bot.message_handler(commands=['write'])
 def WriteSomething(message):
     #from ..accounts.models import Telegram
-    bot.send_message(Telegram.TelegramUser(),'Apelle, figlio di apollo fece una palla di pelle di pollo')
+    bot.send_message(USER_ID,'Apelle, figlio di apollo fece una palla di pelle di pollo')
 # View Django per gestire gli aggiornamenti del webhook
 @csrf_exempt #da mettere ASSOLUTAMENTE in caso di collegamenti con il file url
 def webhook_view(request):
