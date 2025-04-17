@@ -50,6 +50,10 @@ class Garden(models.Model):
     moisture = models.JSONField(default=list)
     status = models.CharField(default="not working", max_length=50) # [ working, not working ]
     plants = models.JSONField(default=list)
+    location = models.CharField(max_length=50, default="unknown")
+    latitude = models.FloatField(default=0.0) 
+    longitude = models.FloatField(default=0.0)
+    surface_area = models.FloatField(default=0.0) # Surface area of the garden in square meters
 
 class Sensor(models.Model):
     id = models.AutoField(primary_key=True)

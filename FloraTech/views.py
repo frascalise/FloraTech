@@ -1,4 +1,5 @@
 import json
+import requests
 from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -138,6 +139,45 @@ def edit_garden(request, garden_id):
         "garden": garden,
         "plants": available_plants
     })
+
+@login_required
+def settings_view(request, garden_id):
+    garden = Garden.objects.get(id=garden_id)
+
+    if request.method == "POST":
+        location = request.POST.get("location")
+        surface_area = request.POST.get("surface_area")
+
+        if location:
+            garden.location = location
+            garden.location = location
+
+            url = f"https://nominatim.openstreetmap.org/search"
+            params = {
+                "q": location,
+                "format": "json",
+                "limit": 1
+            }
+
+            try:
+                response = requests.get(url, params=params, headers={'User-Agent': 'FloraTechApp/1.0'})
+                data = response.json()
+
+                if data:
+                    garden.latitude = float(data[0]["lat"])
+                    garden.longitude = float(data[0]["lon"])
+            except Exception as e:
+                print(f"Errore durante il recupero coordinate: {e}")
+        if surface_area:
+            try:
+                garden.surface_area = float(surface_area)
+            except ValueError:
+                return redirect("settings", garden_id=garden.id)
+
+        garden.save()
+        return redirect("settings", garden_id=garden.id)
+
+    return render(request, "garden/settings.html", {"garden": garden})
 
 @login_required
 def delete_garden(request, garden_id):

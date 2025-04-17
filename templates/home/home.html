@@ -41,12 +41,19 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         {% for garden in gardens %}
         <div class="bg-gray-600 shadow-lg rounded-3xl p-5 flex flex-col items-center relative text-white">
+
+            <a href="{% url 'settings' garden.id %}" class="absolute top-4 right-4 text-gray-400 hover:text-gray-500 text-xl">
+                <i class="fas fa-pen-to-square"></i>
+            </a>
+
             <h2 class="text-xl font-semibold">{{ garden.label }}</h2>
+
             <img 
                 src="https://static.vecteezy.com/system/resources/previews/057/722/445/non_2x/elegant-minimalist-vertical-garden-with-herbs-and-vegetables-isolated-mixed-planting-premium-free-png.png" 
                 alt="Icona giardino" 
                 class="w-64 h-64 mt-2"
             >
+
             <div class="mt-4 flex gap-4">
                 <a href="{% url 'garden' garden.id %}" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg shadow">View</a>
                 <a href="{% url 'edit_garden' garden.id %}" class="border-2 border-yellow-600 hover:bg-gray-700 text-white py-2 px-4 rounded-lg shadow">Edit</a>
