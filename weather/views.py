@@ -4,8 +4,22 @@ from .models import Previsione
 from django.http import HttpResponse
 from django.views.generic.detail import DetailView 
 from django.views.generic.list import ListView
+from .meteo import richiesta_meteo
+from .aiModel import WeatherModel
 from .AI import Prediction,StartingTraining
-# Create your views here.
+
+weatherModel = WeatherModel()
+
+
+def nextPrecipitationSum(request):
+    predSum = weatherModel.get_daily_water_predictions(garden_id=2)
+
+    if predSum <= 0:
+        return HttpResponse("NO NEED TO WATER TODAY")
+    
+    else:
+        return HttpResponse(predSum)
+
 class PrevisionDetail(DetailView):
     model = Previsione
     template_name = 'meteo.html'

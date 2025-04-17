@@ -10,7 +10,12 @@ from datetime import datetime
 from collections import defaultdict
 from datetime import datetime
 from django.db.models import Q
+
 from weather.meteo import richiesta_meteo
+from weather.aiModel import WeatherModel
+
+weatherModel = WeatherModel()
+
 
 def welcome_view(request):
     if request.user.is_authenticated:
@@ -366,13 +371,22 @@ def add_moisture(request, raspberry_id):
     if request.method == 'POST':
         data = json.loads(request.body)
 
-    print("Data: ", data)
-
     garden = Garden.objects.get(id=data['garden'], fk_raspberry=raspberry_id)
     garden.moisture.append(data)
     garden.moisture.sort(key=lambda x: x['timestamp'])
     garden.save()
 
-    print("Garden: ", garden)
-
     return JsonResponse({'message': 'Moisture data added successfully!', 'data': data})
+
+@csrf_exempt
+def get_daily_water_needs(request, raspberry_id, garden_id):
+
+    waterQ = weatherModel.get_daily_water_predictions(garden_id)
+    if waterQ > 0.5: #threshold
+        newIrrigationEntry = Water(garden_id, datetime.now(), waterQ)
+        newIrrigationEntry.save()
+    else:
+        waterQ = 0
+
+    return JsonResponse({'message': 'Returning the daily water volume needed', 'data': waterQ})
+

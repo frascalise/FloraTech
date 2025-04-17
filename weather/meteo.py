@@ -57,7 +57,7 @@ def traduzione_codici_meteo(WC):
     return prevision
 
 def costruzione_richiesta():
-    lat,lon=get_position()
+    lat,lon=get_position()  #latitudine e longitudine dovrebbero essere quelli della posizione dell'orto ?
     start="https://api.open-meteo.com/v1/forecast?"
     position="latitude="+str(lat)+"&longitude="+str(lon)
     var_meteo=variabili_meteo()
