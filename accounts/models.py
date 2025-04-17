@@ -42,6 +42,10 @@ class Telegram(models.Model):
     id = models.AutoField(primary_key=True)
     fk_owner = models.CharField(max_length=50)
     telegram_id= models.CharField(max_length=10)
+
+    def NewTelegramUser(data):
+        Telegram().telegram_id=data
+        Telegram().save()
     
 class Garden(models.Model):
     id = models.AutoField(primary_key=True)
