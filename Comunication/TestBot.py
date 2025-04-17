@@ -67,6 +67,7 @@ def delete_webhook():
 def Alert(request):
     value=Telegram.TelegramUser()
     bot.send_message(value,'Maremma portello, marcondiro dirondello')
+    return HttpResponse(status=200)
 
 
 
