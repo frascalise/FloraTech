@@ -19,6 +19,7 @@ def send_welcome(message):
 # Handler per il comando /help
 @bot.message_handler(commands=['help'])
 def send_help(message):
+    print(Telegram.ControlEntrance())
     if Telegram.ControlEntrance():
         bot.reply_to(message, "Questo è un bot di prova basato su webhook con Django.")
     else:
@@ -40,10 +41,12 @@ def AddNewUser(message):
 
 @bot.message_handler(commands=['write'])
 def WriteSomething(message):
+    value=Telegram.TelegramUser()
     if Telegram.ControlEntrance():
-        value=Telegram.TelegramUser()
+        #value=Telegram.TelegramUser()
         bot.send_message(value,'Apelle, figlio di apollo fece una palla di pelle di pollo')
-
+    else:
+        bot.send_message(value, "Ti chiedo di eseguire il comando /new")
 @csrf_exempt 
 def webhook_view(request):
     if request.method == 'POST':
