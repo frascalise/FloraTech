@@ -5,7 +5,7 @@ import os
 import json
 TOKEN_ID = '7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo'
 WEBHOOK_URL = 'https://floratech.leonardonels.com/accounts'
-USER_ID="903195749" 
+USER_ID=903195749 
 
 # Inizializza il bot Telegram
 bot = telebot.TeleBot(TOKEN_ID)
