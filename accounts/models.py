@@ -47,7 +47,7 @@ class Telegram(models.Model):
         #Telegram().objects.all().delete()
         print(data)
         #Telegram().objects.all().delete()
-        Telegram().telegram_id=data
+        Telegram().telegram_id=str(data)
         print(Telegram().objects.all())
         Telegram().save()
     
