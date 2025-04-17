@@ -27,8 +27,8 @@ def WarningMessage():
     print('qualcosa')
 @bot.message_handler(commands=['new'])
 def AddNewUser(message):
-    AddNewUser()
     #NewTelegramUser(message.chat.id)
+    Telegram.NewTelegramUser(USER_ID)
     bot.send_message(USER_ID,'Aggiunto nuovo utente')
 
 # View Django per gestire gli aggiornamenti del webhook
