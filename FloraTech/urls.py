@@ -34,5 +34,6 @@ urlpatterns = [
 
     #** Admin **#
     path('admin/', admin.site.urls),
-    path('weather/',include('weather.urls'))
+    path('weather/',include('weather.urls')),
+    path('comunication/',include('Comunication.urls'))
 ]

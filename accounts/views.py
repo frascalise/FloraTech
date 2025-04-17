@@ -360,6 +360,3 @@ def logout_view(request):
     logout(request)
     return redirect("welcome")
 
-def NewUser():
-    USER_ID=903195749 
-    #Telegram.NewTelegramId(USER_ID)
