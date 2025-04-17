@@ -13,20 +13,24 @@ bot = telebot.TeleBot(TOKEN_ID)
 # Handler per il comando /start
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    bot.reply_to(message, "Ciao! Sono un bot webhook Django di prova.")
+    bot.reply_to(message, "Ciao! Benvenuto su Floratech\n Per dare il via al tuo nuovo fututo verde ti chiedo di eseguire il comando /new")
     #print(message.chat.id)
 
 # Handler per il comando /help
 @bot.message_handler(commands=['help'])
 def send_help(message):
-    bot.reply_to(message, "Questo è un bot di prova basato su webhook con Django.")
-    value = Telegram.TelegramUser()
-    #print(value)
+    if Telegram.ControlEntrance():
+        bot.reply_to(message, "Questo è un bot di prova basato su webhook con Django.")
+    else:
+        bot.reply_to(message, "Ti chiedo di eseguire il comando /new")
+    
 
 def WarningMessage():
-    value=Telegram.TelegramUser()
-    bot.send_message(value,'Sta per splodere tutto')
-    print('qualcosa')
+    if Telegram.ControlEntrance():
+        value=Telegram.TelegramUser()
+        bot.send_message(value,'Sta per splodere tutto')
+        print('qualcosa')
+    
 
 @bot.message_handler(commands=['new'])
 def AddNewUser(message):
@@ -36,8 +40,9 @@ def AddNewUser(message):
 
 @bot.message_handler(commands=['write'])
 def WriteSomething(message):
-    value=Telegram.TelegramUser()
-    bot.send_message(value,'Apelle, figlio di apollo fece una palla di pelle di pollo')
+    if Telegram.ControlEntrance():
+        value=Telegram.TelegramUser()
+        bot.send_message(value,'Apelle, figlio di apollo fece una palla di pelle di pollo')
 
 @csrf_exempt 
 def webhook_view(request):
@@ -65,9 +70,10 @@ def delete_webhook():
     print("Webhook eliminato.")
 
 def Alert(request):
-    value=Telegram.TelegramUser()
-    bot.send_message(value,'Maremma portello, marcondiro dirondello')
-    return HttpResponse(status=200)
+    if Telegram.ControlEntrance():
+        value=Telegram.TelegramUser()
+        bot.send_message(value,'Leonardi Merda')
+        return HttpResponse(status=200)
 
 
 
