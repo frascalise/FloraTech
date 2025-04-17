@@ -44,10 +44,11 @@ class Telegram(models.Model):
     telegram_id= models.CharField(max_length=10)
 
     def NewTelegramUser(data):
+        p_db=Telegram()
         #Telegram().objects.all().delete()
-        print(data)
+        #print(data)
         #Telegram().objects.all().delete()
-        Telegram().telegram_id=str(data)
+        p_db.telegram_id=str(data)
         print(Telegram().objects.all())
         Telegram().save()
     
