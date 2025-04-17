@@ -32,12 +32,28 @@ meteo:
     precipitazioni (neve, pioggia, ecc...)
     precipitazioni (mm)
 '''
-
+    
 class Raspberry(models.Model):
     id = models.AutoField(primary_key=True) 
     fk_owner = models.CharField(max_length=50)
     label = models.CharField(max_length=50)
 
+class Telegram(models.Model):
+    id = models.AutoField(primary_key=True)
+    fk_owner = models.CharField(max_length=50)
+    telegram_id= models.CharField(max_length=10)
+
+    def NewTelegramUser(data):
+        p_db=Telegram()
+        p_db.objects.all().delete()
+        p_db.telegram_id=data
+        p_db.save()
+
+        
+    def TelegramUser():
+        values=Telegram().objects.all()
+        return values[0].telegram_id  
+    
 class Garden(models.Model):
     id = models.AutoField(primary_key=True)
     fk_raspberry = models.ForeignKey(Raspberry, on_delete=models.CASCADE)

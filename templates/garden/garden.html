@@ -89,7 +89,7 @@
                                 </div>
                             </div>
                             {% if sensor.status == "not working" %}
-                                <a href="{% url 'activate_sensor' sensor.id garden.id %}" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600 transition">
+                                <a href="{% url 'accounts:activate_sensor' sensor.id garden.id %}" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600 transition">
                                     Activate
                                 </a>
                             {% endif %}
@@ -144,7 +144,7 @@
             data: {
                 labels: formattedLabels,
                 datasets: [{
-                    label: "Soil Moisture",
+                    label: "Soil Moisture (%)",
                     data: moistureValues,
                     borderColor: "rgb(126, 182, 255)",
                     backgroundColor: "rgba(34, 105, 197, 0.2)",
@@ -164,7 +164,9 @@
                         grid: { color: "gray" }
                     },
                     y: {
-                        beginAtZero: true,
+                        beginAtZero: false,
+                        max: 100,
+                        min: 0,
                         ticks: { color: "white" },
                         grid: { color: "gray" }
                     }

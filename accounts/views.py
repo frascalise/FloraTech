@@ -6,8 +6,8 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 #from retry_requests import retry
+#from .models import Telegram
 from django.http import JsonResponse
-
 weather_icons = {      
     "0":{
         "day":{
@@ -359,3 +359,7 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("welcome")
+
+def NewUser():
+    USER_ID=903195749 
+    #Telegram.NewTelegramId(USER_ID)

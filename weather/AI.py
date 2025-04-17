@@ -11,11 +11,12 @@ from sklearn.model_selection import GridSearchCV
 import numpy as np
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import mean_absolute_error, mean_squared_error, mean_squared_log_error
+import os
 
 def StartingTraining():
     #creazione dataset
-    week1_df = pd.read_csv("weather/csv_data\data_union_from14to21_032025.csv",sep=",")
-    week2_df = pd.read_csv("weather/csv_data\data_union_from21to27_032025.csv",sep=',')
+    week1_df = pd.read_csv(os.path.join(os.getcwd(), "weather/csv_data\data_union_from14to21_032025.csv"),sep=",")
+    week2_df = pd.read_csv(os.path.join(os.getcwd(), "weather/csv_data\data_union_from21to27_032025.csv"),sep=',')
     dataset = pd.concat([week1_df, week2_df], axis=0)
 
     columns = dataset.columns

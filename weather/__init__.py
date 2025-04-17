@@ -8,5 +8,5 @@ if (not stasi):
     else:
         
         print("assente")
-        StartingTraining()
+        #StartingTraining()
     stasi=True
