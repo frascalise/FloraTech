@@ -6,7 +6,6 @@ import json
 TOKEN_ID = '7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo'
 WEBHOOK_URL = 'https://floratech.leonardonels.com/accounts'
 USER_ID=903195749 
-from .models import Telegram
 # Inizializza il bot Telegram
 bot = telebot.TeleBot(TOKEN_ID)
 
@@ -29,10 +28,8 @@ def WarningMessage():
 def AddNewUser(message):
     from .models import Telegram
     bot.send_message(USER_ID,'Aggiunto nuovo utente')
-    Telegram.NewTelegramUser(USER_ID)
-def Lettura(request):
-    values=Telegram.TelegramUser()
-    print(values)
+    Telegram.NewTelegramUser(message.chat.id)
+    bot.send_message(USER_ID,'Aggiunto nuovo utente')
 # View Django per gestire gli aggiornamenti del webhook
 @csrf_exempt #da mettere ASSOLUTAMENTE in caso di collegamenti con il file url
 def webhook_view(request):
