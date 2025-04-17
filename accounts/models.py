@@ -47,7 +47,7 @@ class Telegram(models.Model):
         print('raggiunto altro checkpoint')
         #Telegram().objects.all().delete()
         Telegram().telegram_id=data
-        print(Telegram().telegram_id)
+        print(str(Telegram().telegram_id))
         Telegram().save()
     
 class Garden(models.Model):
