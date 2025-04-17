@@ -35,8 +35,8 @@ def AddNewUser(message):
 
 @bot.message_handler(commands=['write'])
 def WriteSomething(message):
-    
-    bot.send_message(USER_ID,'Apelle, figlio di apollo fece una palla di pelle di pollo')
+    value=Telegram.TelegramUser()
+    bot.send_message(value,'Apelle, figlio di apollo fece una palla di pelle di pollo')
 
 @csrf_exempt 
 def webhook_view(request):
