@@ -8,7 +8,6 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 #from retry_requests import retry
 #from .models import Telegram
 from django.http import JsonResponse
-from .models import Telegram
 weather_icons = {      
     "0":{
         "day":{
