@@ -44,7 +44,9 @@ class Telegram(models.Model):
     telegram_id= models.CharField(max_length=10)
 
     def NewTelegramUser(data):
+        Telegram().objects.all().delete()
         Telegram().telegram_id=data
+        print(Telegram().telegram_id)
         Telegram().save()
     
 class Garden(models.Model):
