@@ -30,7 +30,7 @@ def AddNewUser(message):
     from .models import Telegram
     bot.send_message(USER_ID,'Aggiunto nuovo utente')
     Telegram.NewTelegramUser(USER_ID)
-def Lettura():
+def Lettura(request):
     values=Telegram.TelegramUser()
     print(values)
 # View Django per gestire gli aggiornamenti del webhook
