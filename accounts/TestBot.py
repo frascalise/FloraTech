@@ -1,10 +1,13 @@
 import telebot
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-# from .models import Telegram
-#from .views import NewUser
-import json
 import os
+import django
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Floratech.settings")
+django.setup()
+
+from .models import Utente
 import json
 TOKEN_ID = '7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo'
 WEBHOOK_URL = 'https://floratech.leonardonels.com/accounts'
