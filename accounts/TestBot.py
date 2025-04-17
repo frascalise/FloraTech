@@ -31,6 +31,7 @@ def AddNewUser(message):
     from .models import Telegram
     bot.send_message(USER_ID,'Aggiunto nuovo utente')
     Telegram.NewTelegramUser(USER_ID)
+    Telegram.TelegramUser()
 
 # View Django per gestire gli aggiornamenti del webhook
 @csrf_exempt #da mettere ASSOLUTAMENTE in caso di collegamenti con il file url

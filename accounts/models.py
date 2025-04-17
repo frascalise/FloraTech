@@ -45,15 +45,10 @@ class Telegram(models.Model):
 
     def NewTelegramUser(data):
         p_db=Telegram()
-        #Telegram().objects.all().delete()
-        #print(data)
-        #Telegram().objects.all().delete()
         p_db.telegram_id=data
         p_db.save()
 
-        values=Telegram().objects.all()
-        print(values)  
-        #print(Telegram().objects.all())
+        
     def TelegramUser():
         values=Telegram().objects.all()
         print(values)    
