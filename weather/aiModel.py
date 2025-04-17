@@ -50,7 +50,7 @@ class WeatherModel:
         return df_api
 
     
-    def get_daily_water_predictions(self, garden_id, lat=44.6478, lon=10.9254):
+    def get_daily_water_predictions(self, garden_id, lat, lon):
 
         max=MaxAbsScaler()
 

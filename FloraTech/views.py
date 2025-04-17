@@ -443,8 +443,10 @@ def add_moisture(request, raspberry_id):
 
 @csrf_exempt
 def get_daily_water_needs(request, raspberry_id, garden_id):
+    garden = Garden.objects.get(id=garden_id, fk_raspberry=raspberry_id)
+    lat, lon = garden.latitude, garden.longitude
 
-    waterQ = weatherModel.get_daily_water_predictions(garden_id)
+    waterQ = weatherModel.get_daily_water_predictions(garden_id, lat, lon)
     if waterQ > 0.5: #threshold
         newIrrigationEntry = Water(garden_id, datetime.now(), waterQ)
         newIrrigationEntry.save()
