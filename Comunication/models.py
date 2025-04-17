@@ -4,8 +4,8 @@ from django.db import models
 class Telegram(models.Model):
     user_id=models.CharField(max_length=10)
 
-    def NewTelegramUser():
-        print('nuovo utente')
+    def NewTelegramUser(data):
+        print(str(data))
 
     def TelegramUser():
         print('consegna utente')
