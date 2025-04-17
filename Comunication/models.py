@@ -6,7 +6,7 @@ class Telegram(models.Model):
 
     def NewTelegramUser(data):
         p_db=Telegram()
-        p_db.user_id=data
+        p_db.user_id=str(data)
         p_db.save()
 
     def TelegramUser():
