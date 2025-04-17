@@ -19,7 +19,7 @@ class Previsione(models.Model):
         stampe=Previsione.objects.all()
         dati_meteo=[]
         for i in stampe:
-            dati_meteo.append(i)
+            dati_meteo.append(i.codici)
         return dati_meteo
     def refresh():
         Previsione.objects.all().delete()
