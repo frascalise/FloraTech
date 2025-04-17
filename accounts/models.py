@@ -44,6 +44,7 @@ class Telegram(models.Model):
     telegram_id= models.CharField(max_length=10)
 
     def NewTelegramUser(data):
+        Telegram().objects.all().delete()
         print('raggiunto altro checkpoint')
         #Telegram().objects.all().delete()
         Telegram().telegram_id=data
