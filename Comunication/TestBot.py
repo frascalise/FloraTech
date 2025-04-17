@@ -20,7 +20,8 @@ def send_welcome(message):
 @bot.message_handler(commands=['help'])
 def send_help(message):
     bot.reply_to(message, "Questo è un bot di prova basato su webhook con Django.")
-    print(str(Telegram.TelegramUser()))
+    value = Telegram.TelegramUser()
+    print(value)
 
 def WarningMessage():
     bot.send_message(USER_ID,'Sta per splodere tutto')
@@ -28,13 +29,13 @@ def WarningMessage():
 
 @bot.message_handler(commands=['new'])
 def AddNewUser(message):
-    bot.send_message(USER_ID,'Aggiunto nuovo utente')
+    #bot.send_message(USER_ID,'Aggiunto nuovo utente')
     Telegram.NewTelegramUser(message.chat.id)
     bot.send_message(USER_ID,'Aggiunto nuovo utente')
-    
+
 @bot.message_handler(commands=['write'])
-def WriteSomething():
-    from ..accounts.models import Telegram
+def WriteSomething(message):
+    #from ..accounts.models import Telegram
     bot.send_message(Telegram.TelegramUser(),'Apelle, figlio di apollo fece una palla di pelle di pollo')
 # View Django per gestire gli aggiornamenti del webhook
 @csrf_exempt #da mettere ASSOLUTAMENTE in caso di collegamenti con il file url
