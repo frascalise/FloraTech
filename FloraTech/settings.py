@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "accounts.apps.AccountsConfig",
-    'weather.apps.WeatherConfig'
+    'weather.apps.WeatherConfig',
+    'Comunication.apps.ComunicationConfig'
 ]
 
 MIDDLEWARE = [

@@ -41,18 +41,7 @@ class Raspberry(models.Model):
 class Telegram(models.Model):
     id = models.AutoField(primary_key=True)
     fk_owner = models.CharField(max_length=50)
-    telegram_id= models.CharField(max_length=10)
-
-    def NewTelegramUser(data):
-        p_db=Telegram()
-        p_db.objects.all().delete()
-        p_db.telegram_id=data
-        p_db.save()
-
-        
-    def TelegramUser():
-        values=Telegram().objects.all()
-        return values[0].telegram_id  
+    telegram_id= models.CharField(max_length=10)  
     
 class Garden(models.Model):
     id = models.AutoField(primary_key=True)
