@@ -27,6 +27,8 @@ def WarningMessage():
     print('qualcosa')
 @bot.message_handler(commands=['new'])
 def AddNewUser(message):
+    
+    from .models import Telegram
     #NewTelegramUser(message.chat.id)
     Telegram.NewTelegramUser(USER_ID)
     bot.send_message(USER_ID,'Aggiunto nuovo utente')
@@ -48,7 +50,6 @@ def webhook_view(request):
 
 # Funzione per impostare il webhook (da eseguire una sola volta o tramite un comando Django custom)
 def set_webhook(request):
-    from .models import Telegram
     bot.set_webhook(url=f"{WEBHOOK_URL}/{TOKEN_ID}/")
     print(f"Webhook impostato su: {WEBHOOK_URL}/{TOKEN_ID}")
     return HttpResponse(status=200)
