@@ -5,7 +5,7 @@ import os
 import json
 TOKEN_ID = '7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo'
 WEBHOOK_URL = 'https://floratech.leonardonels.com/comunication'
-USER_ID=903195749 
+#USER_ID=903195749 
 from .models import Telegram
 # Inizializza il bot Telegram
 bot = telebot.TeleBot(TOKEN_ID)
@@ -14,24 +14,25 @@ bot = telebot.TeleBot(TOKEN_ID)
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     bot.reply_to(message, "Ciao! Sono un bot webhook Django di prova.")
-    print(message.chat.id)
+    #print(message.chat.id)
 
 # Handler per il comando /help
 @bot.message_handler(commands=['help'])
 def send_help(message):
     bot.reply_to(message, "Questo è un bot di prova basato su webhook con Django.")
     value = Telegram.TelegramUser()
-    print(value)
+    #print(value)
 
 def WarningMessage():
-    bot.send_message(USER_ID,'Sta per splodere tutto')
+    value=Telegram.TelegramUser()
+    bot.send_message(value,'Sta per splodere tutto')
     print('qualcosa')
 
 @bot.message_handler(commands=['new'])
 def AddNewUser(message):
     #bot.send_message(USER_ID,'Aggiunto nuovo utente')
     Telegram.NewTelegramUser(message.chat.id)
-    bot.send_message(USER_ID,'Aggiunto nuovo utente')
+    bot.send_message(message.chat.id,'Aggiunto nuovo utente')
 
 @bot.message_handler(commands=['write'])
 def WriteSomething(message):
@@ -62,6 +63,10 @@ def set_webhook(request):
 def delete_webhook():
     bot.delete_webhook()
     print("Webhook eliminato.")
+
+def Alert(request):
+    value=Telegram.TelegramUser()
+    bot.send_message(value,'Maremma portello, marcondiro dirondello')
 
 
 
