@@ -238,7 +238,7 @@ def deactivate_sensor(request, sensor_id, garden_id):
 def setup(request):
     # Dati per il Raspberry e il Garden
     data_raspberry = {
-        'username': 'frascalise',
+        'username': 'admin',    # password: floratech1
         'label': 'RASPBERRY TEST',
     }
 
