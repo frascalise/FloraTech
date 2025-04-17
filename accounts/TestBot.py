@@ -27,7 +27,7 @@ def WarningMessage():
     print('qualcosa')
 @bot.message_handler(commands=['new'])
 def AddNewUser(message):
-    
+    print('entrato')
     from .models import Telegram
     #NewTelegramUser(message.chat.id)
     Telegram.NewTelegramUser(USER_ID)
