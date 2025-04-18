@@ -505,6 +505,16 @@ def get_water(request):
         data = json.loads(request.body)
 
     garden = Garden.objects.get(id=data['garden_id'])
+    lat, lon = garden.latitude, garden.longitude
 
-    response = {"water": 0.0}
-    return JsonResponse(response)
+    waterQ = weatherModel.get_daily_water_predictions(garden.id, lat, lon)
+    if waterQ > 0.5: #threshold
+        newIrrigationEntry = Water(garden.id, datetime.now(), waterQ)
+        newIrrigationEntry.save()
+    else:
+        waterQ = 0
+
+    waterQ = waterQ*garden.surface_area
+    print("\n\n\n\nWaterQ: ", waterQ, "\n\n\n\n\n")
+
+    return JsonResponse({'message': 'Returning the daily water volume needed', 'data': waterQ})
