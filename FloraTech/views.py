@@ -210,7 +210,7 @@ def edit_sensor(request, sensor_id, garden_id):
             sensor.label = sensor.type
         sensor.save()
 
-        return redirect("garden/garden.html", garden_id=garden.id)
+        return render("garden/garden.html", garden_id=garden.id)
 
     return render(request, "garden/edit_sensor.html", {"garden": garden})
     
