@@ -212,7 +212,7 @@ def edit_sensor(request, sensor_id, garden_id):
 
         return redirect("garden/garden.html", garden_id=garden.id)
 
-    return render(request, "garden/settings.html", {"garden": garden})
+    return render(request, "garden/edit_sensor.html", {"garden": garden})
     
 
 @login_required
