@@ -489,7 +489,7 @@ def get_temperature(request):
     lat, lon = garden.latitude, garden.longitude
     
     url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current_weather=true"
-    response = requests.get(url)
+    weather_json = requests.get(url)
     json_result = response.json()
 
     temperature = json_result["current_weather"]["temperature"]
