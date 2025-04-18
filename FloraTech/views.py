@@ -402,6 +402,12 @@ def new_sensor(request, raspberry_id):
         fk_garden = None,
         fk_raspberry = Raspberry.objects.get(id=raspberry_id)
     )
+
+    if sensor.type == 'actuator':
+        sensor.label = 'Actuator'
+    elif sensor.type == 'sensor':
+        sensor.label = 'Sensor'
+
     sensor.save()
 
     response = {
