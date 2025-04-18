@@ -175,7 +175,7 @@ def settings_view(request, garden_id):
                 return redirect("settings", garden_id=garden.id)
 
         garden.save()
-        return redirect("garden/settings.html", garden_id=garden.id)
+        return redirect("garden", garden_id=garden.id)
 
     return render(request, "garden/settings.html", {"garden": garden})
 
@@ -210,7 +210,7 @@ def edit_sensor(request, sensor_id, garden_id):
             sensor.label = sensor.type
         sensor.save()
 
-        return render("garden/garden.html", garden_id=garden.id)
+        return redirect("garden", garden_id=garden.id)
 
     return render(request, "garden/edit_sensor.html", {"garden": garden})
     
