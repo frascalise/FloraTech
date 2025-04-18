@@ -89,7 +89,7 @@
                                 </div>
                             </div>
                             {% if sensor.status == "not working" %}
-                                <a href="{% url 'accounts:activate_sensor' sensor.id garden.id %}" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600 transition">
+                                <a href="{% url 'activate_sensor' sensor.id garden.id %}" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600 transition">
                                     Activate
                                 </a>
                             {% endif %}
@@ -114,7 +114,7 @@
                                     <span class="text-sm text-white">Working</span>
                                 </div>
                             </div>
-                            <a href="{% url 'accounts:deactivate_sensor' sensor.id garden.id %}" class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition">
+                            <a href="{% url 'deactivate_sensor' sensor.id garden.id %}" class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition">
                                 Deactivate
                             </a>
                         </div>
