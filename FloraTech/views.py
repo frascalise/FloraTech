@@ -502,6 +502,7 @@ def get_water(request):
     if request.method == 'POST':
         data = json.loads(request.body)
 
+    print("Data: ", data)
     garden = Garden.objects.get(id=data['garden_id'])
 
     response = {"water": 0.0}
