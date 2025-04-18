@@ -452,7 +452,7 @@ def add_garden(request, raspberry_id):
 
     return JsonResponse(response)
 
-# DONE: Add moisture to the garden
+# DONE: Add moisture to the garden 
 @csrf_exempt
 def add_moisture(request, raspberry_id):
     data = {}
