@@ -171,7 +171,7 @@ class WeatherModel:
 
         # using plants into the garden
         garden = Garden.objects.get(id=garden_id)
-        crops = [entry['type'] for entry in garden.plants]
+        crops = [entry['name'] for entry in garden.plants]
 
         for temperature in [Tmax, Tmin]:
             if temperature < 20:
