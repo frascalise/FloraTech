@@ -3,7 +3,7 @@ from django.urls import path, include
 from .views import get_daily_water_needs, welcome_view, home_view, garden_view, settings_view, edit_sensor, activate_sensor, deactivate_sensor, edit_garden, delete_garden, new_garden
 
 #* API *#
-from .views import setup, sensor_working, sensor_warning, check_sensor, new_sensor, add_garden, show_all, delete_all, add_moisture
+from .views import setup, sensor_working, sensor_warning, check_sensor, new_sensor, add_garden, show_all, delete_all, add_moisture, get_temperature, get_water
 
 
 
@@ -34,6 +34,8 @@ urlpatterns = [
     path("api/add_garden/<int:raspberry_id>", add_garden, name="add_garden"),
     path("api/add_moisture/<int:raspberry_id>", add_moisture, name="add_moisture"),
     path("api/get_daily_water/<int:raspberry_id>/<int:garden_id>", get_daily_water_needs, name="get_daily_water"),
+    path("api/get_temperature/", get_temperature, name="get_temperature"),
+    path("api/get_water/", get_water, name="get_water"),
 
     #** Admin **#
     path('admin/', admin.site.urls),

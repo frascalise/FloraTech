@@ -480,3 +480,29 @@ def get_daily_water_needs(request, raspberry_id, garden_id):
 
     return JsonResponse({'message': 'Returning the daily water volume needed', 'data': waterQ})
 
+@csrf_exempt
+def get_temperature(request):
+    if request.method == 'POST':
+       data = json.loads(request.body)
+
+    garden = Garden.objects.get(id=data['garden_id'])
+    lat, lon = garden.latitude, garden.longitude
+    
+    url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current_weather=true"
+    response = requests.get(url)
+    json_result = response.json()
+
+    temperature = json_result["current_weather"]["temperature"]
+
+    response = {"temperature": temperature}
+    return JsonResponse(response)
+
+@csrf_exempt
+def get_water(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+
+    garden = Garden.objects.get(id=data['garden_id'])
+
+    response = {"water": 0.0}
+    return JsonResponse(response)
