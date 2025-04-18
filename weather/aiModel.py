@@ -132,7 +132,7 @@ class WeatherModel:
         moisture = 0
 
         for telem in garden.moisture:
-            moisture += telem['value']
+            moisture += telem['moisture']
 
         moisture = moisture/len(garden.moisture)
 
