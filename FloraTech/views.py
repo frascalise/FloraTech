@@ -385,7 +385,7 @@ def check_sensor(request, raspberry_id):
 
     return JsonResponse(response, safe=False)
 
-# Add a new sensor to the database
+# DONE: Add a new sensor to the database
 @csrf_exempt
 def new_sensor(request, raspberry_id):
     if request.method == 'POST':
