@@ -175,7 +175,7 @@ def settings_view(request, garden_id):
                 return redirect("settings", garden_id=garden.id)
 
         garden.save()
-        return redirect("settings", garden_id=garden.id)
+        return redirect("garden/settings.html", garden_id=garden.id)
 
     return render(request, "garden/settings.html", {"garden": garden})
 
@@ -195,6 +195,25 @@ def new_garden(request):
     garden.save()
 
     return redirect('home')
+
+@login_required
+def edit_sensor(request, sensor_id, garden_id):
+    sensor = Sensor.objects.get(id=sensor_id)
+    garden = Garden.objects.get(id=garden_id)
+
+    if request.method == "POST":
+        label = request.POST.get("label")
+        
+        if label:
+            sensor.label = label
+        else:
+            sensor.label = sensor.type
+        sensor.save()
+
+        return redirect("garden/garden.html", garden_id=garden.id)
+
+    return render(request, "garden/settings.html", {"garden": garden})
+    
 
 @login_required
 def activate_sensor(request, sensor_id, garden_id):

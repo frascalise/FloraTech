@@ -74,27 +74,29 @@
             <h2 class="text-xl font-semibold text-white mb-4">Deactivated Sensors</h2>
             <div class="space-y-4">
                 {% for sensor in sensors %}
-                    {% if sensor.status != "working" %}
-                        <div class="bg-gray-600 p-3 rounded-lg flex justify-between items-center">
-                            <div>
-                                <p class="font-semibold text-red-300">ID: {{ sensor.id }}</p>
-                                <p class="text-sm text-gray-200">Label: {{ sensor.label }}</p>
-                                <div class="flex items-center gap-2 bg-gray-500 rounded-full px-2 py-1 w-fit mt-1">
-                                    {% if sensor.status == "not working" %}
-                                        <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-                                    {% else %}
-                                        <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                                    {% endif %}
-                                    <span class="text-sm text-white">{{ sensor.status }}</span>
+                    <a href={% url 'edit_sensor' sensor.id garden.id %}>
+                        {% if sensor.status != "working" %}
+                            <div class="bg-gray-600 p-3 rounded-lg flex justify-between items-center">
+                                <div>
+                                    <p class="font-semibold text-red-300">ID: {{ sensor.id }}</p>
+                                    <p class="text-sm text-gray-200">Label: {{ sensor.label }}</p>
+                                    <div class="flex items-center gap-2 bg-gray-500 rounded-full px-2 py-1 w-fit mt-1">
+                                        {% if sensor.status == "not working" %}
+                                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                        {% else %}
+                                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                        {% endif %}
+                                        <span class="text-sm text-white">{{ sensor.status }}</span>
+                                    </div>
                                 </div>
+                                {% if sensor.status == "not working" %}
+                                    <a href="{% url 'activate_sensor' sensor.id garden.id %}" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600 transition">
+                                        Activate
+                                    </a>
+                                {% endif %}
                             </div>
-                            {% if sensor.status == "not working" %}
-                                <a href="{% url 'activate_sensor' sensor.id garden.id %}" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600 transition">
-                                    Activate
-                                </a>
-                            {% endif %}
-                        </div>
-                    {% endif %}
+                        {% endif %}
+                    </a>
                 {% endfor %}
             </div>
         </div>
@@ -104,21 +106,23 @@
             <h2 class="text-xl font-semibold text-white mb-4">Active Sensors</h2>
             <div class="space-y-4">
                 {% for sensor in sensors %}
-                    {% if sensor.status == "working" %}
-                        <div class="bg-gray-600 p-3 rounded-lg flex justify-between items-center">
-                            <div>
-                                <p class="font-semibold text-green-300">ID: {{ sensor.id }}</p>
-                                <p class="text-sm text-gray-200">Label: {{ sensor.label }}</p>
-                                <div class="flex items-center gap-2 bg-gray-500 rounded-full px-2 py-1 w-fit mt-1">
-                                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                                    <span class="text-sm text-white">Working</span>
+                    <a href={% url 'edit_sensor' sensor.id garden.id %}>
+                        {% if sensor.status == "working" %}
+                            <div class="bg-gray-600 p-3 rounded-lg flex justify-between items-center">
+                                <div>
+                                    <p class="font-semibold text-green-300">ID: {{ sensor.id }}</p>
+                                    <p class="text-sm text-gray-200">Label: {{ sensor.label }}</p>
+                                    <div class="flex items-center gap-2 bg-gray-500 rounded-full px-2 py-1 w-fit mt-1">
+                                        <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                        <span class="text-sm text-white">Working</span>
+                                    </div>
                                 </div>
+                                <a href="{% url 'deactivate_sensor' sensor.id garden.id %}" class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition">
+                                    Deactivate
+                                </a>
                             </div>
-                            <a href="{% url 'deactivate_sensor' sensor.id garden.id %}" class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition">
-                                Deactivate
-                            </a>
-                        </div>
-                    {% endif %}
+                        {% endif %}
+                    </a>
                 {% endfor %}
             </div>
         </div>

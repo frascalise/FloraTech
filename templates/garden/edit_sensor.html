@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Sensor Settings{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto mt-10 text-white">
+    <h2 class="text-2xl font-semibold text-green-300 mb-6">Settings: {{ sensor.label }}</h2>
+
+    <form method="post" class="space-y-6">
+        {% csrf_token %}
+
+        <div>
+            <label for="location" class="block text-sm font-medium text-gray-300">Label</label>
+            <input type="text" id="label" name="label" value="{{ sensor.label }}"
+                   class="w-full mt-2 p-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-green-400">
+        </div>
+
+        <div class="pt-4">
+            <button type="submit"
+                    class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-md shadow-md transition">
+                Save
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
