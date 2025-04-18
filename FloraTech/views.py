@@ -507,7 +507,7 @@ def get_water(request):
     garden = Garden.objects.get(id=data['garden_id'])
     lat, lon = garden.latitude, garden.longitude
 
-    waterQ = weatherModel.get_daily_water_predictions(garden.id, lat, lon)
+    waterQ = weatherModel.get_daily_water_predictions(data['garden_id'], lat, lon)
     if waterQ > 0.5: #threshold
         newIrrigationEntry = Water(garden.id, datetime.now(), waterQ)
         newIrrigationEntry.save()
