@@ -29,8 +29,11 @@ def WarningMessage():
 
 @bot.message_handler(commands=['new'])
 def AddNewUser(message):
-        Telegram.NewTelegramUser(message.chat.id)
-        bot.send_message(message.chat.id,'Aggiunto nuovo utente')
+        if Telegram.ControlEntrance(message.chat.id):
+            bot.reply_to(message,'hai già aggiunto il tuo utente al sito.')
+        else:
+            Telegram.NewTelegramUser(message.chat.id)
+            bot.send_message(message.chat.id,'Aggiunto nuovo utente')
     
 
 @bot.message_handler(commands=['write'])
