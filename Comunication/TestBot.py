@@ -13,7 +13,10 @@ bot = telebot.TeleBot(TOKEN_ID)
 # Handler per il comando /start
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    bot.reply_to(message, "Ciao! Benvenuto su Floratech\n Per dare il via al tuo nuovo fututo verde ti chiedo di eseguire il comando /new")
+    if not Telegram.ControlEntrance():
+        bot.reply_to(message, "Ciao! Benvenuto su Floratech\n Per dare il via al tuo nuovo fututo verde ti chiedo di eseguire il comando /new")
+    else:
+        bot.send_message(Telegram.TelegramUser(),"La tua esperienza è già cominciata. Goditi il servizio")
     #print(message.chat.id)
 
 # Handler per il comando /help
@@ -21,7 +24,7 @@ def send_welcome(message):
 def send_help(message):
     print(Telegram.ControlEntrance())
     if Telegram.ControlEntrance():
-        bot.reply_to(message, "Questo è un bot di prova basato su webhook con Django.")
+        bot.reply_to(message, "In che cosa posso aiutarti?")
     else:
         bot.reply_to(message, "Ti chiedo di eseguire il comando /new")
     
@@ -35,9 +38,12 @@ def WarningMessage():
 
 @bot.message_handler(commands=['new'])
 def AddNewUser(message):
+    if Telegram.DoesNotExist:
     #bot.send_message(USER_ID,'Aggiunto nuovo utente')
-    Telegram.NewTelegramUser(message.chat.id)
-    bot.send_message(message.chat.id,'Aggiunto nuovo utente')
+        Telegram.NewTelegramUser(message.chat.id)
+        bot.send_message(message.chat.id,'Aggiunto nuovo utente')
+    else:
+        bot.send_message(message.chat.id,'Hai già aggiunto il tuo utente.')
 
 @bot.message_handler(commands=['write'])
 def WriteSomething(message):
@@ -72,10 +78,15 @@ def delete_webhook():
     bot.delete_webhook()
     print("Webhook eliminato.")
 
-def Alert(request):
+def Alert(request,problema):
     if Telegram.ControlEntrance():
         value=Telegram.TelegramUser()
-        bot.send_message(value,'Leonardi Merda')
+        match problema:
+            case 'sensor' : bot.send_message(value,'[WARNING]\nComunicazione con sensore assente')
+            case 'hub': bot.send_message(value,'[WARNING]\nProblems from the Hub')
+            case 'storm': bot.send_message(value,'[WARNING]\n A storm is arriving in few hours')
+            
+        #bot.send_message(value,'A huge amount of water will arrive')
         return HttpResponse(status=200)
 
 
