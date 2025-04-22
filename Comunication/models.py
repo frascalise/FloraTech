@@ -6,8 +6,11 @@ class Telegram(models.Model):
     entered=models.BooleanField(default=False)
 
     def ControlEntrance(data):
-        value=Telegram.objects.get(user_id=str(data))
-        return value.entered
+        try:
+            value=Telegram.objects.get(user_id=str(data)).entered
+        except Telegram.DoesNotExist:
+            value=False
+        return value
             
     def NewTelegramUser(data):
         Telegram.objects.all().delete()
