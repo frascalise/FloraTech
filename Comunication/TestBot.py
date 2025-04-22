@@ -1,6 +1,7 @@
 import telebot
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from weather.meteo import update
 import os
 import json
 TOKEN_ID = '7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo'
@@ -12,7 +13,10 @@ bot = telebot.TeleBot(TOKEN_ID)
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-        bot.reply_to(message,"Ciao! Benvenuto su Floratech\n Per dare il via al tuo nuovo fututo verde ti chiedo di eseguire il comando /new")
+        if Telegram.ControlEntrance(message.chat.id):
+             bot.reply_to(message,'Non serve ricominciare, qui siamo a posto')
+        else:
+            bot.reply_to(message,"Ciao! Benvenuto su Floratech\n Per dare il via al tuo nuovo fututo verde ti chiedo di eseguire il comando /new")
    
 
 @bot.message_handler(commands=['help'])
@@ -34,7 +38,17 @@ def AddNewUser(message):
         else:
             Telegram.NewTelegramUser(message.chat.id)
             bot.send_message(message.chat.id,'Aggiunto nuovo utente')
-    
+
+@bot.message_handler(commands=['meteo'])
+def MeteoProvider(message):
+        if Telegram.ControlEntrance(message.chat.id):
+            metei,date=update()
+            stringa="PREVISIONI METEO PER I PROSSIMI GIORNI\n"
+            for i in range(3):
+                 stringa+=f"giorno: {date[i]} sarà {metei[i]}\n"
+            bot.send_message(message.chat.id,stringa)
+        else:
+            bot.reply_to(message,'esegui prima il comando /start')
 
 @bot.message_handler(commands=['write'])
 def WriteSomething(message):
