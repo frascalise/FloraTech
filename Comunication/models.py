@@ -16,6 +16,7 @@ class Telegram(models.Model):
         Telegram.objects.all().delete()
         p_db=Telegram()
         p_db.user_id=str(data)
+        p_db.entered=True
         p_db.save()
 
     def TelegramUser():
