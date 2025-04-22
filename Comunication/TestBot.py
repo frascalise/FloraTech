@@ -13,8 +13,7 @@ bot = telebot.TeleBot(TOKEN_ID)
 # Handler per il comando /start
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    print(Telegram.DoesNotExist)
-    if Telegram.DoesNotExist:
+    if not Telegram.ControlEntrance():
         bot.reply_to(message, "Ciao! Benvenuto su Floratech\n Per dare il via al tuo nuovo fututo verde ti chiedo di eseguire il comando /new")
     elif Telegram.ControlEntrance():
         bot.send_message(Telegram.TelegramUser(),"La tua esperienza è già cominciata. Goditi il servizio")
@@ -23,27 +22,28 @@ def send_welcome(message):
 # Handler per il comando /help
 @bot.message_handler(commands=['help'])
 def send_help(message):
-    if Telegram.ControlEntrance():
-        bot.reply_to(message, "In che cosa posso aiutarti?")
-    elif Telegram.DoesNotExist:
-        bot.reply_to(message, "Ti chiedo di eseguire il comando /new")
+    try: 
+        bot.send_message(Telegram.TelegramUser(),'Come posso aiutarti?')
+    except Telegram.DoesNotExist:
+        bot.reply_to(message, "Devi prima usare il comando /start per iniziare.")
     
 
 def WarningMessage():
-    if Telegram.ControlEntrance():
-        value=Telegram.TelegramUser()
-        bot.send_message(value,'Sta per splodere tutto')
-        print('qualcosa')
+        try:
+            value=Telegram.TelegramUser()
+            bot.send_message(value,'Sta per splodere tutto')
+        except Telegram.DoesNotExist:
+            print('errore invio warning')
     
 
 @bot.message_handler(commands=['new'])
 def AddNewUser(message):
-    if Telegram.DoesNotExist:
-    #bot.send_message(USER_ID,'Aggiunto nuovo utente')
+    if Telegram.ControlEntrance():
         Telegram.NewTelegramUser(message.chat.id)
         bot.send_message(message.chat.id,'Aggiunto nuovo utente')
-    elif Telegram.ControlEntrance():
-        bot.send_message(message.chat.id,'Hai già aggiunto il tuo utente.')
+    else:
+        bot.send_message(message.chat.id,'Hai già un utente')
+    
 
 @bot.message_handler(commands=['write'])
 def WriteSomething(message):
