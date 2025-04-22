@@ -15,7 +15,7 @@ bot = telebot.TeleBot(TOKEN_ID)
 def send_welcome(message):
     if Telegram.DoesNotExist:
         bot.reply_to(message, "Ciao! Benvenuto su Floratech\n Per dare il via al tuo nuovo fututo verde ti chiedo di eseguire il comando /new")
-    else:
+    elif Telegram.ControlEntrance():
         bot.send_message(Telegram.TelegramUser(),"La tua esperienza è già cominciata. Goditi il servizio")
     #print(message.chat.id)
 
@@ -25,7 +25,7 @@ def send_help(message):
     print(Telegram.ControlEntrance())
     if Telegram.ControlEntrance():
         bot.reply_to(message, "In che cosa posso aiutarti?")
-    else:
+    elif Telegram.DoesNotExist:
         bot.reply_to(message, "Ti chiedo di eseguire il comando /new")
     
 
@@ -42,7 +42,7 @@ def AddNewUser(message):
     #bot.send_message(USER_ID,'Aggiunto nuovo utente')
         Telegram.NewTelegramUser(message.chat.id)
         bot.send_message(message.chat.id,'Aggiunto nuovo utente')
-    else:
+    elif Telegram.ControlEntrance():
         bot.send_message(message.chat.id,'Hai già aggiunto il tuo utente.')
 
 @bot.message_handler(commands=['write'])
