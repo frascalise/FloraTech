@@ -35,9 +35,9 @@ def AddNewUser(message):
 
 @bot.message_handler(commands=['write'])
 def WriteSomething(message):
-    value=Telegram.TelegramUser()
     if Telegram.ControlEntrance(message.chat.id):
         #value=Telegram.TelegramUser()
+        value=Telegram.TelegramUser()
         bot.send_message(value,'Apelle, figlio di apollo fece una palla di pelle di pollo')
     else:
         bot.reply_to(message, "Ti chiedo di eseguire il comando /new")
