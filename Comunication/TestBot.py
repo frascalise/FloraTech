@@ -13,7 +13,7 @@ bot = telebot.TeleBot(TOKEN_ID)
 # Handler per il comando /start
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    if not Telegram.ControlEntrance():
+    if not Telegram.ControlEntrance() or Telegram.DoesNotExist:
         bot.reply_to(message, "Ciao! Benvenuto su Floratech\n Per dare il via al tuo nuovo fututo verde ti chiedo di eseguire il comando /new")
     else:
         bot.send_message(Telegram.TelegramUser(),"La tua esperienza è già cominciata. Goditi il servizio")
