@@ -17,11 +17,10 @@ def send_welcome(message):
 
 @bot.message_handler(commands=['help'])
 def send_help(message):
-    try: 
-        bot.send_message(Telegram.TelegramUser(),'Come posso aiutarti?')
-    except Telegram.DoesNotExist:
-        bot.reply_to(message, "Devi prima usare il comando /start per iniziare.")
-    
+    if Telegram.ControlEntrance(message.chat.id):
+         bot.send_message(Telegram.TelegramUser(),'come posso aiutarti?')
+    else:
+         bot.reply_to(message,'esegui prima /start')
 
 def WarningMessage():
         value=Telegram.TelegramUser()
@@ -37,7 +36,7 @@ def AddNewUser(message):
 @bot.message_handler(commands=['write'])
 def WriteSomething(message):
     value=Telegram.TelegramUser()
-    if Telegram.ControlEntrance():
+    if Telegram.ControlEntrance(message.chat.id):
         #value=Telegram.TelegramUser()
         bot.send_message(value,'Apelle, figlio di apollo fece una palla di pelle di pollo')
     else:
@@ -68,15 +67,15 @@ def delete_webhook():
     print("Webhook eliminato.")
 
 def Alert(request,problema):
-    if Telegram.ControlEntrance():
-        value=Telegram.TelegramUser()
-        match problema:
-            case 'sensor' : bot.send_message(value,'[WARNING]\nComunicazione con sensore assente')
-            case 'hub': bot.send_message(value,'[WARNING]\nProblems from the Hub')
-            case 'storm': bot.send_message(value,'[WARNING]\n A storm is arriving in few hours')
+    
+    value=Telegram.TelegramUser()
+    match problema:
+        case 'sensor' : bot.send_message(value,'[WARNING]\nComunicazione con sensore assente')
+        case 'hub': bot.send_message(value,'[WARNING]\nProblems from the Hub')
+        case 'storm': bot.send_message(value,'[WARNING]\n A storm is arriving in few hours')
             
         #bot.send_message(value,'A huge amount of water will arrive')
-        return HttpResponse(status=200)
+    return HttpResponse(status=200)
 
 
 
