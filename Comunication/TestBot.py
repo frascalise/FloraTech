@@ -10,16 +10,11 @@ from .models import Telegram
 # Inizializza il bot Telegram
 bot = telebot.TeleBot(TOKEN_ID)
 
-# Handler per il comando /start
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    if Telegram.ControlEntrance():
-        bot.reply_to(message, "La tua esperienza è già cominciata. Goditi il servizio")
-    else:
         bot.reply_to(message,"Ciao! Benvenuto su Floratech\n Per dare il via al tuo nuovo fututo verde ti chiedo di eseguire il comando /new")
    
 
-# Handler per il comando /help
 @bot.message_handler(commands=['help'])
 def send_help(message):
     try: 
@@ -29,20 +24,14 @@ def send_help(message):
     
 
 def WarningMessage():
-        try:
-            value=Telegram.TelegramUser()
-            bot.send_message(value,'Sta per splodere tutto')
-        except Telegram.DoesNotExist:
-            print('errore invio warning')
+        value=Telegram.TelegramUser()
+        bot.send_message(value,'Sta per splodere tutto')
     
 
 @bot.message_handler(commands=['new'])
 def AddNewUser(message):
-    if Telegram.ControlEntrance():
         Telegram.NewTelegramUser(message.chat.id)
         bot.send_message(message.chat.id,'Aggiunto nuovo utente')
-    else:
-        bot.send_message(message.chat.id,'Hai già un utente')
     
 
 @bot.message_handler(commands=['write'])
