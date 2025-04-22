@@ -13,6 +13,7 @@ bot = telebot.TeleBot(TOKEN_ID)
 # Handler per il comando /start
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
+    print(Telegram.DoesNotExist)
     if Telegram.DoesNotExist:
         bot.reply_to(message, "Ciao! Benvenuto su Floratech\n Per dare il via al tuo nuovo fututo verde ti chiedo di eseguire il comando /new")
     elif Telegram.ControlEntrance():
@@ -22,7 +23,6 @@ def send_welcome(message):
 # Handler per il comando /help
 @bot.message_handler(commands=['help'])
 def send_help(message):
-    print(Telegram.ControlEntrance())
     if Telegram.ControlEntrance():
         bot.reply_to(message, "In che cosa posso aiutarti?")
     elif Telegram.DoesNotExist:
@@ -52,7 +52,7 @@ def WriteSomething(message):
         #value=Telegram.TelegramUser()
         bot.send_message(value,'Apelle, figlio di apollo fece una palla di pelle di pollo')
     else:
-        bot.send_message(value, "Ti chiedo di eseguire il comando /new")
+        bot.reply_to(message, "Ti chiedo di eseguire il comando /new")
 @csrf_exempt 
 def webhook_view(request):
     if request.method == 'POST':
