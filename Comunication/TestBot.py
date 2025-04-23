@@ -2,8 +2,8 @@ import telebot
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from weather.meteo import update
-from FloraTech.views import NewTelegramUser
-import os
+from FloraTech.views import VerifyTelegramUser,NewEntrance,TelegramIdProvider
+import random
 import json
 TOKEN_ID = '7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo'
 WEBHOOK_URL = 'https://floratech.leonardonels.com/comunication'
@@ -11,6 +11,7 @@ WEBHOOK_URL = 'https://floratech.leonardonels.com/comunication'
 from .models import Telegram
 # Inizializza il bot Telegram
 bot = telebot.TeleBot(TOKEN_ID)
+user_state={}
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
@@ -34,11 +35,39 @@ def WarningMessage():
 
 @bot.message_handler(commands=['new'])
 def AddNewUser(message):
-        if Telegram.ControlEntrance(message.chat.id):
+        bot.send_message(message.chat.id,'Scrivi il tuo nome utente')
+        bot.register_next_step_handler(message,VerifyCode)
+        #user_state[chat_id] = {'waiting_for': 'name'}
+        '''if Telegram.ControlEntrance(message.chat.id):
             bot.reply_to(message,'hai già aggiunto il tuo utente al sito.')
         else:
-            value=Telegram.NewTelegramUser(message.chat.id)
-            bot.send_message(message.chat.id,value)
+            value=
+            bot.send_message(message.chat.id,value)'''
+def VerifyCode(message):
+    if message.text[0]!='/':
+        number=random.randint(100000,999999)
+        user_state[message.chat.id]={'palla':'345678'}
+
+        user_state[message.chat.id]={'username':message.text}
+        value=VerifyTelegramUser(message.text,message.chat.id,number)
+        
+        if value==1:
+            bot.send_message(message.chat.id,f'il tuo codice è 123456')
+        
+            bot.send_message(message.chat.id,'Scrivi il codice che ti è stato inviato')
+            bot.register_next_step_handler(message,Decision)
+        else:
+            bot.send_message(message.chat.id,'Non risulti presente nel sistema')
+    else: bot.reply_to(message,'Non scrivere comandi. Ricomincia')
+
+def Decision(message):
+    number='123456'
+    if message.text == number:
+         NewEntrance(user_state[message.chat.id]['username'],message.chat.id)
+         Telegram.NewTelegramUser(message.chat.id)
+         bot.send_message(message.chat.id,'accesso avvenuto')
+    else:
+         bot.send_message(message.chat.id,'accesso negato')
 
 @bot.message_handler(commands=['meteo'])
 def MeteoProvider(message):
@@ -84,15 +113,14 @@ def delete_webhook():
     bot.delete_webhook()
     print("Webhook eliminato.")
 
-def Alert(request,problema,telegram_id,giardino):
+def Alert(request,problema,username):
     
-    value=Telegram.TelegramUser(telegram_id)
+    #value=Telegram.TelegramUser(telegram_id)
+    value=TelegramIdProvider(username)
     match problema:
         case 'sensor' : bot.send_message(value,'[WARNING]\nComunicazione con sensore assente')
         case 'hub': bot.send_message(value,'[WARNING]\nProblems from the Hub')
         case 'storm': bot.send_message(value,'[WARNING]\n A storm is arriving in few hours')
-            
-        #bot.send_message(value,'A huge amount of water will arrive')
     return HttpResponse(status=200)
 
 

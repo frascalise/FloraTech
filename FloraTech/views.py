@@ -1,5 +1,6 @@
 import json
 import requests
+import random
 from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -11,6 +12,8 @@ from datetime import datetime
 from collections import defaultdict
 from datetime import datetime
 from django.db.models import Q
+from django.http import HttpResponse
+from django.contrib.auth.models import User
 
 from weather.meteo import richiesta_meteo
 from weather.aiModel import WeatherModel
@@ -319,9 +322,7 @@ def setup(request):
     }
 
     return render(request, 'api/api.html', {'data': data})
-def NewTelegramUser(owner,tele_id):
-    user=Telegram.objects.create(fk_owner=owner,telegram_id=tele_id)
-    user.save()
+
     
 # For testing purposes only
 # Show all the data
@@ -533,3 +534,20 @@ def get_water(request):
     print("\n\n\n\nWaterQ: ", waterQ, "\n\n\n\n\n")
 
     return JsonResponse({'message': 'Returning the daily water volume needed', 'data': waterQ})
+
+def VerifyTelegramUser(owner,tele_id,number):
+    p_db=User.objects.all()
+    presente=False
+    for i in p_db:
+        if i.username==owner:
+            presente=True
+    if presente:
+        return 1
+    return 0
+        
+def NewEntrance(owner,tele_id):
+    #Telegram.objects.all().delete()
+    value=Telegram.objects.create(fk_owner=owner,telegram_id=tele_id)
+    value.save()
+def TelegramIdProvider(username):
+    return Telegram.objects.get(fk_owner=username).telegram_id
