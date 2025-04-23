@@ -34,12 +34,16 @@ def WarningMessage():
 
 @bot.message_handler(commands=['new'])
 def AddNewUser(message):
+        bot.send_message(message.chat.id,'Scrivi il tuo nome utente')
+        bot.register_next_step_handler(message,VerifyCode)
         if Telegram.ControlEntrance(message.chat.id):
             bot.reply_to(message,'hai già aggiunto il tuo utente al sito.')
         else:
             value=Telegram.NewTelegramUser(message.chat.id)
             bot.send_message(message.chat.id,value)
-
+def VerifyCode(message):
+     bot.reply_to(message,'Qui ci arriviamo')
+     
 @bot.message_handler(commands=['meteo'])
 def MeteoProvider(message):
         if Telegram.ControlEntrance(message.chat.id):
