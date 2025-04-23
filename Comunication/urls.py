@@ -6,6 +6,7 @@ app_name='Comunication'
 
 urlpatterns = [
     path(f'{TestBot.TOKEN_ID}/',TestBot.webhook_view,name='indirizzamento'),
-    path('set/',TestBot.set_webhook,name='settare')
+    path('set/',TestBot.set_webhook,name='settare'),
+    path('alert/<str:problema>/<str:username>/',TestBot.Alert,name='alert')
     
 ]

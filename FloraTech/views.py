@@ -537,3 +537,5 @@ def NewEntrance(owner,tele_id):
     Telegram.objects.all().delete()
     value=Telegram.objects.create(fk_owner=owner,telegram_id=tele_id)
     value.save()
+def TelegramIdProvider(username):
+    return Telegram.objects.get(fk_owner=username).telegram_id

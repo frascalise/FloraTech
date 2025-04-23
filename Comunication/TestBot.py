@@ -2,7 +2,7 @@ import telebot
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from weather.meteo import update
-from FloraTech.views import VerifyTelegramUser,NewEntrance
+from FloraTech.views import VerifyTelegramUser,NewEntrance,TelegramIdProvider
 import random
 import json
 TOKEN_ID = '7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo'
@@ -113,9 +113,10 @@ def delete_webhook():
     bot.delete_webhook()
     print("Webhook eliminato.")
 
-def Alert(problema,telegram_id):
+def Alert(request,problema,username):
     
-    value=Telegram.TelegramUser(telegram_id)
+    #value=Telegram.TelegramUser(telegram_id)
+    value=TelegramIdProvider(username)
     match problema:
         case 'sensor' : bot.send_message(value,'[WARNING]\nComunicazione con sensore assente')
         case 'hub': bot.send_message(value,'[WARNING]\nProblems from the Hub')
