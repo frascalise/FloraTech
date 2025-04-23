@@ -316,9 +316,8 @@ def VerifyTelegramUser(owner,tele_id,number):
         if i.fk_owner==owner:
             presente=True
     if not presente:
-        
-        return HttpResponse(number)
-    return 0
+        return f'il tuo codice è {number}'
+    return 'sei già a posto, scrivi 0'
         
 
     

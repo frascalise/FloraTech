@@ -44,11 +44,12 @@ def AddNewUser(message):
             value=Telegram.NewTelegramUser(message.chat.id)
             bot.send_message(message.chat.id,value)'''
 def VerifyCode(message):
-     bot.reply_to(message,f'Qui ci arriviamo con {message.text}')
-     number=random.randint(100000,999999)
-     VerifyTelegramUser(message.text,message.chat.id,number)
-
-     bot.send_message(message.chat.id,'Scrivi il codice che ti è stato inviato')
+    bot.reply_to(message,f'Qui ci arriviamo con {message.text}')
+    number=random.randint(100000,999999)
+    value=VerifyTelegramUser(message.text,message.chat.id,number)
+    bot.send_message(message.chat.id,value)
+    
+    bot.send_message(message.chat.id,'Scrivi il codice che ti è stato inviato')
 
 
 @bot.message_handler(commands=['meteo'])
