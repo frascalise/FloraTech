@@ -283,6 +283,10 @@ def setup(request):
     garden = Garden.objects.create(fk_raspberry=raspberry, label=data_garden['label'])
     garden.moisture = data_garden['moisture']
     garden.plants = data_garden['plants']
+    garden.location = data_garden['location']
+    garden.latitude = data_garden['latitude']
+    garden.longitude = data_garden['longitude']
+    garden.surface_area = data_garden['surface_area']
     garden.save()
 
     # Create the sensors
@@ -290,8 +294,8 @@ def setup(request):
     # 1	10	None	1	False	not working	sensor	Sensor
     # 2	11	None	1	False	not working	sensor	Sensor
     # 3	15	1	1	True	working	actuator	Actuator
-    sensor1 = Sensor.objects.create(idSensor=10, fk_garden=garden, fk_raspberry=raspberry, is_associated=False, status='not working', type='sensor', label='Sensor')
-    sensor2 = Sensor.objects.create(idSensor=11, fk_garden=garden, fk_raspberry=raspberry, is_associated=False, status='not working', type='sensor', label='Sensor')
+    sensor1 = Sensor.objects.create(idSensor=10, fk_garden=garden, fk_raspberry=raspberry, is_associated=True, status='not working', type='sensor', label='Sensor')
+    sensor2 = Sensor.objects.create(idSensor=11, fk_garden=garden, fk_raspberry=raspberry, is_associated=True, status='not working', type='sensor', label='Sensor')
     sensor3 = Sensor.objects.create(idSensor=15, fk_garden=garden, fk_raspberry=raspberry, is_associated=True, status='working', type='actuator', label='Actuator')
     sensor1.save()
     sensor2.save()
