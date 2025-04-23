@@ -50,8 +50,10 @@ def VerifyCode(message):
     bot.send_message(message.chat.id,value)
     
     bot.send_message(message.chat.id,'Scrivi il codice che ti è stato inviato')
+    bot.register_next_step_handler(message,Decision(number))
 
-
+def Decision(message,number):
+     bot.send_message(message.chat.id,'halleluja')
 @bot.message_handler(commands=['meteo'])
 def MeteoProvider(message):
         if Telegram.ControlEntrance(message.chat.id):
