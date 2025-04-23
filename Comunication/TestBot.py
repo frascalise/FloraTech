@@ -46,7 +46,6 @@ def AddNewUser(message):
 def VerifyCode(message):
     if message.text[0]!='/':
         number=random.randint(100000,999999)
-        bot.reply_to(message,user_state[message.chat.id]['control'])
         user_state[message.chat.id]={'control':str(number)}
 
         user_state[message.chat.id]={'username':message.text}
@@ -61,7 +60,7 @@ def VerifyCode(message):
     else: bot.reply_to(message,'Non scrivere comandi. Ricomincia')
 
 def Decision(message):
-    bot.reply_to(message,user_state[message.chat.id]['control'])
+    bot.reply_to(message,message.text)
     
     bot.send_message(message.chat.id,'fuori')
 @bot.message_handler(commands=['meteo'])
