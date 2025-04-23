@@ -46,7 +46,7 @@ def AddNewUser(message):
 def VerifyCode(message):
     if message.text[0]!='/':
         number=random.randint(100000,999999)
-        user_state[message.chat.id]={'control':'345678'}
+        user_state[message.chat.id]={'palla':'345678'}
 
         user_state[message.chat.id]={'username':message.text}
         value=VerifyTelegramUser(message.text,message.chat.id,number)
@@ -60,9 +60,8 @@ def VerifyCode(message):
     else: bot.reply_to(message,'Non scrivere comandi. Ricomincia')
 
 def Decision(message):
-    bot.reply_to(message,user_state[message.chat.id]['username'])
-    
-    bot.send_message(message.chat.id,'fuori')
+    bot.reply_to(message,user_state[message.chat.id]['palla'])
+
 @bot.message_handler(commands=['meteo'])
 def MeteoProvider(message):
         if Telegram.ControlEntrance(message.chat.id):
