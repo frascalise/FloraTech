@@ -51,7 +51,7 @@ def VerifyCode(message):
         user_state[message.chat.id]={'username':message.text}
         value=VerifyTelegramUser(message.text,message.chat.id,number)
         if value==1:
-            bot.send_message(message.chat.id,f'il tuo codice è {number}')
+            bot.send_message(message.chat.id,f'il tuo codice è 123456')
         
             bot.send_message(message.chat.id,'Scrivi il codice che ti è stato inviato')
             bot.register_next_step_handler(message,Decision)
@@ -62,6 +62,7 @@ def VerifyCode(message):
 def Decision(message):
     number='123456'
     if message.text == number:
+         NewEntrance(user_state[message.chat.id]['username'],message.chat.id)
          bot.send_message(message.chat.id,'accesso avvenuto')
     else:
          bot.send_message(message.chat.id,'accesso negato')
