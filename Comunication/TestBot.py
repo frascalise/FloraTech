@@ -49,8 +49,8 @@ def VerifyCode(message):
         user_state[message.chat.id]={'palla':'345678'}
 
         user_state[message.chat.id]={'username':message.text}
-        #value=VerifyTelegramUser(message.text,message.chat.id,number)
-        value=1
+        value=VerifyTelegramUser(message.text,message.chat.id,number)
+        
         if value==1:
             bot.send_message(message.chat.id,f'il tuo codice è 123456')
         
