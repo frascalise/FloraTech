@@ -54,7 +54,7 @@ def home_view(request):
             "plants_names": plants_names,
             "plants_quantities": plants_quantities,
         })
-    
+
     # Passa i dati alla template
     return render(request, "home/home.html", {"weather": weather_data, "user": user, "gardens": gardens_data})
 
