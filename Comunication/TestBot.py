@@ -60,17 +60,7 @@ def VerifyCode(message):
     else: bot.reply_to(message,'Non scrivere comandi. Ricomincia')
 
 def Decision(message):
-    #bot.send_message(message.chat.id,user_state[message.chat.id]['control'])
-    #bot.send_message(message.chat.id,message.text)
-    bot.send_message(message.chat.id,'entrato')
-    if message.text==user_state[message.chat.id]['control']:
-          #bot.send_message(message.chat.id,'entrato')
-          #NewEntrance(user_state[message.chat.id]['username'],message.chat.id)
-        bot.send_message(message.chat.id,'accesso effettuato')
-    else:
-        bot.send_message(message.chat.id,'accesso fallito')
-    bot.send_message(message.chat.id,'qui non entra')
-
+    bot.reply_to(message,'Siamo entrati')
 @bot.message_handler(commands=['meteo'])
 def MeteoProvider(message):
         if Telegram.ControlEntrance(message.chat.id):
