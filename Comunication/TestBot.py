@@ -46,14 +46,16 @@ def AddNewUser(message):
 def VerifyCode(message):
     bot.reply_to(message,f'Qui ci arriviamo con {message.text}')
     number=random.randint(100000,999999)
+    user_state[message.chat.id]={'control':number}
     value=VerifyTelegramUser(message.text,message.chat.id,number)
     bot.send_message(message.chat.id,value)
     
     bot.send_message(message.chat.id,'Scrivi il codice che ti è stato inviato')
-    bot.register_next_step_handler(message,Decision(number))
+    bot.register_next_step_handler(message,Decision)
 
 def Decision(message,number):
      bot.send_message(message.chat.id,'halleluja')
+     bot.send_message(message.chat.id,user_state[message.chat.id]['control'])
 @bot.message_handler(commands=['meteo'])
 def MeteoProvider(message):
         if Telegram.ControlEntrance(message.chat.id):
