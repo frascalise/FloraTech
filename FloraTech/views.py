@@ -534,7 +534,7 @@ def VerifyTelegramUser(owner,tele_id,number):
     return 0
         
 def NewEntrance(owner,tele_id):
-    Telegram.objects.all().delete()
+    #Telegram.objects.all().delete()
     value=Telegram.objects.create(fk_owner=owner,telegram_id=tele_id)
     value.save()
 def TelegramIdProvider(username):
