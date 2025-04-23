@@ -64,8 +64,8 @@ def Decision(message):
     bot.send_message(message.chat.id,message.text)
     #bot.send_message(message.chat.id,'entrato')
     if message.text==user_state[message.chat.id]['control']:
-          bot.send_message(message.chat.id,'entrato')
-          NewEntrance(user_state[message.chat.id]['username'],message.chat.id)
+          #bot.send_message(message.chat.id,'entrato')
+          #NewEntrance(user_state[message.chat.id]['username'],message.chat.id)
           bot.send_message(message.chat.id,'accesso effettuato')
     else:
         bot.send_message(message.chat.id,'accesso fallito')
