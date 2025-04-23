@@ -60,11 +60,19 @@ class WeatherModel:
         #weather_data = np.array(df_api_transf)
 
         preds = self.model.predict(df_api_transf)
-        self.model.partial_fit(df_api_transf,preds)
+        
         predictedPrecipitationsSum = 0
 
         for pred in preds:
             predictedPrecipitationsSum += pred
+
+        predicted_precipitation_sum_from_meteo_api = sum(df_api["precipitation_sum"])
+
+        if abs(predictedPrecipitationsSum - predicted_precipitation_sum_from_meteo_api) > 2:
+            predictedPrecipitationsSum = predicted_precipitation_sum_from_meteo_api
+        else:
+            self.model.partial_fit(df_api_transf,preds)
+            
 
         groundWater = self.get_ground_water(garden_id)
 
