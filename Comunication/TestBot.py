@@ -53,7 +53,7 @@ def VerifyCode(message):
     bot.send_message(message.chat.id,'Scrivi il codice che ti è stato inviato')
     bot.register_next_step_handler(message,Decision)
 
-def Decision(message,number):
+def Decision(message):
      bot.send_message(message.chat.id,'halleluja')
      bot.send_message(message.chat.id,user_state[message.chat.id]['control'])
 @bot.message_handler(commands=['meteo'])
