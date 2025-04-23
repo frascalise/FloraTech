@@ -272,6 +272,10 @@ def setup(request):
             {'name': 'TOMATO', 'quantity': 5},
             {'name': 'BANANA', 'quantity': 3},
         ],
+        'location': 'catanzaro',
+        'latitude': 38.8299603,
+        'longitude': 16.4315569,
+        'surface_area': 20.0,
     }
 
     raspberry = Raspberry.objects.create(fk_owner=data_raspberry['username'], label=data_raspberry['label'])
