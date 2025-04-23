@@ -35,14 +35,11 @@ def WarningMessage():
 
 @bot.message_handler(commands=['new'])
 def AddNewUser(message):
-        bot.send_message(message.chat.id,'Scrivi il tuo nome utente')
-        bot.register_next_step_handler(message,VerifyCode)
-        #user_state[chat_id] = {'waiting_for': 'name'}
-        '''if Telegram.ControlEntrance(message.chat.id):
-            bot.reply_to(message,'hai già aggiunto il tuo utente al sito.')
+        if not Telegram.ControlEntrance(message.chat.id):
+            bot.send_message(message.chat.id,'Scrivi il tuo nome utente')
+            bot.register_next_step_handler(message,VerifyCode)
         else:
-            value=
-            bot.send_message(message.chat.id,value)'''
+            bot.send_message(message.chat.id,'Risulti già iscritto. Non serve reiscriversi')
 def VerifyCode(message):
     if message.text[0]!='/':
         number=random.randint(100000,999999)
