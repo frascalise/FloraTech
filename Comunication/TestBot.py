@@ -63,8 +63,8 @@ def VerifyCode(message):
 def Decision(message):
     number='123456'
     if message.text == number:
-         #NewEntrance(user_state[message.chat.id]['username'],message.chat.id)
-         #Telegram.NewTelegramUser(message.chat.id)
+         NewEntrance(user_state[message.chat.id]['username'],message.chat.id)
+         Telegram.NewTelegramUser(message.chat.id)
          bot.send_message(message.chat.id,'accesso avvenuto')
     else:
          bot.send_message(message.chat.id,'accesso negato')
