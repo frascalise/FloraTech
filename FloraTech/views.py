@@ -316,8 +316,8 @@ def VerifyTelegramUser(owner,tele_id,number):
         if i.fk_owner==owner:
             presente=True
     if presente:
-        return f'il tuo codice è {number}'
-    return 'non risulti presente.\n Controlla di aver fatto tutti i passaggi precedenti.'
+        return 1
+    return 0
         
 def NewEntrance(owner,tele_id):
     value=Telegram.objects.create(fk_owner=owner,telegram_id=tele_id)

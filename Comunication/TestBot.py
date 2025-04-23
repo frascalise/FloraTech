@@ -44,15 +44,18 @@ def AddNewUser(message):
             value=Telegram.NewTelegramUser(message.chat.id)
             bot.send_message(message.chat.id,value)'''
 def VerifyCode(message):
-    bot.reply_to(message,f'Qui ci arriviamo con {message.text}')
+    #bot.reply_to(message,f'Qui ci arriviamo con {message.text}')
     number=random.randint(100000,999999)
-    
+
     user_state[message.chat.id]={'control':str(number)}
     value=VerifyTelegramUser(message.text,message.chat.id,number)
-    bot.send_message(message.chat.id,value)
+    if value==1:
+        bot.send_message(message.chat.id,f'il tuo codice è {number}')
     
-    bot.send_message(message.chat.id,'Scrivi il codice che ti è stato inviato')
-    bot.register_next_step_handler(message,Decision)
+        bot.send_message(message.chat.id,'Scrivi il codice che ti è stato inviato')
+        bot.register_next_step_handler(message,Decision)
+    else:
+        bot.send_message(message.chat.id,'Non risulti presente nel sistema')
 
 def Decision(message):
     if message.text==user_state[message.chat.id]['control']:
