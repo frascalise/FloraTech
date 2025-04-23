@@ -36,8 +36,8 @@ def AddNewUser(message):
         if Telegram.ControlEntrance(message.chat.id):
             bot.reply_to(message,'hai già aggiunto il tuo utente al sito.')
         else:
-            Telegram.NewTelegramUser(message.chat.id)
-            bot.send_message(message.chat.id,'Aggiunto nuovo utente')
+            value=Telegram.NewTelegramUser(message.chat.id)
+            bot.send_message(message.chat.id,value)
 
 @bot.message_handler(commands=['meteo'])
 def MeteoProvider(message):

@@ -13,11 +13,19 @@ class Telegram(models.Model):
         return value
             
     def NewTelegramUser(data):
-        Telegram.objects.all().delete()
-        p_db=Telegram()
-        p_db.user_id=str(data)
-        p_db.entered=True
-        p_db.save()
+        #Telegram.objects.all().delete()
+        presente=False
+        p_db=Telegram.objects.all()
+        for i in p_db:
+            if i.user_id==str(data):
+                presente=True
+        if not presente:
+            p_db2=Telegram()
+            p_db2.user_id=str(data)
+            p_db2.entered=True
+            p_db2.save()
+            return "aggiunto"
+        else: return "già presente"
 
     def TelegramUser():
         values= Telegram.objects.all()
