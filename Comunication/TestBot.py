@@ -112,7 +112,7 @@ def delete_webhook():
     bot.delete_webhook()
     print("Webhook eliminato.")
 
-def Alert(request,problema,telegram_id,giardino):
+def Alert(problema,telegram_id):
     
     value=Telegram.TelegramUser(telegram_id)
     match problema:

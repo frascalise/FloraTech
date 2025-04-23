@@ -14,6 +14,7 @@ from datetime import datetime
 from django.db.models import Q
 from django.http import HttpResponse
 from django.contrib.auth.models import User
+from Comunication.TestBot import Alert
 
 from weather.meteo import richiesta_meteo
 from weather.aiModel import WeatherModel
@@ -324,6 +325,10 @@ def NewEntrance(owner,tele_id):
     Telegram.objects.all().delete()
     value=Telegram.objects.create(fk_owner=owner,telegram_id=tele_id)
     value.save()
+def Alert(request,problema,username):
+    p_db=Telegram.objects.get(fk_owner=username)
+    Alert(problema,p_db.telegram_id)
+    return HttpResponse(status=200)
 
     
 # For testing purposes only
