@@ -44,22 +44,24 @@ def AddNewUser(message):
             value=Telegram.NewTelegramUser(message.chat.id)
             bot.send_message(message.chat.id,value)'''
 def VerifyCode(message):
-    
-    number=random.randint(100000,999999)
+    if message.text[0]!='/':
+        number=random.randint(100000,999999)
 
-    user_state[message.chat.id]={'control':str(number)}
-    user_state[message.chat.id]={'username':message.text}
-    value=VerifyTelegramUser(message.text,message.chat.id,number)
-    if value==1:
-        bot.send_message(message.chat.id,f'il tuo codice è {number}')
-    
-        bot.send_message(message.chat.id,'Scrivi il codice che ti è stato inviato')
-        bot.register_next_step_handler(message,Decision)
-    else:
-        bot.send_message(message.chat.id,'Non risulti presente nel sistema')
+        user_state[message.chat.id]={'control':str(number)}
+        user_state[message.chat.id]={'username':message.text}
+        value=VerifyTelegramUser(message.text,message.chat.id,number)
+        if value==1:
+            bot.send_message(message.chat.id,f'il tuo codice è {number}')
+        
+            bot.send_message(message.chat.id,'Scrivi il codice che ti è stato inviato')
+            bot.register_next_step_handler(message,Decision)
+        else:
+            bot.send_message(message.chat.id,'Non risulti presente nel sistema')
+    else: bot.reply_to(message,'Non scrivere comandi. Ricomincia')
 
 def Decision(message):
     if message.text==user_state[message.chat.id]['control']:
+          bot.send_message(message.chat.id,'entrato')
           NewEntrance(user_state[message.chat.id]['username'],message.chat.id)
           bot.send_message(message.chat.id,'accesso effettuato')
     else:
