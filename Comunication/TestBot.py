@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from weather.meteo import update
 from FloraTech.views import NewTelegramUser
-import os
+import random
 import json
 TOKEN_ID = '7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo'
 WEBHOOK_URL = 'https://floratech.leonardonels.com/comunication'
@@ -11,6 +11,7 @@ WEBHOOK_URL = 'https://floratech.leonardonels.com/comunication'
 from .models import Telegram
 # Inizializza il bot Telegram
 bot = telebot.TeleBot(TOKEN_ID)
+user_state={}
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
@@ -36,13 +37,14 @@ def WarningMessage():
 def AddNewUser(message):
         bot.send_message(message.chat.id,'Scrivi il tuo nome utente')
         bot.register_next_step_handler(message,VerifyCode)
-        if Telegram.ControlEntrance(message.chat.id):
+        #user_state[chat_id] = {'waiting_for': 'name'}
+        '''if Telegram.ControlEntrance(message.chat.id):
             bot.reply_to(message,'hai già aggiunto il tuo utente al sito.')
         else:
             value=Telegram.NewTelegramUser(message.chat.id)
-            bot.send_message(message.chat.id,value)
+            bot.send_message(message.chat.id,value)'''
 def VerifyCode(message):
-     bot.reply_to(message,'Qui ci arriviamo')
+     bot.reply_to(message,f'Qui ci arriviamo con {message.text}')
      
 @bot.message_handler(commands=['meteo'])
 def MeteoProvider(message):
