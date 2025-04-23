@@ -69,6 +69,7 @@ def Decision(message):
         bot.send_message(message.chat.id,'accesso effettuato')
     else:
         bot.send_message(message.chat.id,'accesso fallito')
+    bot.send_message(message.chat.id,'qui non entra')
 
 @bot.message_handler(commands=['meteo'])
 def MeteoProvider(message):
