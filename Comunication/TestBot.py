@@ -60,7 +60,7 @@ def VerifyCode(message):
     else: bot.reply_to(message,'Non scrivere comandi. Ricomincia')
 
 def Decision(message):
-    bot.reply_to(message,'Siamo entrati')
+    bot.reply_to(message,user_state[message.chat.id]['control'])
     
     bot.send_message(message.chat.id,'fuori')
 @bot.message_handler(commands=['meteo'])
