@@ -1,6 +1,7 @@
 import requests
 #from Comunication.TestBot import WarningMessage
 import json
+from accounts.models import *
 
 def update():
     url=costruzione_richiesta()
@@ -10,7 +11,7 @@ def update():
     return json_result["daily"]["weather_code"],json_result["daily"]["time"]
 
 def richiesta_meteo(request):
-    url=costruzione_richiesta()
+    url=costruzione_richiesta(request)
     response = requests.get(url)
     json_result = response.json()
     codici=traduzione_codici_meteo(json_result["daily"]["weather_code"])
@@ -56,8 +57,8 @@ def traduzione_codici_meteo(WC):
                 prevision.append("http://openweathermap.org/img/wn/11d@2x.png")
     return prevision
 
-def costruzione_richiesta():
-    lat,lon=get_position()  #latitudine e longitudine dovrebbero essere quelli della posizione dell'orto ?
+def costruzione_richiesta(request):
+    lat,lon=get_position(request)  #latitudine e longitudine dovrebbero essere quelli della posizione dell'orto ?
     start="https://api.open-meteo.com/v1/forecast?"
     position="latitude="+str(lat)+"&longitude="+str(lon)
     var_meteo=variabili_meteo()
@@ -73,8 +74,12 @@ def TimeZone():
     return "timezone=Europe"+'%'+"2FBerlin"
 def Days():
     return "past_days=3&forecast_days=4"#past_days=3&
-def get_position():
-    return 44.64,10.99
+def get_position(request):
+    # user = logged user
+    user = request.user
+    garden = Garden.objects.filter(user=user).first()
+
+    return garden.latitude,garden.longitude
 
 def spacchettamento(date):
     anni=[]

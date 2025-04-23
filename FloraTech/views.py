@@ -437,7 +437,6 @@ def setup(request):
 
     return render(request, 'api/api.html', {'data': data})
 
-    
 # For testing purposes only
 # Show all the data
 def show_all(request):
