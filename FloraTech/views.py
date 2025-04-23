@@ -309,17 +309,16 @@ def setup(request):
     }
 
     return render(request, 'api/api.html', {'data': data})
-def NewTelegramUser(owner,tele_id,number):
+def VerifyTelegramUser(owner,tele_id,number):
     p_db=Telegram.objects.all()
     presente=False
     for i in p_db:
         if i.fk_owner==owner:
             presente=True
     if not presente:
-        user=Telegram.objects.create(fk_owner=owner,telegram_id=tele_id)
-        user.save()
-        #number=random.randint(100000, 999999)
+        
         return HttpResponse(number)
+    return 0
         
 
     

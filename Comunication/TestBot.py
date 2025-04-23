@@ -2,7 +2,7 @@ import telebot
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from weather.meteo import update
-from FloraTech.views import NewTelegramUser
+from FloraTech.views import VerifyTelegramUser
 import random
 import json
 TOKEN_ID = '7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo'
@@ -46,8 +46,11 @@ def AddNewUser(message):
 def VerifyCode(message):
      bot.reply_to(message,f'Qui ci arriviamo con {message.text}')
      number=random.randint(100000,999999)
-     NewTelegramUser(message.text,message.chat.id,number)
-     
+     VerifyTelegramUser(message.text,message.chat.id,number)
+
+     bot.send_message(message.chat.id,'Scrivi il codice che ti è stato inviato')
+
+
 @bot.message_handler(commands=['meteo'])
 def MeteoProvider(message):
         if Telegram.ControlEntrance(message.chat.id):
