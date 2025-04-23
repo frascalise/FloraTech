@@ -13,6 +13,7 @@ from collections import defaultdict
 from datetime import datetime
 from django.db.models import Q
 from django.http import HttpResponse
+from django.contrib.auth.models import User
 
 from weather.meteo import richiesta_meteo
 from weather.aiModel import WeatherModel
@@ -310,10 +311,10 @@ def setup(request):
 
     return render(request, 'api/api.html', {'data': data})
 def VerifyTelegramUser(owner,tele_id,number):
-    p_db=Telegram.objects.all()
+    p_db=User.objects.all()
     presente=False
     for i in p_db:
-        if i.fk_owner==owner:
+        if i.username==owner:
             presente=True
     if presente:
         return 1
