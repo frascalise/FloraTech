@@ -46,7 +46,7 @@ def AddNewUser(message):
 def VerifyCode(message):
     if message.text[0]!='/':
         number=random.randint(100000,999999)
-        user_state[message.chat.id]={'control':number}
+        user_state[message.chat.id]={'control':'345678'}
 
         user_state[message.chat.id]={'username':message.text}
         value=VerifyTelegramUser(message.text,message.chat.id,number)
