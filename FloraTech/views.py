@@ -277,7 +277,19 @@ def setup(request):
     garden.moisture = data_garden['moisture']
     garden.plants = data_garden['plants']
     garden.save()
-    
+
+    # Create the sensors
+    # id	idSensor	fk_garden_id	fk_raspberry_id	is_associated	status	type	label
+    # 1	10	None	1	False	not working	sensor	Sensor
+    # 2	11	None	1	False	not working	sensor	Sensor
+    # 3	15	1	1	True	working	actuator	Actuator
+    sensor1 = Sensor.objects.create(idSensor=10, fk_garden=None, fk_raspberry=raspberry, is_associated=False, status='not working', type='sensor', label='Sensor')
+    sensor2 = Sensor.objects.create(idSensor=11, fk_garden=None, fk_raspberry=raspberry, is_associated=False, status='not working', type='sensor', label='Sensor')
+    sensor3 = Sensor.objects.create(idSensor=15, fk_garden=garden, fk_raspberry=raspberry, is_associated=True, status='working', type='actuator', label='Actuator')
+    sensor1.save()
+    sensor2.save()
+    sensor3.save()
+
     PLANT_CHOICES = [
         ("ONION", "Onion"),
         ("TOMATO", "Tomato"),
