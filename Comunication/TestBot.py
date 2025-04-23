@@ -2,7 +2,7 @@ import telebot
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from weather.meteo import update
-from FloraTech.views import VerifyTelegramUser,NewEntrance
+#from FloraTech.views import VerifyTelegramUser,NewEntrance
 import random
 import json
 TOKEN_ID = '7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo'
@@ -49,7 +49,8 @@ def VerifyCode(message):
         user_state[message.chat.id]={'palla':'345678'}
 
         user_state[message.chat.id]={'username':message.text}
-        value=VerifyTelegramUser(message.text,message.chat.id,number)
+        #value=VerifyTelegramUser(message.text,message.chat.id,number)
+        value=1
         if value==1:
             bot.send_message(message.chat.id,f'il tuo codice è 123456')
         
@@ -62,7 +63,7 @@ def VerifyCode(message):
 def Decision(message):
     number='123456'
     if message.text == number:
-         NewEntrance(user_state[message.chat.id]['username'],message.chat.id)
+         #NewEntrance(user_state[message.chat.id]['username'],message.chat.id)
          Telegram.NewTelegramUser(message.chat.id)
          bot.send_message(message.chat.id,'accesso avvenuto')
     else:
