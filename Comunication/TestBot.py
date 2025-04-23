@@ -54,8 +54,10 @@ def VerifyCode(message):
     bot.register_next_step_handler(message,Decision)
 
 def Decision(message):
-     bot.send_message(message.chat.id,'halleluja')
-     bot.send_message(message.chat.id,user_state[message.chat.id]['control'])
+    if message.text==user_state[message.chat.id]['control']:
+          bot.send_message(message.chat.id,'accesso effettuato')
+    else:
+        bot.send_message(message.chat.id,'accesso fallito')
 @bot.message_handler(commands=['meteo'])
 def MeteoProvider(message):
         if Telegram.ControlEntrance(message.chat.id):
