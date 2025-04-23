@@ -2,6 +2,7 @@ import telebot
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from weather.meteo import update
+from FloraTech.views import NewTelegramUser
 import os
 import json
 TOKEN_ID = '7789512707:AAFdHTHgdALOO745NlUPHftmClXrRBUMzjo'

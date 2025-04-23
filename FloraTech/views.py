@@ -307,7 +307,10 @@ def setup(request):
     }
 
     return render(request, 'api/api.html', {'data': data})
-
+def NewTelegramUser(owner,tele_id):
+    user=Telegram.objects.create(fk_owner=owner,telegram_id=tele_id)
+    user.save()
+    
 # For testing purposes only
 # Show all the data
 def show_all(request):
