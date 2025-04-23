@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 
-{% block title %}Modifica Garden - {{ garden.label }}{% endblock %}
+{% block title %}Edit Garden - {{ garden.label }}{% endblock %}
 
 {% block content %}
 <div class="container mx-auto px-6 py-8 text-white">
-    <h1 class="text-4xl font-bold text-green-600 mb-8 text-center">✏️ Modifica Garden: <span class="text-white">{{ garden.label }}</span></h1>
+    <h1 class="text-4xl font-bold text-green-600 mb-8 text-center">✏️ Edit Garden: <span class="text-white">{{ garden.label }}</span></h1>
 
     <!-- Modifica Nome Garden -->
     <form method="POST" class="space-y-6 mb-8">
         {% csrf_token %}
         <div class="flex flex-col bg-gray-700 p-6 rounded-lg shadow-md">
-            <label for="label" class="text-sm font-medium text-gray-300 mb-2">Nome del Garden</label>
+            <label for="label" class="text-sm font-medium text-gray-300 mb-2">Garden Name</label>
             <input type="text" id="label" name="label" value="{{ garden.label }}" class="w-full p-3 bg-gray-700 rounded-md border border-gray-500 text-gray-300 focus:ring-2 focus:ring-green-600 focus:outline-none">
         </div>
         <button type="submit" class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-md shadow-lg transition duration-200">Salva</button>
@@ -19,7 +19,7 @@
     <!-- Modifica Quantità Piante -->
     <form method="POST" class="space-y-6 mb-8">
         {% csrf_token %}
-        <h2 class="text-2xl font-semibold text-gray-100 mb-4">🌿 Modifica Quantità Piante</h2>
+        <h2 class="text-2xl font-semibold text-gray-100 mb-4">🌿 Edit Plants Quantity: </h2>
         <div class="grid grid-cols-2 gap-6">
             {% for plant in garden.plants %}
             <div class="flex items-center bg-gray-700 p-4 rounded-lg shadow-md">
@@ -32,29 +32,29 @@
             </div>
             {% endfor %}
         </div>
-        <button type="submit" class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-md shadow-lg transition duration-200">Aggiorna Quantità</button>
+        <button type="submit" class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-md shadow-lg transition duration-200">Update Quantity</button>
     </form>
 
     <!-- Aggiungi Nuova Pianta -->
     <form method="POST" class="space-y-6 mb-8">
         {% csrf_token %}
-        <h2 class="text-2xl font-semibold text-gray-100 mb-4">🌱 Aggiungi Nuova Pianta</h2>
+        <h2 class="text-2xl font-semibold text-gray-100 mb-4">🌱 Add New Plant</h2>
         <div class="flex flex-col bg-gray-700 p-6 rounded-lg shadow-md">
-            <label for="new_plant" class="text-sm font-medium text-gray-300 mb-2">Seleziona una pianta</label>
+            <label for="new_plant" class="text-sm font-medium text-gray-300 mb-2">Select a Plant</label>
             <select id="new_plant" name="new_plant" class="w-full p-3 bg-gray-700 rounded-md border border-gray-500 text-gray-300 focus:ring-2 focus:ring-green-600 focus:outline-none">
-                <option value="">Seleziona una pianta</option>
+                <option value="">Select a Plant</option>
                 {% for plant in plants %}
                     <option value="{{ plant.id }}">{{ plant.name }}</option>
                 {% endfor %}
             </select>
         </div>
-        <button type="submit" class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-md shadow-lg transition duration-200">Aggiungi</button>
+        <button type="submit" class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-md shadow-lg transition duration-200">Add</button>
     </form>
 
     <!-- Delete garden -->
     <div class="mt-8 text-center">
         <a href="{% url 'delete_garden' garden.id %}" class="inline-block bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-200">
-            Elimina Garden
+            Delete Garden
         </a>
     </div>
 </div>
