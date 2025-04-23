@@ -14,7 +14,6 @@ from datetime import datetime
 from django.db.models import Q
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from Comunication.TestBot import Alert
 
 from weather.meteo import richiesta_meteo
 from weather.aiModel import WeatherModel
