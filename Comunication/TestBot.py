@@ -22,12 +22,12 @@ def send_welcome(message):
 @bot.message_handler(commands=['help'])
 def send_help(message):
     if Telegram.ControlEntrance(message.chat.id):
-         bot.send_message(Telegram.TelegramUser(),'come posso aiutarti?')
+         bot.reply_to(message,'come posso aiutarti?')
     else:
          bot.reply_to(message,'esegui prima /start')
 
 def WarningMessage():
-        value=Telegram.TelegramUser()
+        value=Telegram.TelegramUser(0)
         bot.send_message(value,'Sta per splodere tutto')
     
 
@@ -54,8 +54,8 @@ def MeteoProvider(message):
 def WriteSomething(message):
     if Telegram.ControlEntrance(message.chat.id):
         #value=Telegram.TelegramUser()
-        value=Telegram.TelegramUser()
-        bot.send_message(value,'Apelle, figlio di apollo fece una palla di pelle di pollo')
+        #value=Telegram.TelegramUser()
+        bot.send_message(message.chat.id,'Apelle, figlio di apollo fece una palla di pelle di pollo')
     else:
         bot.reply_to(message, "Ti chiedo di eseguire il comando /new")
 @csrf_exempt 
@@ -83,9 +83,9 @@ def delete_webhook():
     bot.delete_webhook()
     print("Webhook eliminato.")
 
-def Alert(request,problema):
+def Alert(request,problema,telegram_id,giardino):
     
-    value=Telegram.TelegramUser()
+    value=Telegram.TelegramUser(telegram_id)
     match problema:
         case 'sensor' : bot.send_message(value,'[WARNING]\nComunicazione con sensore assente')
         case 'hub': bot.send_message(value,'[WARNING]\nProblems from the Hub')

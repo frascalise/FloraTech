@@ -27,10 +27,10 @@ class Telegram(models.Model):
             return "aggiunto"
         else: return "già presente"
 
-    def TelegramUser():
+    def TelegramUser(index):
         values= Telegram.objects.all()
-        print(values)
-        return values[0].user_id
+        #print(values)
+        return values[index].user_id
         
     
     
