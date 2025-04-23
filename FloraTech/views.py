@@ -357,7 +357,7 @@ def exam(request):
         'weather': list(weather),
     }
 
-    return render(request, 'api/show_all.html', {'data': data})
+    return redirect('show_all')
 
 # For testing purposes only
 # Add all the elements to the database

@@ -25,9 +25,9 @@ urlpatterns = [
     path("api/setup/", setup, name="setup"),
     path("api/show_all/", show_all, name="show_all"),
     path("api/delete_all/", delete_all, name="delete_all"),
+    path("api/exam/", exam, name="exam"),
 
     #** API **#
-    path("api/exam", exam, name="exam"),
     path("api/sensor_working/<int:raspberry_id>/<int:sensor_id>/", sensor_working, name="sensor_working"),
     path("api/sensor_warning/<int:raspberry_id>/<int:sensor_id>/<str:warning_message>/", sensor_warning, name="sensor_warning"),
     path("api/check_sensor/<int:raspberry_id>", check_sensor, name="check_sensor"),
