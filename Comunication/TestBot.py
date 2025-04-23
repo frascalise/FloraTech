@@ -45,6 +45,8 @@ def AddNewUser(message):
             bot.send_message(message.chat.id,value)'''
 def VerifyCode(message):
      bot.reply_to(message,f'Qui ci arriviamo con {message.text}')
+     number=random.randint(100000,999999)
+     NewTelegramUser(message.text,message.chat.id,number)
      
 @bot.message_handler(commands=['meteo'])
 def MeteoProvider(message):

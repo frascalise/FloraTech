@@ -1,5 +1,6 @@
 import json
 import requests
+import random
 from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -11,6 +12,7 @@ from datetime import datetime
 from collections import defaultdict
 from datetime import datetime
 from django.db.models import Q
+from django.http import HttpResponse
 
 from weather.meteo import richiesta_meteo
 from weather.aiModel import WeatherModel
@@ -307,9 +309,19 @@ def setup(request):
     }
 
     return render(request, 'api/api.html', {'data': data})
-def NewTelegramUser(owner,tele_id):
-    user=Telegram.objects.create(fk_owner=owner,telegram_id=tele_id)
-    user.save()
+def NewTelegramUser(owner,tele_id,number):
+    p_db=Telegram.objects.all()
+    presente=False
+    for i in p_db:
+        if i.fk_owner==owner:
+            presente=True
+    if not presente:
+        user=Telegram.objects.create(fk_owner=owner,telegram_id=tele_id)
+        user.save()
+        #number=random.randint(100000, 999999)
+        return HttpResponse(number)
+        
+
     
 # For testing purposes only
 # Show all the data
