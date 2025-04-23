@@ -255,6 +255,110 @@ def deactivate_sensor(request, sensor_id, garden_id):
     return redirect('garden', garden_id=garden_id)
 
 #** -------------------------------- PRODUCTION API -------------------------------- **#
+
+# For testing purposes only
+# Setup for exam
+def exam(request):
+    # DELETE
+    Raspberry.objects.all().delete()
+    Garden.objects.all().delete()
+    Sensor.objects.all().delete()
+    Weather.objects.all().delete()
+
+    with connection.cursor() as cursor:
+        cursor.execute("DELETE FROM sqlite_sequence WHERE name='accounts_raspberry'")
+        cursor.execute("DELETE FROM sqlite_sequence WHERE name='accounts_garden'")
+        cursor.execute("DELETE FROM sqlite_sequence WHERE name='accounts_sensor'")
+        cursor.execute("DELETE FROM sqlite_sequence WHERE name='accounts_weather'")
+
+    data = { 'message': 'All data deleted successfully!' }
+
+    # SETUP
+    # Dati per il Raspberry e il Garden
+    data_raspberry = {
+        'username': 'admin',    # password: floratech1
+        'label': 'RASPBERRY TEST',
+    }
+
+    data_garden = {
+        'fk_raspberry': 1,
+        'label': 'Garden Test',
+        'moisture': [{'timestamp': '2025-04-12 16:14:22.414395', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-13 16:14:31.346044', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-14 16:14:40.280807', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:14:49.217141', 'moisture': 795, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:14:58.150797', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:15:07.085934', 'moisture': 795, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-14 16:15:16.020279', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:15:24.954200', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:15:33.888822', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:15:42.835102', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:16:00.693254', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:16:09.630516', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:16:18.565234', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:16:27.499489', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:19:17.257998', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:19:26.192496', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:19:35.127375', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:19:44.061125', 'moisture': 795, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:19:52.997814', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:20:01.928535', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:20:10.864961', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:20:19.798581', 'moisture': 795, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:20:28.731473', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:20:37.669183', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:20:46.601846', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:20:55.535298', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:21:04.472946', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:21:22.337892', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:21:31.273187', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:21:40.209395', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:21:49.141601', 'moisture': 795, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:21:58.152333', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:22:07.030330', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:22:16.068179', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:22:24.881183', 'moisture': 795, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:22:33.859732', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:22:42.947330', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:22:51.682106', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:23:00.617203', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:23:09.554060', 'moisture': 795, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:23:18.488184', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:23:27.421804', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:23:36.404134', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:23:45.487621', 'moisture': 795, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:23:54.224856', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:24:03.244742', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:24:12.093125', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:24:21.027397', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:24:29.964162', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:24:38.897189', 'moisture': 795, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:24:47.831332', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:24:56.766156', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:25:05.702954', 'moisture': 794, 'sensor_from': 10, 'garden': 1}, {'timestamp': '2025-04-11 16:25:14.639908', 'moisture': 794, 'sensor_from': 10, 'garden': 1}],
+        'plants': [
+            {'name': 'TOMATO', 'quantity': 5},
+            {'name': 'BANANA', 'quantity': 3},
+        ],
+        'location': 'catanzaro',
+        'latitude': 38.8299603,
+        'longitude': 16.4315569,
+        'surface_area': 20.0,
+    }
+
+    raspberry = Raspberry.objects.create(fk_owner=data_raspberry['username'], label=data_raspberry['label'])
+    
+    garden = Garden.objects.create(fk_raspberry=raspberry, label=data_garden['label'])
+    garden.moisture = data_garden['moisture']
+    garden.plants = data_garden['plants']
+    garden.location = data_garden['location']
+    garden.latitude = data_garden['latitude']
+    garden.longitude = data_garden['longitude']
+    garden.surface_area = data_garden['surface_area']
+    garden.save()
+
+    # Create the sensors
+    # id	idSensor	fk_garden_id	fk_raspberry_id	is_associated	status	type	label
+    # 1	10	None	1	False	not working	sensor	Sensor
+    # 2	11	None	1	False	not working	sensor	Sensor
+    # 3	15	1	1	True	working	actuator	Actuator
+    sensor1 = Sensor.objects.create(idSensor=10, fk_garden=garden, fk_raspberry=raspberry, is_associated=True, status='working', type='sensor', label='Sensor')
+    sensor2 = Sensor.objects.create(idSensor=11, fk_garden=garden, fk_raspberry=raspberry, is_associated=True, status='working', type='sensor', label='Sensor')
+    sensor3 = Sensor.objects.create(idSensor=15, fk_garden=garden, fk_raspberry=raspberry, is_associated=True, status='working', type='actuator', label='Actuator')
+    sensor1.save()
+    sensor2.save()
+    sensor3.save()
+
+    PLANT_CHOICES = [
+        ("ONION", "Onion"),
+        ("TOMATO", "Tomato"),
+        ("SUGARCANE", "Sugarcane"),
+        ("COTTON", "Cotton"),
+        ("MUSTARD", "Mustard"),
+        ("WHEAT", "Wheat"),
+        ("BEAN", "Bean"),
+        ("CITRUS", "Citrus"),
+        ("MAIZE", "Maize"),
+        ("MELON", "Melon"),
+        ("RICE", "Rice"),
+        ("POTATO", "Potato"),
+        ("CABBAGE", "Cabbage"),
+        ("SOYBEAN", "Soybean"),
+        ("BANANA", "Banana"),
+    ]
+    
+    for i in PLANT_CHOICES:
+        plant = Plant.objects.create(name=i[0])
+        plant.save()
+
+    data = {
+        'raspberry_id': raspberry.id,
+        'garden_id': garden.id,
+        'message': 'Raspberry and garden successfully added!',
+    }
+
+    raspberry = Raspberry.objects.all().values()
+    garden = Garden.objects.all().values()
+    sensor = Sensor.objects.all().values()
+    weather = Weather.objects.all().values()
+
+    data = {
+        'raspberry': list(raspberry),
+        'garden': list(garden),
+        'sensor': list(sensor),
+        'weather': list(weather),
+    }
+
+    return render(request, 'api/show_all.html', {'data': data})
+
 # For testing purposes only
 # Add all the elements to the database
 def setup(request):
