@@ -119,9 +119,7 @@ def Alert(problema,telegram_id):
         case 'sensor' : bot.send_message(value,'[WARNING]\nComunicazione con sensore assente')
         case 'hub': bot.send_message(value,'[WARNING]\nProblems from the Hub')
         case 'storm': bot.send_message(value,'[WARNING]\n A storm is arriving in few hours')
-            
-        #bot.send_message(value,'A huge amount of water will arrive')
-    return HttpResponse(status=200)
+        
 
 
 
