@@ -292,6 +292,7 @@ def exam(request):
         'latitude': 38.8299603,
         'longitude': 16.4315569,
         'surface_area': 20.0,
+        'status': 'working',
     }
 
     raspberry = Raspberry.objects.create(fk_owner=data_raspberry['username'], label=data_raspberry['label'])
@@ -303,6 +304,7 @@ def exam(request):
     garden.latitude = data_garden['latitude']
     garden.longitude = data_garden['longitude']
     garden.surface_area = data_garden['surface_area']
+    garden.status = data_garden['status']
     garden.save()
 
     # Create the sensors
