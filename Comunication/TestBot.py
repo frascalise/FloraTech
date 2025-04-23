@@ -41,7 +41,7 @@ def AddNewUser(message):
         '''if Telegram.ControlEntrance(message.chat.id):
             bot.reply_to(message,'hai già aggiunto il tuo utente al sito.')
         else:
-            value=Telegram.NewTelegramUser(message.chat.id)
+            value=
             bot.send_message(message.chat.id,value)'''
 def VerifyCode(message):
     if message.text[0]!='/':
@@ -63,6 +63,7 @@ def Decision(message):
     number='123456'
     if message.text == number:
          NewEntrance(user_state[message.chat.id]['username'],message.chat.id)
+         Telegram.NewTelegramUser(message.chat.id)
          bot.send_message(message.chat.id,'accesso avvenuto')
     else:
          bot.send_message(message.chat.id,'accesso negato')
