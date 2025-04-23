@@ -46,7 +46,7 @@ def AddNewUser(message):
 def VerifyCode(message):
     bot.reply_to(message,f'Qui ci arriviamo con {message.text}')
     number=random.randint(100000,999999)
-    user_state[message.chat.id]={'control':number}
+    user_state[message.chat.id]={'control':str(number)}
     value=VerifyTelegramUser(message.text,message.chat.id,number)
     bot.send_message(message.chat.id,value)
     
