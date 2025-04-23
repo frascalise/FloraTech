@@ -60,7 +60,11 @@ def VerifyCode(message):
     else: bot.reply_to(message,'Non scrivere comandi. Ricomincia')
 
 def Decision(message):
-    bot.reply_to(message,user_state[message.chat.id]['palla'])
+    number='123456'
+    if message.text == number:
+         bot.send_message(message.chat.id,'accesso avvenuto')
+    else:
+         bot.send_message(message.chat.id,'accesso negato')
 
 @bot.message_handler(commands=['meteo'])
 def MeteoProvider(message):
