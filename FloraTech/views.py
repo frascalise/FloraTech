@@ -311,21 +311,6 @@ def setup(request):
     }
 
     return render(request, 'api/api.html', {'data': data})
-def VerifyTelegramUser(owner,tele_id,number):
-    p_db=User.objects.all()
-    presente=False
-    for i in p_db:
-        if i.username==owner:
-            presente=True
-    if presente:
-        return 1
-    return 0
-        
-def NewEntrance(owner,tele_id):
-    Telegram.objects.all().delete()
-    value=Telegram.objects.create(fk_owner=owner,telegram_id=tele_id)
-    value.save()
-
 
     
 # For testing purposes only
@@ -538,3 +523,18 @@ def get_water(request):
     print("\n\n\n\nWaterQ: ", waterQ, "\n\n\n\n\n")
 
     return JsonResponse({'message': 'Returning the daily water volume needed', 'data': waterQ})
+
+def VerifyTelegramUser(owner,tele_id,number):
+    p_db=User.objects.all()
+    presente=False
+    for i in p_db:
+        if i.username==owner:
+            presente=True
+    if presente:
+        return 1
+    return 0
+        
+def NewEntrance(owner,tele_id):
+    Telegram.objects.all().delete()
+    value=Telegram.objects.create(fk_owner=owner,telegram_id=tele_id)
+    value.save()
