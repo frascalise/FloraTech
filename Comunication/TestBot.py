@@ -114,10 +114,11 @@ def Alert(request,problema,username):
     
     #value=Telegram.TelegramUser(telegram_id)
     value=TelegramIdProvider(username)
-    match problema:
-        case 'sensor' : bot.send_message(value,'[WARNING]\nComunicazione con sensore assente')
-        case 'hub': bot.send_message(value,'[WARNING]\nProblems from the Hub')
-        case 'storm': bot.send_message(value,'[WARNING]\n A storm is arriving in few hours')
+    for i in value:
+        match problema:
+            case 'sensor' : bot.send_message(value,'[WARNING]\nComunicazione con sensore assente')
+            case 'hub': bot.send_message(value,'[WARNING]\nProblems from the Hub')
+            case 'storm': bot.send_message(value,'[WARNING]\n A storm is arriving in few hours')
     return HttpResponse(status=200)
 
 
