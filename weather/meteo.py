@@ -74,7 +74,7 @@ def TimeZone():
 def Days():
     return "past_days=3&forecast_days=4"#past_days=3&
 def get_position():
-    return 44.64,10.99
+    return 38.8299603,16.4315569
 
 def spacchettamento(date):
     anni=[]
