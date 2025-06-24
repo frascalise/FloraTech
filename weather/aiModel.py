@@ -144,7 +144,7 @@ class WeatherModel:
             moisture += telem['moisture']
 
         moisture = moisture/len(garden.moisture)
-
+        moisture = moisture * 100 / 1023
         #IMPORTANT convert the moisture measurement to the right unit!!!
 
         constantDepth = 10 #(mm)
