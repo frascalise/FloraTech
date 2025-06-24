@@ -370,7 +370,7 @@ def demo(request):
         
         garden = Garden.objects.get(id=data['garden'])
         garden.moisture.sort(key=lambda x: datetime.strptime(x['timestamp'], '%Y-%m-%d %H:%M:%S.%f'))
-        garden.moisture = garden.moisture[-data['keep']:]
+        garden.moisture = garden.moisture[:-data['keep']]
         garden.save()
         
         print("Dati moisture mantenuti:", garden.moisture)
