@@ -367,10 +367,16 @@ def exam(request):
 def demo(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-
-    print("Keep last: ", data['keep'], ' data')
-
-    return JsonResponse({'keep': data['keep'], 'message': 'Data received successfully!'})
+        
+        garden = Garden.objects.get(id=data['garden'])
+        garden.moisture.sort(key=lambda x: datetime.strptime(x['timestamp'], '%Y-%m-%d %H:%M:%S.%f'))
+        garden.moisture = garden.moisture[-data['keep']:]
+        garden.save()
+        
+        print("Dati moisture mantenuti:", garden.moisture)
+        return JsonResponse({'keep': data['keep'], 'message': 'Data received successfully!'})
+    else:
+        return JsonResponse({'message': 'Only POST method is allowed.'})
 
 
 # For testing purposes only
