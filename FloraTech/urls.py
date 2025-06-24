@@ -3,7 +3,7 @@ from django.urls import path, include
 from .views import get_daily_water_needs, welcome_view, home_view, garden_view, settings_view, edit_sensor, activate_sensor, deactivate_sensor, edit_garden, delete_garden, new_garden
 
 #* API *#
-from .views import exam, setup, sensor_working, sensor_warning, check_sensor, new_sensor, add_garden, show_all, delete_all, add_moisture, get_temperature, get_water
+from .views import demo, exam, setup, sensor_working, sensor_warning, check_sensor, new_sensor, add_garden, show_all, delete_all, add_moisture, get_temperature, get_water
 
 
 
@@ -26,6 +26,7 @@ urlpatterns = [
     path("api/show_all/", show_all, name="show_all"),
     path("api/delete_all/", delete_all, name="delete_all"),
     path("api/exam/", exam, name="exam"),
+    path("api/demo/", demo, name="exam"),
 
     #** API **#
     path("api/sensor_working/<int:raspberry_id>/<int:sensor_id>/", sensor_working, name="sensor_working"),
