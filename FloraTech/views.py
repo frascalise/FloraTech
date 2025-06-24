@@ -82,7 +82,7 @@ def garden_view(request, garden_id):
     moisture_values = [round(daily_avg[day], 2) for day in sorted_days]
 
     for i in range(len(moisture_values)):
-        moisture_values[i] = moisture_values[i] * 100 / 1023
+        moisture_values[i] = 100 - (moisture_values[i] * 100 / 1023)
 
     return render(request, "garden/garden.html", {
         "garden": garden,
