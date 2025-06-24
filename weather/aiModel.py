@@ -130,7 +130,8 @@ class WeatherModel:
         for w in waterList:
             water += w['waterQuantity']
             
-        return water
+        # instead of return water
+        return 0
 
     def get_ground_water(self, garden_id):
         """
