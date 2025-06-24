@@ -367,7 +367,7 @@ def demo(request):
     if request.method == 'POST':
         data = json.loads(request.body)
 
-    print("Received data:", data)
+    print("Keep last: ", data['keep'], ' data')
 
 
 # For testing purposes only
