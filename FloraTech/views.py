@@ -370,6 +370,8 @@ def demo(request):
 
     print("Keep last: ", data['keep'], ' data')
 
+    return JsonResponse({'keep': data['keep'], 'message': 'Data received successfully!'})
+
 
 # For testing purposes only
 # Add all the elements to the database
