@@ -363,6 +363,7 @@ def exam(request):
 
 # For testing purposes only
 # Demo
+@csrf_exempt
 def demo(request):
     if request.method == 'POST':
         data = json.loads(request.body)
