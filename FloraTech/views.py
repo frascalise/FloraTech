@@ -22,8 +22,6 @@ weatherModel = WeatherModel()
 
 
 def welcome_view(request):
-    if request.user.is_authenticated:
-        return redirect('home')
     return render(request, "welcome/welcome.html")
 
 @login_required

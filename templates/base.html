@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -11,31 +12,58 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
     
     {% block extra_css %}{% endblock %}
+    <style>
+        html, body {
+            height: 100%;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-image: url("{% static 'bg.png' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            min-height: 100vh;
+            width: 100vw;
+            overflow-x: hidden;
+            background-attachment: fixed;
+        }
+    </style>
 </head>
 <body class="bg-gray-800">
+    <!-- Inizio frosted glass -->
+    <div class="min-h-screen w-full flex flex-col bg-gray-900/70 backdrop-blur-lg shadow-lg">
+        <!-- Navbar -->
+        <nav class="p-6 flex justify-between items-center">
+            <a class="text-2xl font-bold text-green-500" href="{% url 'welcome' %}">FloraTech</a>
+            <div>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'home' %}" class="ml-4 text-green-500 font-bold">Dashboard</a>
+                    <a href="{% url 'accounts:logout' %}" class="ml-4 text-red-500 hover:underline">Logout</a>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}" class="ml-4 text-green-400 hover:underline">Login</a>
+                    <a href="{% url 'accounts:register' %}" class="ml-4 text-green-400 hover:underline">Register</a>
+                {% endif %}
+            </div>
+        </nav>
 
-    <!-- Navbar -->
-    <nav class="bg-gray-900 p-4 flex justify-between items-center shadow-md">
-        <a class="text-2xl font-bold text-green-600" href="{% url 'home' %}">FloraTech</a>
-        <div>
-            {% if user.is_authenticated %}
-                <a href="{% url 'accounts:logout' %}" class="ml-4 text-red-500 hover:underline">Logout</a>
-            {% endif %}
+        <!-- Contenuto della pagina -->
+        <div class="container mx-auto p-6 flex-1">
+            {% block content %}{% endblock %}
         </div>
-    </nav>
 
-    <!-- Contenuto della pagina -->
-    <div class="container mx-auto p-6">
-        {% block content %}{% endblock %}
+        <!-- Footer -->
+        <footer class="text-center text-gray-500 mb-4">
+        <p>Made with ❤️ by Francesco Scalise, Niccolò Davoli and Leonardo Nels.</p>
+        <p>
+            For information or support, contact us: 
+        <b><a href="mailto:fra.scalise21@gmail.com" class="text-gray-400 hover:underline">fra.scalise21@gmail.com</a></b>.
+    </p>
+</footer>
+
     </div>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white text-center p-4 mt-6 shadow-md">
-        <p>&copy; 2023 FloraTech. Tutti i diritti riservati.</p> 
-        <p>Realizzato con ❤️ da Francesco Scalise, Niccolò Davoli e Leonardo Nels.</p>
-        <p>Per informazioni o supporto, contattaci su <a href="mailto:fra.scalise21@gmail.com" class="text-green-600 hover:underline">fra.scalise21@gmail.com</a>.</p>
-    </footer>
-
     {% block extra_js %}{% endblock %}
 </body>
+
 </html>
